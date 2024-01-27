@@ -12,10 +12,11 @@
       },
       "style": {
         "noNonNullAssertion": {
-					"level": "off"
-				}
+          "level": "off"
+        }
       }
-    }
+    },
+    "ignore": ["**/*.gen.ts"]
   },
   "formatter": {
     "indentStyle": "space",
