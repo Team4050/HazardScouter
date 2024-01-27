@@ -9,6 +9,11 @@
       "recommended": true,
       "a11y": {
         "all": false
+      },
+      "style": {
+        "noNonNullAssertion": {
+					"level": "off"
+				}
       }
     }
   },
