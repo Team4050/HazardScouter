@@ -97,7 +97,12 @@ export default {
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ["Inter"],
+        heading: ["Orbitron"],
+      },
+    },
   },
   darkMode: "class",
   plugins: [
@@ -105,7 +110,7 @@ export default {
       defaultTheme: "dark",
       defaultExtendTheme: "dark",
       themes: {
-        bio: {
+        green: {
           extend: "dark",
           layout: {},
           colors: {
@@ -121,7 +126,7 @@ export default {
             danger: colorScales.red,
           },
         },
-        scanning: {
+        orange: {
           extend: "dark",
           layout: {},
           colors: {

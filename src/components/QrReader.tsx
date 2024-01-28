@@ -14,7 +14,6 @@ export default function QrReader({ onRead }: Props): JSX.Element {
         forceUpdate();
       }}
       constraints={{ facingMode: "environment", aspectRatio: 1 }}
-      className="w-full"
       scanDelay={500}
     />
   );

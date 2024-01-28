@@ -1,6 +1,6 @@
 import { Button, Link } from "@nextui-org/react";
 
-export default function Index(): JSX.Element {
+export default function Home(): JSX.Element {
   return (
     <div className="w-full h-full flex justify-center">
       <Button as={Link} color="primary" className="my-auto" href="/scouting">

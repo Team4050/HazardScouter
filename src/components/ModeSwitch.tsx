@@ -13,7 +13,11 @@ export default function ModeSwitch(): JSX.Element {
       startContent={<TableCellsIcon />}
       endContent={<CameraIcon />}
       isSelected={!location.pathname.includes("scanning")}
-      classNames={{ wrapper: "bg-primary" }}
+      classNames={{
+        wrapper: "bg-primary",
+        startContent: "text-white",
+        endContent: "text-white",
+      }}
       onClick={() => {
         if (location.pathname.includes("scouting")) {
           navigate("/scanning");
