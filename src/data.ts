@@ -1,79 +1,81 @@
 import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 
-export const useDataStore = create<MatchData>()((set) => ({
-  preMatch: {
-    scouter: "",
-    matchNumber: 0,
-    teamNumber: 0,
-    matchType: "quals",
-    alliance: "red",
-    robotPosition: "1",
-  },
-  auto: {
-    leaveStartingZone: false,
-    ampScores: 0,
-    speakerScores: 0,
-  },
-  teleop: {
-    ampScores: 0,
-    speakerScores: 0,
-    timesAmplified: 0,
-    pickupType: "none",
-  },
-  endGame: {
-    stageSeconds: 0,
-    endStatus: "not attempted",
-    trap: false,
-  },
-  postMatch: {
-    driverRating: 0,
-    defenseRating: 0,
-    speedRating: 0,
-    died: false,
-    unstable: false,
-    droppedNotes: false,
-    potentialPartner: false,
-    comments: "",
-  },
+export const useDataStore = create<AppData>()(
+  persist(
+    (set, _get) => ({
+      scouter: 0,
+      match: {},
+      appAlliance: undefined,
 
-  setPreMatchData: (data: PreMatchData) => set({ preMatch: data }),
-  setAutoData: (data: AutoData) => set({ auto: data }),
-  setTeleopData: (data: TeleopData) => set({ teleop: data }),
-  setEndGameData: (data: EndGameData) => set({ endGame: data }),
-  setPostMatchData: (data: PostMatchData) => set({ postMatch: data }),
-}));
+      setScouter: (scouter: Scouter) => set({ scouter }),
+      setAppAlliance: (alliance: Alliance) => set({ appAlliance: alliance }),
+      setPreMatchData: (data: PreMatchData) =>
+        set({ match: { preMatch: data } }),
+    }),
+    {
+      name: "app-data",
+      storage: createJSONStorage(() => localStorage),
+      skipHydration: true,
+    },
+  ),
+);
 
-interface MatchData {
-  preMatch: PreMatchData;
-  auto: AutoData;
-  teleop: TeleopData;
-  endGame: EndGameData;
-  postMatch: PostMatchData;
+type Scouter = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+
+interface AppData {
+  match: MatchData;
+  scouter: Scouter;
+  appAlliance: Alliance | undefined;
+
+  setAppAlliance: (alliance: Alliance) => void;
+  setScouter: (scouter: Scouter) => void;
+  setPreMatchData: (data: PreMatchData) => void;
 }
 
-interface PreMatchData {
+interface MatchData {
+  preMatch?: PreMatchData;
+  auto?: AutoData;
+  teleop?: TeleopData;
+  endGame?: EndGameData;
+  postMatch?: PostMatchData;
+}
+
+export enum MatchType {
+  Practice = "practice",
+  Quals = "quals",
+  Semi = "semi",
+  Finals = "finals",
+}
+
+export enum Alliance {
+  Red = "red",
+  Blue = "blue",
+}
+
+export interface PreMatchData {
   scouter: string;
   matchNumber: number;
   teamNumber: number;
-  matchType: "quals" | "semi" | "finals";
-  alliance: "red" | "blue";
-  robotPosition: "1" | "2" | "3";
+  matchType: MatchType;
+  alliance: Alliance;
+  drivePosition: 1 | 2 | 3;
 }
 
-interface AutoData {
+export interface AutoData {
   leaveStartingZone: boolean;
   ampScores: number;
   speakerScores: number;
 }
 
-interface TeleopData {
+export interface TeleopData {
   ampScores: number;
   speakerScores: number;
   timesAmplified: number;
   pickupType: "source" | "floor" | "both" | "none";
 }
 
-interface EndGameData {
+export interface EndGameData {
   stageSeconds: number;
   endStatus:
     | "parked"
@@ -85,7 +87,7 @@ interface EndGameData {
   trap: boolean;
 }
 
-interface PostMatchData {
+export interface PostMatchData {
   driverRating: number;
   defenseRating: number;
   speedRating: number;

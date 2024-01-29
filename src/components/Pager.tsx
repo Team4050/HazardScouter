@@ -23,7 +23,6 @@ export default function Pager({ pages }: Props): JSX.Element {
       <div className="fixed z-10 bottom-0 left-0 w-full flex flex-row mb-4 px-4 justify-between select-none items-center">
         <Button
           isIconOnly
-          variant="bordered"
           color="primary"
           onClick={() => setCurrentPage(currentPage - 1)}
           isDisabled={currentPage === 0}
@@ -37,7 +36,6 @@ export default function Pager({ pages }: Props): JSX.Element {
           </Card>
         ) : (
           <Tabs
-            variant="bordered"
             color="primary"
             onSelectionChange={(key) =>
               setCurrentPage(parseInt(key.toString()))
@@ -52,7 +50,6 @@ export default function Pager({ pages }: Props): JSX.Element {
 
         <Button
           isIconOnly
-          variant="bordered"
           color="primary"
           onClick={() => setCurrentPage(currentPage + 1)}
           isDisabled={currentPage === pages.length - 1}
