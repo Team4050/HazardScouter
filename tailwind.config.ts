@@ -1,6 +1,6 @@
 import { nextui } from "@nextui-org/react";
-import { Config } from "tailwindcss";
 import { ColorScale as NUIColorScale } from "@nextui-org/react";
+import { Config } from "tailwindcss";
 
 export type ColorScale = Exclude<NUIColorScale, string>;
 
@@ -100,7 +100,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ["Inter"],
-        heading: ["Orbitron"],
+        tech: ["Orbitron"],
       },
     },
   },

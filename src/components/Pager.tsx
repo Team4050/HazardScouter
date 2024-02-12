@@ -3,28 +3,50 @@ import { Button, Card, CardBody, Tab, Tabs } from "@nextui-org/react";
 import { useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 
+import { useMetaStore } from "../store/useDataStore";
+
 type Props = {
   pages: Page[];
 };
 
 type Page = {
   title: string;
-  component: JSX.Element;
+  form: (onChanged: FormOnChanged) => JSX.Element;
 };
 
+export type FormOnChanged = (isValid: boolean) => void;
+
 export default function Pager({ pages }: Props): JSX.Element {
-  const [currentPage, setCurrentPage] = useState<number>(0);
   const isPhone = useMediaQuery("(max-width: 640px)");
+  const { currentPage, setPage } = useMetaStore();
+  const [currentPageValid, setCurrentPageValid] = useState(false);
+
+  const onFormChanged = (valid: boolean) => {
+    setCurrentPageValid(valid);
+  };
+
+  const onNext = () => {
+    setPage(currentPage + 1);
+    setCurrentPageValid(false);
+  };
+
+  const onPrev = () => {
+    setPage(currentPage - 1);
+  };
 
   return (
     <>
-      {pages[currentPage].component}
+      <div className="font-tech text-2xl font-semibold text-center my-8">
+        {pages[currentPage].title}
+      </div>
+
+      {pages[currentPage].form(onFormChanged)}
 
       <div className="fixed z-10 bottom-0 left-0 w-full flex flex-row mb-4 px-4 justify-between select-none items-center">
         <Button
           isIconOnly
           color="primary"
-          onClick={() => setCurrentPage(currentPage - 1)}
+          onClick={() => onPrev()}
           isDisabled={currentPage === 0}
         >
           <ArrowLeftIcon className="w-8" />
@@ -37,9 +59,7 @@ export default function Pager({ pages }: Props): JSX.Element {
         ) : (
           <Tabs
             color="primary"
-            onSelectionChange={(key) =>
-              setCurrentPage(parseInt(key.toString()))
-            }
+            onSelectionChange={(key) => setPage(parseInt(key.toString()))}
             selectedKey={currentPage.toString()}
           >
             {pages.map((page, i) => (
@@ -51,8 +71,8 @@ export default function Pager({ pages }: Props): JSX.Element {
         <Button
           isIconOnly
           color="primary"
-          onClick={() => setCurrentPage(currentPage + 1)}
-          isDisabled={currentPage === pages.length - 1}
+          onClick={() => onNext()}
+          isDisabled={currentPage === pages.length - 1 || !currentPageValid}
         >
           <ArrowRightIcon className="w-8" />
         </Button>

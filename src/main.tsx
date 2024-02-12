@@ -1,17 +1,3 @@
-import { StrictMode } from "react";
-import ReactDOM from "react-dom/client";
-import "./styles/tailwind.css";
-import "./styles/fonts.css";
-import {
-  Outlet,
-  RouterProvider,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
-
-import Scouting from "./pages/scouting";
-import Home from "./pages/home";
-import { createBrowserRouter } from "react-router-dom";
 import {
   Navbar,
   NavbarBrand,
@@ -20,11 +6,25 @@ import {
   NextUIProvider,
 } from "@nextui-org/react";
 import clsx from "clsx";
-import ModeSwitch from "./components/ModeSwitch";
-import { useMediaQuery } from "usehooks-ts";
-import Scanning from "./pages/scanning";
+import { StrictMode } from "react";
+import ReactDOM from "react-dom/client";
+import {
+  Outlet,
+  RouterProvider,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 
-export const router = createBrowserRouter([
+import ModeSwitch from "./components/ModeSwitch";
+import Home from "./pages/home";
+import Scanning from "./pages/scanning";
+import Scouting from "./pages/scouting";
+import { useMetaStore } from "./store/useDataStore";
+import "./styles/fonts.css";
+import "./styles/tailwind.css";
+
+const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
@@ -45,10 +45,10 @@ export const router = createBrowserRouter([
   },
 ]);
 
-function RootLayout(): JSX.Element {
+export default function RootLayout(): JSX.Element {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const isPhone = useMediaQuery("(max-width: 640px)");
+  const { scanOnly } = useMetaStore();
 
   return (
     <NextUIProvider navigate={navigate} className="fixed h-screen w-screen">
@@ -57,19 +57,20 @@ function RootLayout(): JSX.Element {
           "text-foreground bg-background h-full bg-gradient-to-tr",
           pathname === "/scanning"
             ? "orange from-green-800 to-orange-700"
-            : "green from-red-600 to-blue-800"
+            : "green from-red-600 to-blue-800",
         )}
       >
-        <Navbar position="static" isBordered className="font-heading">
-          <NavbarContent justify={isPhone ? "center" : "start"}>
+        <Navbar position="static" isBordered className="font-tech">
+          <NavbarContent justify="start" className="">
             <NavbarBrand className="space-x-2">
               <img src="/logo.svg" className="max-h-10" />
               <span className="text-2xl">Hazard Scouter</span>
             </NavbarBrand>
           </NavbarContent>
 
-          {pathname.startsWith("/scanning") ||
-          pathname.startsWith("/scouting") ? (
+          {!scanOnly &&
+          (pathname.startsWith("/scanning") ||
+            pathname.startsWith("/scouting")) ? (
             <NavbarContent justify="end">
               <NavbarItem>
                 <ModeSwitch />
@@ -89,5 +90,5 @@ function RootLayout(): JSX.Element {
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <RouterProvider router={router} />
-  </StrictMode>
+  </StrictMode>,
 );

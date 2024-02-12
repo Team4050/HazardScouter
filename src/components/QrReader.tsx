@@ -1,18 +1,13 @@
-import { useForceUpdate } from "framer-motion";
-import { QrReader as Reader } from "react-qr-reader";
+import { OnResultFunction, QrReader as Reader } from "react-qr-reader";
 
 type Props = {
-  onRead: (data: string | undefined) => void;
+  onResult: OnResultFunction;
 };
 
-export default function QrReader({ onRead }: Props): JSX.Element {
-  const [forceUpdate] = useForceUpdate();
+export default function QrReader({ onResult }: Props): JSX.Element {
   return (
     <Reader
-      onResult={(result) => {
-        onRead(result?.getText());
-        forceUpdate();
-      }}
+      onResult={onResult}
       constraints={{ facingMode: "environment", aspectRatio: 1 }}
       scanDelay={500}
     />
