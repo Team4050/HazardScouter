@@ -2,7 +2,7 @@ import { Input, InputProps } from "@nextui-org/react";
 import clsx from "clsx";
 import { Control, Controller } from "react-hook-form";
 
-export type Props = {
+type Props = {
   name: string;
   // eslint-disable-next-line
   control: Control<any, any>;
