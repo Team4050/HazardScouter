@@ -13,27 +13,30 @@ export default function FormInput({ name, ...props }: Props): JSX.Element {
     <Controller
       name={name}
       control={props.control}
-      render={({ field, formState }) => (
-        <Input
-          {...props}
-          name={field.name}
-          isInvalid={!!formState.errors?.[name]?.message}
-          // errorMessage={formState.errors?.[name]?.message?.toString()}
-          value={field.value ? field.value : null}
-          onChange={field.onChange}
-          onBlur={field.onBlur}
-          disabled={field.disabled}
-          classNames={{
-            inputWrapper: clsx(
-              formState.errors?.[name]?.message
-                ? "border-red-500"
-                : field.value
-                  ? "border-green-500/70"
-                  : null,
-            ),
-          }}
-        />
-      )}
+      render={({ field, formState }) => {
+        // const defaultValue = formState.defaultValues?.[name];
+        return (
+          <Input
+            {...props}
+            name={field.name}
+            isInvalid={!!formState.errors?.[name]?.message}
+            // errorMessage={formState.errors?.[name]?.message?.toString()}
+            value={field.value || ""}
+            onChange={field.onChange}
+            onBlur={field.onBlur}
+            disabled={field.disabled}
+            classNames={{
+              inputWrapper: clsx(
+                formState.errors?.[name]?.message
+                  ? "border-red-500"
+                  : field.value
+                    ? "border-green-500/70"
+                    : null,
+              ),
+            }}
+          />
+        );
+      }}
     />
   );
 }

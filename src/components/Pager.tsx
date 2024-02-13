@@ -6,22 +6,22 @@ import { useMediaQuery } from "usehooks-ts";
 import { useMetaStore } from "../store/useDataStore";
 
 type Props = {
-  pages: Page[];
+  pages: {
+    title: string;
+    form: (props: FormProps) => JSX.Element;
+  }[];
 };
 
-type Page = {
-  title: string;
-  form: (onChanged: FormOnChanged) => JSX.Element;
+export type FormProps = {
+  onChanged: (isValid: boolean) => void;
 };
-
-export type FormOnChanged = (isValid: boolean) => void;
 
 export default function Pager({ pages }: Props): JSX.Element {
-  const isPhone = useMediaQuery("(max-width: 640px)");
+  const isPhone = useMediaQuery("(max-width: 768px)");
   const { currentPage, setPage } = useMetaStore();
   const [currentPageValid, setCurrentPageValid] = useState(false);
 
-  const onFormChanged = (valid: boolean) => {
+  const onChanged = (valid: boolean) => {
     setCurrentPageValid(valid);
   };
 
@@ -36,11 +36,11 @@ export default function Pager({ pages }: Props): JSX.Element {
 
   return (
     <>
-      <div className="font-tech text-2xl font-semibold text-center my-8">
+      <div className="font-tech text-2xl font-semibold text-center my-4 md:my-8">
         {pages[currentPage].title}
       </div>
 
-      {pages[currentPage].form(onFormChanged)}
+      {pages[currentPage].form({ onChanged })}
 
       <div className="fixed z-10 bottom-0 left-0 w-full flex flex-row mb-4 px-4 justify-between select-none items-center">
         <Button

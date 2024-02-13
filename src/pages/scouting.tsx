@@ -1,62 +1,75 @@
-import { Select, SelectItem, Tab, Tabs } from "@nextui-org/react";
+import { Select, SelectItem, Switch, Tab, Tabs } from "@nextui-org/react";
 import clsx from "clsx";
 import { Controller } from "react-hook-form";
+import { useMediaQuery } from "usehooks-ts";
 
-import Pager, { FormOnChanged } from "../components/Pager";
+import Pager, { FormProps } from "../components/Pager";
 import FormInput from "../components/form/Input";
+import useCompiledData from "../hooks/useCompiledData";
 import useForm from "../hooks/useForm";
 import {
   Alliance,
+  AutoDataType,
+  DrivePosition,
   MatchType,
   PreMatchDataType,
+  autoDataDefaults,
+  autoDataSchema,
   preMatchDataDefaults,
   preMatchDataSchema,
 } from "../store/schema";
-import { usePreMatchStore } from "../store/useDataStore";
+import { useAutoStore, usePreMatchStore } from "../store/useDataStore";
+
+const isDev = import.meta.env.DEV;
 
 export default function Scouting(): JSX.Element {
-  return (
-    <div className="mx-auto max-w-xl">
-      <Pager
-        pages={[
-          {
-            title: "Pre-Match",
-            form: (onChanged) => <PreMatch onChanged={onChanged} />,
-          },
-          {
-            title: "Autonomous",
-            // component: <Auto />,
-            form: (onChanged) => <div></div>,
-          },
-          {
-            title: "Teleoperated",
-            form: (onChanged) => <Teleop onChanged={onChanged} />,
-          },
-          {
-            title: "Endgame",
-            form: (onChanged) => <Endgame onChanged={onChanged} />,
-          },
-          {
-            title: "Post-Match",
-            form: (onChanged) => <PostMatch onChanged={onChanged} />,
-          },
-        ]}
-      />
+  const isPhone = useMediaQuery("(max-width: 768px)");
+  const data = useCompiledData();
 
-      {/* {import.meta.env.DEV && (
-        <div className="mt-10 max-w-28 mx-auto">
-          <pre>{JSON.stringify(preMatchData, null, 2)}</pre>
+  return (
+    <div
+      className={clsx(
+        "mx-auto",
+        isPhone ? "max-w-xl" : null,
+        isDev ? "flex flex-row space-x-8 md:mx-20" : null,
+      )}
+    >
+      <div className={clsx(isDev ? "md:w-1/2" : null)}>
+        <Pager
+          pages={[
+            {
+              title: "Pre-Match",
+              form: PreMatch,
+            },
+            {
+              title: "Autonomous",
+              form: Auto,
+            },
+            {
+              title: "Teleoperated",
+              form: Teleop,
+            },
+            {
+              title: "Endgame",
+              form: Endgame,
+            },
+            {
+              title: "Post-Match",
+              form: PostMatch,
+            },
+          ]}
+        />
+      </div>
+      {isDev ? (
+        <div className="hidden md:block md:w-1/2 mt-10">
+          <pre className="mx-10">{data}</pre>
         </div>
-      )} */}
+      ) : null}
     </div>
   );
 }
 
-type SharedPageProps = {
-  onChanged: FormOnChanged;
-};
-
-function PreMatch({ onChanged }: SharedPageProps): JSX.Element {
+function PreMatch({ onChanged }: FormProps): JSX.Element {
   const { setData, data: preMatchData } = usePreMatchStore();
 
   const { control, watch } = useForm<
@@ -65,7 +78,7 @@ function PreMatch({ onChanged }: SharedPageProps): JSX.Element {
   >({
     setData,
     onChanged,
-    defaultValues: preMatchData,
+    defaultValues: preMatchData ?? preMatchDataDefaults,
     schema: preMatchDataSchema,
   });
 
@@ -141,14 +154,15 @@ function PreMatch({ onChanged }: SharedPageProps): JSX.Element {
         )}
       />
 
-      <div className="col-span-full md:flex flex-row space-x-2 text-center md:text-left">
-        <div className="font-tech font-medium md:mb-0 mb-2">
-          Driver Position
-        </div>
-        <Controller
-          control={control}
-          name="drivePosition"
-          render={({ field: { value, onChange } }) => (
+      <Controller
+        control={control}
+        name="drivePosition"
+        defaultValue={preMatchDataDefaults.drivePosition}
+        render={({ field: { value, onChange } }) => (
+          <div className="col-span-full md:flex flex-row space-x-2 text-center md:text-left">
+            <div className="font-tech font-medium md:mb-0 mb-2">
+              Driver Position
+            </div>
             <Tabs
               fullWidth
               className="col-span-2"
@@ -160,64 +174,68 @@ function PreMatch({ onChanged }: SharedPageProps): JSX.Element {
               selectedKey={value}
               onSelectionChange={onChange}
             >
-              <Tab key={1} title="Position 1" />
-              <Tab key={2} title="Position 2" />
-              <Tab key={3} title="Position 3" />
+              <Tab key={DrivePosition.Near} title="Near" />
+              <Tab key={DrivePosition.Middle} title="Middle" />
+              <Tab key={DrivePosition.Far} title="Far" />
             </Tabs>
-          )}
-        />
-      </div>
+          </div>
+        )}
+      />
     </form>
   );
 }
 
-// function Auto(): JSX.Element {
-//   const { auto } = useDataStore();
+function Auto({ onChanged }: FormProps): JSX.Element {
+  const { setData, data: autoData } = useAutoStore();
 
-//   const {
-//     handleSubmit,
-//     control,
-//     formState: { errors, isDirty },
-//     watch,
-//     reset,
-//   } = useForm<AutoData>({
-//     mode: "onTouched",
-//     resolver: zodResolver(preMatchDataSchema),
-//     defaultValues: auto ?? {
-//       leaveStartingZone: false,
-//       ampScores: 0,
-//       speakerScores: 0,
-//     },
-//   });
+  const { control } = useForm<AutoDataType, typeof autoDataSchema>({
+    setData,
+    onChanged,
+    defaultValues: autoDataDefaults,
+    schema: autoDataSchema,
+  });
 
-//   const onSubmit = (data: AutoData) => {
-//     // TODO
+  return (
+    <form className="grid grid-cols-4 gap-4">
+      <Controller
+        control={control}
+        name="leaveStartingZone"
+        render={({ field: { value, onChange } }) => (
+          <Switch isSelected={value} onChange={onChange}>
+            Left Starting Zone
+          </Switch>
+        )}
+      />
 
-//     console.log(data);
-//   };
+      <FormInput
+        type="number"
+        label="Amp Scores"
+        variant="faded"
+        name="ampScores"
+        className="col-span-2"
+        control={control}
+      />
 
-//   return (
-//     <form
-//       className="grid grid-cols-2 gap-4"
-//       onSubmit={(e) => {
-//         handleSubmit(onSubmit)(e);
+      <FormInput
+        type="number"
+        label="Speaker Scores"
+        variant="faded"
+        name="speakerScores"
+        className="col-span-2"
+        control={control}
+      />
+    </form>
+  );
+}
 
-//         if (errors) console.log(errors);
-//       }}
-//     >
-//       {/* <Counter control={control} name="Amp Scores" /> */}
-//     </form>
-//   );
-// }
-
-function Teleop({ onChanged }: SharedPageProps): JSX.Element {
+function Teleop({ onChanged }: FormProps): JSX.Element {
   return <div>Teleop</div>;
 }
 
-function Endgame({ onChanged }: SharedPageProps): JSX.Element {
+function Endgame({ onChanged }: FormProps): JSX.Element {
   return <div>Endgame</div>;
 }
 
-function PostMatch({ onChanged }: SharedPageProps): JSX.Element {
+function PostMatch({ onChanged }: FormProps): JSX.Element {
   return <div>Post-Match</div>;
 }

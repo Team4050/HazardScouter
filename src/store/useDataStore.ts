@@ -24,31 +24,31 @@ export const usePreMatchStore = create<
 }));
 
 export const useAutoStore = create<
-  AutoDataType & { setData: (data: AutoDataType) => void }
+  { data: AutoDataType } & { setData: (data: AutoDataType) => void }
 >()((set) => ({
-  ...autoDataDefaults,
-  setData: (data) => set((state) => ({ ...state, ...data })),
+  data: autoDataDefaults,
+  setData: (data) => set((state) => ({ ...state, data })),
 }));
 
 export const useTeleopStore = create<
-  TeleopDataType & { setData: (data: TeleopDataType) => void }
+  { data: TeleopDataType } & { setData: (data: TeleopDataType) => void }
 >()((set) => ({
-  ...teleopDataDefaults,
-  setData: (data) => set((state) => ({ ...state, ...data })),
+  data: teleopDataDefaults,
+  setData: (data) => set((state) => ({ ...state, data })),
 }));
 
 export const useEndGameStore = create<
-  EndGameDataType & { setData: (data: EndGameDataType) => void }
+  { data: EndGameDataType } & { setData: (data: EndGameDataType) => void }
 >()((set) => ({
-  ...endGameDataDefaults,
-  setData: (data) => set((state) => ({ ...state, ...data })),
+  data: endGameDataDefaults,
+  setData: (data) => set((state) => ({ ...state, data })),
 }));
 
 export const usePostMatchStore = create<
-  PostMatchDataType & { setData: (data: PostMatchDataType) => void }
+  { data: PostMatchDataType } & { setData: (data: PostMatchDataType) => void }
 >()((set) => ({
-  ...postMatchDataDefaults,
-  setData: (data) => set((state) => ({ ...state, ...data })),
+  data: postMatchDataDefaults,
+  setData: (data) => set((state) => ({ ...state, data })),
 }));
 
 export const useMetaStore = create<

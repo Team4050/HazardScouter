@@ -12,6 +12,12 @@ export enum Alliance {
   Blue = "blue",
 }
 
+export enum DrivePosition {
+  Near = "near",
+  Middle = "middle",
+  Far = "far",
+}
+
 export enum PickupType {
   Source = "source",
   Floor = "floor",
@@ -34,7 +40,7 @@ export const preMatchDataSchema = z.object({
   teamNumber: z.coerce.number().min(1),
   matchType: z.nativeEnum(MatchType),
   alliance: z.nativeEnum(Alliance),
-  drivePosition: z.coerce.number().min(1).max(3),
+  drivePosition: z.nativeEnum(DrivePosition),
 });
 export type PreMatchDataType = z.infer<typeof preMatchDataSchema>;
 export const preMatchDataDefaults: PreMatchDataType = {
@@ -43,7 +49,7 @@ export const preMatchDataDefaults: PreMatchDataType = {
   teamNumber: 0,
   matchType: MatchType.Practice,
   alliance: Alliance.Red,
-  drivePosition: 1,
+  drivePosition: DrivePosition.Near,
 };
 
 export const autoDataSchema = z.object({
@@ -104,4 +110,12 @@ export const postMatchDataDefaults: PostMatchDataType = {
   droppedNotes: false,
   potentialPartner: false,
   comments: "",
+};
+
+export type MatchDataType = {
+  preMatch: PreMatchDataType;
+  auto: AutoDataType;
+  teleop: TeleopDataType;
+  endgame: EndGameDataType;
+  postMatch: PostMatchDataType;
 };
