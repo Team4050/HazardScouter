@@ -1,4 +1,4 @@
-import { zodResolver } from "@hookform/resolvers/zod";
+import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useEffect } from "react";
 import {
   DefaultValues,
@@ -6,11 +6,11 @@ import {
   UseFormReturn,
   useForm as useRhfForm,
 } from "react-hook-form";
-import { z } from "zod";
+import { BaseSchema } from "valibot";
 
 export default function useForm<
   T extends FieldValues,
-  TSchema extends z.Schema,
+  TSchema extends BaseSchema,
 >({
   setData,
   onChanged,
@@ -24,7 +24,7 @@ export default function useForm<
 }): UseFormReturn<T> {
   const form = useRhfForm<T>({
     mode: "onChange",
-    resolver: zodResolver(schema),
+    resolver: valibotResolver(schema),
     defaultValues: defaultValues || {},
   });
 

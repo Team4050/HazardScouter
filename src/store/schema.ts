@@ -1,4 +1,14 @@
-import { z } from "zod";
+import {
+  object,
+  string,
+  length,
+  minValue,
+  maxValue,
+  enum_,
+  number,
+  Output,
+  boolean,
+} from "valibot";
 
 export enum MatchType {
   Practice = "practice",
@@ -34,16 +44,16 @@ export enum EndStatus {
   NotAttempted = "not-attempted",
 }
 
-export const preMatchDataSchema = z.object({
-  scouter: z.string().length(2),
-  matchNumber: z.coerce.number().min(1).max(999),
-  teamNumber: z.coerce.number().min(1),
-  matchType: z.nativeEnum(MatchType),
-  alliance: z.nativeEnum(Alliance),
-  drivePosition: z.nativeEnum(DrivePosition),
+export const preMatchDataSchema = object({
+  scouter: string([length(2)]),
+  matchNumber: number([minValue(1), maxValue(999)]),
+  teamNumber: number([minValue(1)]),
+  matchType: enum_(MatchType),
+  alliance: enum_(Alliance),
+  drivePosition: enum_(DrivePosition),
 });
-export type PreMatchDataType = z.infer<typeof preMatchDataSchema>;
-export const preMatchDataDefaults: PreMatchDataType = {
+export type PreMatchData = Output<typeof preMatchDataSchema>;
+export const preMatchDataDefaults: PreMatchData = {
   scouter: "",
   matchNumber: 0,
   teamNumber: 0,
@@ -52,55 +62,55 @@ export const preMatchDataDefaults: PreMatchDataType = {
   drivePosition: DrivePosition.Near,
 };
 
-export const autoDataSchema = z.object({
-  leaveStartingZone: z.boolean(),
-  ampScores: z.coerce.number(),
-  speakerScores: z.coerce.number(),
+export const autoDataSchema = object({
+  leaveStartingZone: boolean(),
+  ampScores: number([minValue(0), maxValue(99)]),
+  speakerScores: number([minValue(0), maxValue(99)]),
 });
-export type AutoDataType = z.infer<typeof autoDataSchema>;
-export const autoDataDefaults: AutoDataType = {
+export type AutoData = Output<typeof autoDataSchema>;
+export const autoDataDefaults: AutoData = {
   leaveStartingZone: false,
   ampScores: 0,
   speakerScores: 0,
 };
 
-export const teleopDataSchema = z.object({
-  ampScores: z.coerce.number(),
-  speakerScores: z.coerce.number(),
-  timesAmplified: z.coerce.number(),
-  pickupType: z.nativeEnum(PickupType),
+export const teleopDataSchema = object({
+  ampScores: number([minValue(0), maxValue(99)]),
+  speakerScores: number([minValue(0), maxValue(99)]),
+  timesAmplified: number([minValue(0), maxValue(99)]),
+  pickupType: enum_(PickupType),
 });
-export type TeleopDataType = z.infer<typeof teleopDataSchema>;
-export const teleopDataDefaults: TeleopDataType = {
+export type TeleopData = Output<typeof teleopDataSchema>;
+export const teleopDataDefaults: TeleopData = {
   ampScores: 0,
   speakerScores: 0,
   timesAmplified: 0,
   pickupType: PickupType.None,
 };
 
-export const endGameDataSchema = z.object({
-  stageSeconds: z.coerce.number(),
-  endStatus: z.nativeEnum(EndStatus),
-  trap: z.boolean(),
+export const endGameDataSchema = object({
+  stageSeconds: number([minValue(0), maxValue(99)]), // TODO: Need better values here
+  endStatus: enum_(EndStatus),
+  trap: boolean(),
 });
-export type EndGameDataType = z.infer<typeof endGameDataSchema>;
-export const endGameDataDefaults: EndGameDataType = {
+export type EndGameData = Output<typeof endGameDataSchema>;
+export const endGameDataDefaults: EndGameData = {
   stageSeconds: 0,
   endStatus: EndStatus.NotAttempted,
   trap: false,
 };
 
-export const postMatchDataSchema = z.object({
-  driverRating: z.coerce.number(),
-  defenseRating: z.coerce.number(),
-  speedRating: z.coerce.number(),
-  died: z.boolean(),
-  unstable: z.boolean(),
-  droppedNotes: z.boolean(),
-  potentialPartner: z.boolean(),
-  comments: z.string(),
+export const postMatchDataSchema = object({
+  driverRating: number([minValue(0), maxValue(10)]),
+  defenseRating: number([minValue(0), maxValue(10)]),
+  speedRating: number([minValue(0), maxValue(10)]),
+  died: boolean(),
+  unstable: boolean(),
+  droppedNotes: boolean(),
+  potentialPartner: boolean(),
+  comments: string(),
 });
-export type PostMatchDataType = z.infer<typeof postMatchDataSchema>;
+export type PostMatchDataType = Output<typeof postMatchDataSchema>;
 export const postMatchDataDefaults: PostMatchDataType = {
   driverRating: 0,
   defenseRating: 0,
@@ -113,9 +123,9 @@ export const postMatchDataDefaults: PostMatchDataType = {
 };
 
 export type MatchDataType = {
-  preMatch: PreMatchDataType;
-  auto: AutoDataType;
-  teleop: TeleopDataType;
-  endgame: EndGameDataType;
+  preMatch: PreMatchData;
+  auto: AutoData;
+  teleop: TeleopData;
+  endgame: EndGameData;
   postMatch: PostMatchDataType;
 };

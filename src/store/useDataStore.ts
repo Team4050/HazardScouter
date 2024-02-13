@@ -2,11 +2,11 @@ import { create } from "zustand";
 
 import { config } from "../../config";
 import {
-  AutoDataType,
-  EndGameDataType,
+  AutoData,
+  EndGameData,
   PostMatchDataType,
-  PreMatchDataType,
-  TeleopDataType,
+  PreMatchData,
+  TeleopData,
   autoDataDefaults,
   endGameDataDefaults,
   postMatchDataDefaults,
@@ -14,31 +14,29 @@ import {
   teleopDataDefaults,
 } from "./schema";
 
-// const storage = createJSONStorage(() => localStorage);
-
 export const usePreMatchStore = create<
-  { data: PreMatchDataType } & { setData: (data: PreMatchDataType) => void }
+  { data: PreMatchData } & { setData: (data: PreMatchData) => void }
 >()((set) => ({
   data: preMatchDataDefaults,
   setData: (data) => set((state) => ({ ...state, data })),
 }));
 
 export const useAutoStore = create<
-  { data: AutoDataType } & { setData: (data: AutoDataType) => void }
+  { data: AutoData } & { setData: (data: AutoData) => void }
 >()((set) => ({
   data: autoDataDefaults,
   setData: (data) => set((state) => ({ ...state, data })),
 }));
 
 export const useTeleopStore = create<
-  { data: TeleopDataType } & { setData: (data: TeleopDataType) => void }
+  { data: TeleopData } & { setData: (data: TeleopData) => void }
 >()((set) => ({
   data: teleopDataDefaults,
   setData: (data) => set((state) => ({ ...state, data })),
 }));
 
 export const useEndGameStore = create<
-  { data: EndGameDataType } & { setData: (data: EndGameDataType) => void }
+  { data: EndGameData } & { setData: (data: EndGameData) => void }
 >()((set) => ({
   data: endGameDataDefaults,
   setData: (data) => set((state) => ({ ...state, data })),

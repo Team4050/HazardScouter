@@ -9,10 +9,10 @@ import useCompiledData from "../hooks/useCompiledData";
 import useForm from "../hooks/useForm";
 import {
   Alliance,
-  AutoDataType,
+  AutoData,
   DrivePosition,
   MatchType,
-  PreMatchDataType,
+  PreMatchData,
   autoDataDefaults,
   autoDataSchema,
   preMatchDataDefaults,
@@ -72,10 +72,7 @@ export default function Scouting(): JSX.Element {
 function PreMatch({ onChanged }: FormProps): JSX.Element {
   const { setData, data: preMatchData } = usePreMatchStore();
 
-  const { control, watch } = useForm<
-    PreMatchDataType,
-    typeof preMatchDataSchema
-  >({
+  const { control, watch } = useForm<PreMatchData, typeof preMatchDataSchema>({
     setData,
     onChanged,
     defaultValues: preMatchData ?? preMatchDataDefaults,
@@ -188,7 +185,7 @@ function PreMatch({ onChanged }: FormProps): JSX.Element {
 function Auto({ onChanged }: FormProps): JSX.Element {
   const { setData, data: autoData } = useAutoStore();
 
-  const { control } = useForm<AutoDataType, typeof autoDataSchema>({
+  const { control } = useForm<AutoData, typeof autoDataSchema>({
     setData,
     onChanged,
     defaultValues: autoDataDefaults,
