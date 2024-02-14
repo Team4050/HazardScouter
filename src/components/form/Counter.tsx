@@ -15,6 +15,8 @@ type CounterProps = {
   };
   size?: "sm" | "md" | "lg";
   value?: number;
+  minCount?: number;
+  maxCount?: number;
   onChange?: (value: number) => void;
 };
 
@@ -25,6 +27,8 @@ export function Counter({
   classNames,
   size = "md",
   value,
+  minCount = 0,
+  maxCount = 99,
   onChange,
 }: CounterProps): JSX.Element {
   const [count, setCount] = useState<number>(value || 0);
@@ -37,9 +41,13 @@ export function Counter({
 
   return (
     <div
-      className={clsx("flex", labelLeft ? "flex-row" : "flex-col", className)}
+      className={clsx(
+        "flex",
+        labelLeft ? "flex-row space-x-1" : "flex-col space-y-1",
+        className,
+      )}
     >
-      <div className={clsx("text-lg", classNames?.label)}>{label}</div>
+      <div className={clsx(classNames?.label)}>{label}</div>
       <div
         className={clsx(
           "flex flex-row bg-background w-fit rounded-xl p-1",
@@ -52,10 +60,10 @@ export function Counter({
           size={size}
           className={clsx(classNames?.buttons)}
           onClick={() => setCount(count - 1)}
-          disabled={count <= 0}
+          disabled={count <= minCount}
         >
           <MinusIcon
-            className={clsx(count <= 0 ? "opacity-50" : null, "w-6")}
+            className={clsx(count <= minCount ? "opacity-50" : null, "w-6")}
           />
         </Button>
         <div
@@ -72,10 +80,10 @@ export function Counter({
           size={size}
           className={clsx(classNames?.buttons)}
           onClick={() => setCount(count + 1)}
-          disabled={count >= 99}
+          disabled={count >= maxCount}
         >
           <PlusIcon
-            className={clsx(count >= 99 ? "opacity-50" : null, "w-6")}
+            className={clsx(count >= maxCount ? "opacity-50" : null, "w-6")}
           />
         </Button>
       </div>

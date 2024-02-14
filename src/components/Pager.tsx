@@ -34,13 +34,15 @@ export default function Pager({ pages }: Props): JSX.Element {
     setPage(currentPage - 1);
   };
 
+  const Page = pages[currentPage].form;
+
   return (
     <>
       <div className="font-tech text-2xl font-semibold text-center my-4 md:my-8">
         {pages[currentPage].title}
       </div>
 
-      {pages[currentPage].form({ onChanged })}
+      <Page onChanged={onChanged} />
 
       <div className="fixed z-10 bottom-0 left-0 w-full flex flex-row mb-4 px-4 justify-between select-none items-center">
         <Button

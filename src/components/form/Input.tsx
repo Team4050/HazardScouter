@@ -14,7 +14,6 @@ export default function FormInput({ name, ...props }: Props): JSX.Element {
       name={name}
       control={props.control}
       render={({ field, formState }) => {
-        // const defaultValue = formState.defaultValues?.[name];
         return (
           <Input
             {...props}
@@ -22,7 +21,13 @@ export default function FormInput({ name, ...props }: Props): JSX.Element {
             isInvalid={!!formState.errors?.[name]?.message}
             // errorMessage={formState.errors?.[name]?.message?.toString()}
             value={field.value || ""}
-            onChange={field.onChange}
+            onChange={(e) =>
+              field.onChange(
+                props.type === "number"
+                  ? e.target.valueAsNumber
+                  : e.target.value,
+              )
+            }
             onBlur={field.onBlur}
             disabled={field.disabled}
             classNames={{

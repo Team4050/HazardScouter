@@ -28,19 +28,24 @@ export default function useForm<
     defaultValues: defaultValues || {},
   });
 
-  useEffect(() => {
-    onChanged(form.formState.isValid);
-  }, [onChanged, form.formState.isValid]);
+  const {
+    formState: { isValid },
+    watch,
+  } = form;
 
   useEffect(() => {
-    const watcher = form.watch((values) => {
+    onChanged(isValid);
+  }, [onChanged, isValid]);
+
+  useEffect(() => {
+    const watcher = watch((values) => {
       // TODO: Need to debounce?
       if (values && Object.values(values).every((v) => v !== undefined)) {
         setData(values as T);
       }
     });
     return () => watcher.unsubscribe();
-  }, [form, setData]);
+  }, [watch, setData]);
 
   return form;
 }

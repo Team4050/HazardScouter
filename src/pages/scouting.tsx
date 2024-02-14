@@ -21,13 +21,21 @@ import {
   AutoData,
   DrivePosition,
   MatchType,
+  PickupType,
   PreMatchData,
+  TeleopData,
   autoDataDefaults,
   autoDataSchema,
   preMatchDataDefaults,
   preMatchDataSchema,
+  teleopDataDefaults,
+  teleopDataSchema,
 } from "../store/schema";
-import { useAutoStore, usePreMatchStore } from "../store/useDataStore";
+import {
+  useAutoStore,
+  usePreMatchStore,
+  useTeleopStore,
+} from "../store/useDataStore";
 
 const isDev = import.meta.env.DEV;
 
@@ -147,7 +155,6 @@ function PreMatch({ onChanged }: FormProps): JSX.Element {
         render={({ field: { value, onChange } }) => (
           <Select
             label="Match Type"
-            value={value}
             selectedKeys={[value]}
             onChange={(e) => onChange(e.target.value as MatchType)}
             className="col-span-2"
@@ -202,12 +209,12 @@ function Auto({ onChanged }: FormProps): JSX.Element {
   });
 
   return (
-    <form className="flex flex-col space-y-4 text-center">
+    <form className="flex flex-col space-y-4 text-center [&>*]:mx-auto">
       <Controller
         control={control}
         name="leaveStartingZone"
         render={({ field: { value, onChange } }) => (
-          <div className="mx-auto flex flex-col space-y-2">
+          <div className="flex flex-col space-y-2">
             <div className="my-auto text-lg">Left Starting Zone</div>
             <Switch
               isSelected={value}
@@ -227,12 +234,7 @@ function Auto({ onChanged }: FormProps): JSX.Element {
         control={control}
         name="ampScores"
         render={({ field: { value, onChange } }) => (
-          <Counter
-            label="Amp Scores"
-            value={value}
-            onChange={onChange}
-            className="mx-auto"
-          />
+          <Counter label="Amp Scores" value={value} onChange={onChange} />
         )}
       />
 
@@ -240,12 +242,7 @@ function Auto({ onChanged }: FormProps): JSX.Element {
         control={control}
         name="speakerScores"
         render={({ field: { value, onChange } }) => (
-          <Counter
-            label="Speaker Scores"
-            value={value}
-            onChange={onChange}
-            className="mx-auto"
-          />
+          <Counter label="Speaker Scores" value={value} onChange={onChange} />
         )}
       />
     </form>
@@ -253,7 +250,60 @@ function Auto({ onChanged }: FormProps): JSX.Element {
 }
 
 function Teleop({ onChanged }: FormProps): JSX.Element {
-  return <div>Teleop</div>;
+  const { setData, data: teleData } = useTeleopStore();
+
+  const { control } = useForm<TeleopData, typeof teleopDataSchema>({
+    setData,
+    onChanged,
+    defaultValues: teleData ?? teleopDataDefaults,
+    schema: teleopDataSchema,
+  });
+
+  return (
+    <form className="flex flex-col space-y-4 text-center [&>*]:mx-auto">
+      <Controller
+        control={control}
+        name="ampScores"
+        render={({ field: { value, onChange } }) => (
+          <Counter label="Amp Scores" value={value} onChange={onChange} />
+        )}
+      />
+
+      <Controller
+        control={control}
+        name="speakerScores"
+        render={({ field: { value, onChange } }) => (
+          <Counter label="Speaker Scores" value={value} onChange={onChange} />
+        )}
+      />
+
+      <Controller
+        control={control}
+        name="timesAmplified"
+        render={({ field: { value, onChange } }) => (
+          <Counter label="Times Amplified" value={value} onChange={onChange} />
+        )}
+      />
+
+      <Controller
+        control={control}
+        name="pickupType"
+        render={({ field: { value, onChange } }) => (
+          <Select
+            label="Pickup Type"
+            selectedKeys={[value]}
+            onChange={(e) => onChange(e.target.value as PickupType)}
+            className="max-w-[300px]"
+          >
+            <SelectItem key={PickupType.None}>None</SelectItem>
+            <SelectItem key={PickupType.Floor}>Floor</SelectItem>
+            <SelectItem key={PickupType.Source}>Source</SelectItem>
+            <SelectItem key={PickupType.Both}>Floor + Source</SelectItem>
+          </Select>
+        )}
+      />
+    </form>
+  );
 }
 
 function Endgame({ onChanged }: FormProps): JSX.Element {
