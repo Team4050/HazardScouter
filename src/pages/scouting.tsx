@@ -1,9 +1,18 @@
-import { Select, SelectItem, Switch, Tab, Tabs } from "@nextui-org/react";
+import { CheckIcon, XMarkIcon } from "@heroicons/react/20/solid";
+import {
+  Checkbox,
+  Select,
+  SelectItem,
+  Switch,
+  Tab,
+  Tabs,
+} from "@nextui-org/react";
 import clsx from "clsx";
 import { Controller } from "react-hook-form";
 import { useMediaQuery } from "usehooks-ts";
 
 import Pager, { FormProps } from "../components/Pager";
+import { Counter } from "../components/form/Counter";
 import FormInput from "../components/form/Input";
 import useCompiledData from "../hooks/useCompiledData";
 import useForm from "../hooks/useForm";
@@ -188,38 +197,56 @@ function Auto({ onChanged }: FormProps): JSX.Element {
   const { control } = useForm<AutoData, typeof autoDataSchema>({
     setData,
     onChanged,
-    defaultValues: autoDataDefaults,
+    defaultValues: autoData ?? autoDataDefaults,
     schema: autoDataSchema,
   });
 
   return (
-    <form className="grid grid-cols-4 gap-4">
+    <form className="flex flex-col space-y-4 text-center">
       <Controller
         control={control}
         name="leaveStartingZone"
         render={({ field: { value, onChange } }) => (
-          <Switch isSelected={value} onChange={onChange}>
-            Left Starting Zone
-          </Switch>
+          <div className="mx-auto flex flex-col space-y-2">
+            <div className="my-auto text-lg">Left Starting Zone</div>
+            <Switch
+              isSelected={value}
+              onChange={(key) => onChange(key)}
+              className="mx-auto"
+              classNames={{
+                wrapper: clsx(value ? "bg-green-500" : "bg-red-500"),
+              }}
+              startContent={<CheckIcon />}
+              endContent={<XMarkIcon />}
+            />
+          </div>
         )}
       />
 
-      <FormInput
-        type="number"
-        label="Amp Scores"
-        variant="faded"
-        name="ampScores"
-        className="col-span-2"
+      <Controller
         control={control}
+        name="ampScores"
+        render={({ field: { value, onChange } }) => (
+          <Counter
+            label="Amp Scores"
+            value={value}
+            onChange={onChange}
+            className="mx-auto"
+          />
+        )}
       />
 
-      <FormInput
-        type="number"
-        label="Speaker Scores"
-        variant="faded"
-        name="speakerScores"
-        className="col-span-2"
+      <Controller
         control={control}
+        name="speakerScores"
+        render={({ field: { value, onChange } }) => (
+          <Counter
+            label="Speaker Scores"
+            value={value}
+            onChange={onChange}
+            className="mx-auto"
+          />
+        )}
       />
     </form>
   );

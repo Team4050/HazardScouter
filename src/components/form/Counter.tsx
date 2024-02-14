@@ -6,8 +6,7 @@ import { useEffect, useState } from "react";
 type CounterProps = {
   label?: string;
   labelLeft?: boolean;
-  // eslint-disable-next-line
-  // control: Control<any, any>;
+  className?: string;
   classNames?: {
     label?: string;
     buttons?: string;
@@ -22,6 +21,7 @@ type CounterProps = {
 export function Counter({
   label,
   labelLeft,
+  className,
   classNames,
   size = "md",
   value,
@@ -36,7 +36,9 @@ export function Counter({
   }, [count, onChange]);
 
   return (
-    <div className={clsx("flex", labelLeft ? "flex-row" : "flex-col")}>
+    <div
+      className={clsx("flex", labelLeft ? "flex-row" : "flex-col", className)}
+    >
       <div className={clsx("text-lg", classNames?.label)}>{label}</div>
       <div
         className={clsx(
