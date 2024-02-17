@@ -1,11 +1,14 @@
 import { CheckIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import {
+  Card,
   Checkbox,
   Select,
   SelectItem,
+  Slider,
   Switch,
   Tab,
   Tabs,
+  Textarea,
 } from "@nextui-org/react";
 import clsx from "clsx";
 import { Controller } from "react-hook-form";
@@ -20,12 +23,18 @@ import {
   Alliance,
   AutoData,
   DrivePosition,
+  EndGameData,
+  EndStatus,
   MatchType,
   PickupType,
+  PostMatchData,
   PreMatchData,
   TeleopData,
   autoDataDefaults,
   autoDataSchema,
+  endGameDataDefaults,
+  endGameDataSchema,
+  postMatchDataSchema,
   preMatchDataDefaults,
   preMatchDataSchema,
   teleopDataDefaults,
@@ -33,6 +42,8 @@ import {
 } from "../store/schema";
 import {
   useAutoStore,
+  useEndGameStore,
+  usePostMatchStore,
   usePreMatchStore,
   useTeleopStore,
 } from "../store/useDataStore";
@@ -87,12 +98,12 @@ export default function Scouting(): JSX.Element {
 }
 
 function PreMatch({ onChanged }: FormProps): JSX.Element {
-  const { setData, data: preMatchData } = usePreMatchStore();
+  const { setData, data } = usePreMatchStore();
 
   const { control, watch } = useForm<PreMatchData, typeof preMatchDataSchema>({
     setData,
     onChanged,
-    defaultValues: preMatchData ?? preMatchDataDefaults,
+    defaultValues: data ?? preMatchDataDefaults,
     schema: preMatchDataSchema,
   });
 
@@ -199,12 +210,12 @@ function PreMatch({ onChanged }: FormProps): JSX.Element {
 }
 
 function Auto({ onChanged }: FormProps): JSX.Element {
-  const { setData, data: autoData } = useAutoStore();
+  const { setData, data } = useAutoStore();
 
   const { control } = useForm<AutoData, typeof autoDataSchema>({
     setData,
     onChanged,
-    defaultValues: autoData ?? autoDataDefaults,
+    defaultValues: data ?? autoDataDefaults,
     schema: autoDataSchema,
   });
 
@@ -215,7 +226,7 @@ function Auto({ onChanged }: FormProps): JSX.Element {
         name="leaveStartingZone"
         render={({ field: { value, onChange } }) => (
           <div className="flex flex-col space-y-2">
-            <div className="my-auto text-lg">Left Starting Zone</div>
+            <div className="my-auto">Left Starting Zone</div>
             <Switch
               isSelected={value}
               onChange={(key) => onChange(key)}
@@ -250,12 +261,12 @@ function Auto({ onChanged }: FormProps): JSX.Element {
 }
 
 function Teleop({ onChanged }: FormProps): JSX.Element {
-  const { setData, data: teleData } = useTeleopStore();
+  const { setData, data } = useTeleopStore();
 
   const { control } = useForm<TeleopData, typeof teleopDataSchema>({
     setData,
     onChanged,
-    defaultValues: teleData ?? teleopDataDefaults,
+    defaultValues: data ?? teleopDataDefaults,
     schema: teleopDataSchema,
   });
 
@@ -307,9 +318,301 @@ function Teleop({ onChanged }: FormProps): JSX.Element {
 }
 
 function Endgame({ onChanged }: FormProps): JSX.Element {
-  return <div>Endgame</div>;
+  const { setData, data } = useEndGameStore();
+
+  const { control } = useForm<EndGameData, typeof endGameDataSchema>({
+    setData,
+    onChanged,
+    defaultValues: data ?? endGameDataDefaults,
+    schema: endGameDataSchema,
+  });
+
+  return (
+    <form className="flex flex-col space-y-4 text-center [&>*]:mx-auto">
+      <Controller
+        control={control}
+        name="endStatus"
+        render={({ field: { value, onChange } }) => (
+          <Select
+            label="End Status"
+            selectedKeys={[value]}
+            onChange={(e) => onChange(e.target.value as EndStatus)}
+            className="max-w-[300px]"
+          >
+            <SelectItem key={EndStatus.Parked}>Parked</SelectItem>
+            <SelectItem key={EndStatus.OnStage}>On Stage</SelectItem>
+            <SelectItem key={EndStatus.OnStageSpotlight}>
+              On Stage, Spotlight
+            </SelectItem>
+            <SelectItem key={EndStatus.Harmony}>Harmony</SelectItem>
+            <SelectItem key={EndStatus.FailedAttempt}>
+              Failed Attempt
+            </SelectItem>
+            <SelectItem key={EndStatus.NotAttempted}>Not Attempted</SelectItem>
+          </Select>
+        )}
+      />
+
+      <Controller
+        control={control}
+        name="trap"
+        render={({ field: { value, onChange } }) => (
+          <div className="flex flex-col space-y-2">
+            <div className="my-auto text-lg">Trap</div>
+            <Switch
+              isSelected={value}
+              onChange={(key) => onChange(key)}
+              className="mx-auto"
+              classNames={{
+                wrapper: clsx(value ? "bg-green-500" : "bg-red-500"),
+              }}
+              startContent={<CheckIcon />}
+              endContent={<XMarkIcon />}
+            />
+          </div>
+        )}
+      />
+    </form>
+  );
 }
 
 function PostMatch({ onChanged }: FormProps): JSX.Element {
-  return <div>Post-Match</div>;
+  const { setData, data } = usePostMatchStore();
+
+  const { control } = useForm<PostMatchData, typeof postMatchDataSchema>({
+    setData,
+    onChanged,
+    defaultValues: data ?? postMatchDataSchema,
+    schema: postMatchDataSchema,
+  });
+
+  return (
+    <form className="flex flex-col space-y-10 text-center [&>*]:mx-auto">
+      <div className="w-full space-y-2">
+        <Controller
+          control={control}
+          name="driverRating"
+          render={({ field: { value, onChange } }) => (
+            <Slider
+              step={1}
+              label="Driver Rating"
+              showSteps
+              minValue={0}
+              maxValue={10}
+              value={value}
+              onChange={onChange}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name="defenseRating"
+          render={({ field: { value, onChange } }) => (
+            <Slider
+              step={1}
+              label="Defense Rating"
+              showSteps
+              minValue={0}
+              maxValue={10}
+              value={value}
+              onChange={onChange}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name="speedRating"
+          render={({ field: { value, onChange } }) => (
+            <Slider
+              step={1}
+              label="Speed Rating"
+              showSteps
+              minValue={0}
+              maxValue={10}
+              value={value}
+              onChange={onChange}
+            />
+          )}
+        />
+      </div>
+
+      <Card>
+        <div className="flex gap-4 flex-wrap md:flex-nowrap justify-around [&>*]:flex-1">
+          <Controller
+            control={control}
+            name="died"
+            render={({ field: { value, onChange } }) => (
+              <div className="flex flex-col space-y-2">
+                <div className="grow">Robot died?</div>
+                <Switch
+                  isSelected={value}
+                  onChange={(key) => onChange(key)}
+                  className="mx-auto"
+                  classNames={{
+                    wrapper: clsx(value ? "bg-green-500" : "bg-red-500"),
+                  }}
+                  startContent={<CheckIcon />}
+                  endContent={<XMarkIcon />}
+                />
+              </div>
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="unstable"
+            render={({ field: { value, onChange } }) => (
+              <div className="flex flex-col space-y-2">
+                <div className="grow">Robot unstable?</div>
+                <Switch
+                  isSelected={value}
+                  onChange={(key) => onChange(key)}
+                  className="mx-auto"
+                  classNames={{
+                    wrapper: clsx(value ? "bg-green-500" : "bg-red-500"),
+                  }}
+                  startContent={<CheckIcon />}
+                  endContent={<XMarkIcon />}
+                />
+              </div>
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="droppedNotes"
+            render={({ field: { value, onChange } }) => (
+              <div className="flex flex-col space-y-2">
+                <div className="grow">Robot dropped notes?</div>
+                <Switch
+                  isSelected={value}
+                  onChange={(key) => onChange(key)}
+                  className="mx-auto"
+                  classNames={{
+                    wrapper: clsx(value ? "bg-green-500" : "bg-red-500"),
+                  }}
+                  startContent={<CheckIcon />}
+                  endContent={<XMarkIcon />}
+                />
+              </div>
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="potentialPartner"
+            render={({ field: { value, onChange } }) => (
+              <div className="flex flex-col space-y-2">
+                <div className="grow">Good alliance partner?</div>
+                <Switch
+                  isSelected={value}
+                  onChange={(key) => onChange(key)}
+                  className="mx-auto"
+                  classNames={{
+                    wrapper: clsx(value ? "bg-green-500" : "bg-red-500"),
+                  }}
+                  startContent={<CheckIcon />}
+                  endContent={<XMarkIcon />}
+                />
+              </div>
+            )}
+          />
+        </div>
+      </Card>
+      <div className="flex gap-4 flex-wrap md:flex-nowrap justify-around [&>*]:flex-1">
+        <Controller
+          control={control}
+          name="died"
+          render={({ field: { value, onChange } }) => (
+            <div className="flex flex-col space-y-2">
+              <div className="grow">Robot died?</div>
+              <Switch
+                isSelected={value}
+                onChange={(key) => onChange(key)}
+                className="mx-auto"
+                classNames={{
+                  wrapper: clsx(value ? "bg-green-500" : "bg-red-500"),
+                }}
+                startContent={<CheckIcon />}
+                endContent={<XMarkIcon />}
+              />
+            </div>
+          )}
+        />
+
+        <Controller
+          control={control}
+          name="unstable"
+          render={({ field: { value, onChange } }) => (
+            <div className="flex flex-col space-y-2">
+              <div className="grow">Robot unstable?</div>
+              <Switch
+                isSelected={value}
+                onChange={(key) => onChange(key)}
+                className="mx-auto"
+                classNames={{
+                  wrapper: clsx(value ? "bg-green-500" : "bg-red-500"),
+                }}
+                startContent={<CheckIcon />}
+                endContent={<XMarkIcon />}
+              />
+            </div>
+          )}
+        />
+
+        <Controller
+          control={control}
+          name="droppedNotes"
+          render={({ field: { value, onChange } }) => (
+            <div className="flex flex-col space-y-2">
+              <div className="grow">Robot dropped notes?</div>
+              <Switch
+                isSelected={value}
+                onChange={(key) => onChange(key)}
+                className="mx-auto"
+                classNames={{
+                  wrapper: clsx(value ? "bg-green-500" : "bg-red-500"),
+                }}
+                startContent={<CheckIcon />}
+                endContent={<XMarkIcon />}
+              />
+            </div>
+          )}
+        />
+
+        <Controller
+          control={control}
+          name="potentialPartner"
+          render={({ field: { value, onChange } }) => (
+            <div className="flex flex-col space-y-2">
+              <div className="grow">Good alliance partner?</div>
+              <Switch
+                isSelected={value}
+                onChange={(key) => onChange(key)}
+                className="mx-auto"
+                classNames={{
+                  wrapper: clsx(value ? "bg-green-500" : "bg-red-500"),
+                }}
+                startContent={<CheckIcon />}
+                endContent={<XMarkIcon />}
+              />
+            </div>
+          )}
+        />
+      </div>
+
+      <Controller
+        control={control}
+        name="comments"
+        render={({ field: { value, onChange } }) => (
+          <Textarea
+            label="Comments"
+            value={value}
+            onValueChange={onChange}
+            classNames={{ input: "min-h-[200px]" }}
+          />
+        )}
+      />
+    </form>
+  );
 }

@@ -89,13 +89,13 @@ export const teleopDataDefaults: TeleopData = {
 };
 
 export const endGameDataSchema = object({
-  stageSeconds: number([minValue(0), maxValue(99)]), // TODO: Need better values here
+  // stageSeconds: number([minValue(0), maxValue(99)]), // TODO: Need better values here
   endStatus: enum_(EndStatus),
   trap: boolean(),
 });
 export type EndGameData = Output<typeof endGameDataSchema>;
 export const endGameDataDefaults: EndGameData = {
-  stageSeconds: 0,
+  // stageSeconds: 0,
   endStatus: EndStatus.NotAttempted,
   trap: false,
 };
@@ -110,11 +110,11 @@ export const postMatchDataSchema = object({
   potentialPartner: boolean(),
   comments: string(),
 });
-export type PostMatchDataType = Output<typeof postMatchDataSchema>;
-export const postMatchDataDefaults: PostMatchDataType = {
-  driverRating: 0,
-  defenseRating: 0,
-  speedRating: 0,
+export type PostMatchData = Output<typeof postMatchDataSchema>;
+export const postMatchDataDefaults: PostMatchData = {
+  driverRating: 5,
+  defenseRating: 5,
+  speedRating: 5,
   died: false,
   unstable: false,
   droppedNotes: false,
@@ -127,5 +127,5 @@ export type MatchDataType = {
   auto: AutoData;
   teleop: TeleopData;
   endgame: EndGameData;
-  postMatch: PostMatchDataType;
+  postMatch: PostMatchData;
 };

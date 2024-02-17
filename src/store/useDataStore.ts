@@ -4,7 +4,7 @@ import { config } from "../../config";
 import {
   AutoData,
   EndGameData,
-  PostMatchDataType,
+  PostMatchData,
   PreMatchData,
   TeleopData,
   autoDataDefaults,
@@ -43,7 +43,7 @@ export const useEndGameStore = create<
 }));
 
 export const usePostMatchStore = create<
-  { data: PostMatchDataType } & { setData: (data: PostMatchDataType) => void }
+  { data: PostMatchData } & { setData: (data: PostMatchData) => void }
 >()((set) => ({
   data: postMatchDataDefaults,
   setData: (data) => set((state) => ({ ...state, data })),
