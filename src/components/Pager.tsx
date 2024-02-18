@@ -16,6 +16,8 @@ export type FormProps = {
   onChanged: (isValid: boolean) => void;
 };
 
+const isDev = import.meta.env.DEV;
+
 export default function Pager({ pages }: Props): JSX.Element {
   const isPhone = useMediaQuery("(max-width: 768px)");
   const { currentPage, setPage } = useMetaStore();
@@ -74,7 +76,9 @@ export default function Pager({ pages }: Props): JSX.Element {
           isIconOnly
           color="primary"
           onClick={() => onNext()}
-          isDisabled={currentPage === pages.length - 1 || !currentPageValid}
+          isDisabled={
+            currentPage === pages.length - 1 || (!currentPageValid && !isDev)
+          }
         >
           <ArrowRightIcon className="w-8" />
         </Button>

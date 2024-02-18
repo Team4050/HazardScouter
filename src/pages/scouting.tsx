@@ -2,7 +2,6 @@ import { CheckIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import {
   Card,
   CardBody,
-  Checkbox,
   Select,
   SelectItem,
   Slider,
@@ -223,7 +222,7 @@ function Auto({ onChanged }: FormProps): JSX.Element {
   });
 
   return (
-    <form className="flex flex-col space-y-4 text-center [&>*]:mx-auto">
+    <form className="flex flex-col space-y-8 text-center [&>*]:mx-auto">
       <Controller
         control={control}
         name="leaveStartingZone"
@@ -239,6 +238,7 @@ function Auto({ onChanged }: FormProps): JSX.Element {
               }}
               startContent={<CheckIcon />}
               endContent={<XMarkIcon />}
+              size="lg"
             />
           </div>
         )}
@@ -274,7 +274,7 @@ function Teleop({ onChanged }: FormProps): JSX.Element {
   });
 
   return (
-    <form className="flex flex-col space-y-4 text-center [&>*]:mx-auto">
+    <form className="flex flex-col space-y-8 text-center [&>*]:mx-auto">
       <Controller
         control={control}
         name="ampScores"
@@ -331,7 +331,7 @@ function Endgame({ onChanged }: FormProps): JSX.Element {
   });
 
   return (
-    <form className="flex flex-col space-y-4 text-center [&>*]:mx-auto">
+    <form className="flex flex-col space-y-8 text-center [&>*]:mx-auto">
       <Controller
         control={control}
         name="endStatus"
@@ -371,6 +371,7 @@ function Endgame({ onChanged }: FormProps): JSX.Element {
               }}
               startContent={<CheckIcon />}
               endContent={<XMarkIcon />}
+              size="lg"
             />
           </div>
         )}
@@ -439,7 +440,7 @@ function PostMatch({ onChanged }: FormProps): JSX.Element {
         />
       </div>
 
-      <Card>
+      <Card shadow="md" className="p-2">
         <CardBody>
           <div className="flex gap-4 flex-wrap md:flex-nowrap justify-around [&>*]:flex-1 text-center">
             <Controller
