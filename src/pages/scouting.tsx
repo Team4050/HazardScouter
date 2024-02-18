@@ -1,6 +1,7 @@
 import { CheckIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import {
   Card,
+  CardBody,
   Checkbox,
   Select,
   SelectItem,
@@ -58,8 +59,11 @@ export default function Scouting(): JSX.Element {
     <div
       className={clsx(
         "mx-auto",
-        isPhone ? "max-w-xl" : null,
-        isDev ? "flex flex-row space-x-8 md:mx-20" : null,
+        isPhone
+          ? "max-w-xl"
+          : isDev
+            ? "flex flex-row space-x-8 md:mx-20"
+            : null,
       )}
     >
       <div className={clsx(isDev ? "md:w-1/2" : null)}>
@@ -183,13 +187,12 @@ function PreMatch({ onChanged }: FormProps): JSX.Element {
         name="drivePosition"
         defaultValue={preMatchDataDefaults.drivePosition}
         render={({ field: { value, onChange } }) => (
-          <div className="col-span-full md:flex flex-row space-x-2 text-center md:text-left">
+          <div className="col-span-full w-full md:flex flex-row gap-x-2 text-center md:text-left">
             <div className="font-tech font-medium md:mb-0 mb-2">
               Driver Position
             </div>
             <Tabs
               fullWidth
-              className="col-span-2"
               classNames={{
                 cursor: clsx(
                   alliance === Alliance.Red ? "bg-red-500" : "bg-blue-500",
@@ -437,169 +440,90 @@ function PostMatch({ onChanged }: FormProps): JSX.Element {
       </div>
 
       <Card>
-        <div className="flex gap-4 flex-wrap md:flex-nowrap justify-around [&>*]:flex-1">
-          <Controller
-            control={control}
-            name="died"
-            render={({ field: { value, onChange } }) => (
-              <div className="flex flex-col space-y-2">
-                <div className="grow">Robot died?</div>
-                <Switch
-                  isSelected={value}
-                  onChange={(key) => onChange(key)}
-                  className="mx-auto"
-                  classNames={{
-                    wrapper: clsx(value ? "bg-green-500" : "bg-red-500"),
-                  }}
-                  startContent={<CheckIcon />}
-                  endContent={<XMarkIcon />}
-                />
-              </div>
-            )}
-          />
+        <CardBody>
+          <div className="flex gap-4 flex-wrap md:flex-nowrap justify-around [&>*]:flex-1 text-center">
+            <Controller
+              control={control}
+              name="died"
+              render={({ field: { value, onChange } }) => (
+                <div className="flex flex-col space-y-2">
+                  <div className="grow">Robot died?</div>
+                  <Switch
+                    isSelected={value}
+                    onChange={(key) => onChange(key)}
+                    className="mx-auto"
+                    classNames={{
+                      wrapper: clsx(value ? "bg-green-500" : "bg-red-500"),
+                    }}
+                    startContent={<CheckIcon />}
+                    endContent={<XMarkIcon />}
+                  />
+                </div>
+              )}
+            />
 
-          <Controller
-            control={control}
-            name="unstable"
-            render={({ field: { value, onChange } }) => (
-              <div className="flex flex-col space-y-2">
-                <div className="grow">Robot unstable?</div>
-                <Switch
-                  isSelected={value}
-                  onChange={(key) => onChange(key)}
-                  className="mx-auto"
-                  classNames={{
-                    wrapper: clsx(value ? "bg-green-500" : "bg-red-500"),
-                  }}
-                  startContent={<CheckIcon />}
-                  endContent={<XMarkIcon />}
-                />
-              </div>
-            )}
-          />
+            <Controller
+              control={control}
+              name="unstable"
+              render={({ field: { value, onChange } }) => (
+                <div className="flex flex-col space-y-2">
+                  <div className="grow">Robot unstable?</div>
+                  <Switch
+                    isSelected={value}
+                    onChange={(key) => onChange(key)}
+                    className="mx-auto"
+                    classNames={{
+                      wrapper: clsx(value ? "bg-green-500" : "bg-red-500"),
+                    }}
+                    startContent={<CheckIcon />}
+                    endContent={<XMarkIcon />}
+                  />
+                </div>
+              )}
+            />
 
-          <Controller
-            control={control}
-            name="droppedNotes"
-            render={({ field: { value, onChange } }) => (
-              <div className="flex flex-col space-y-2">
-                <div className="grow">Robot dropped notes?</div>
-                <Switch
-                  isSelected={value}
-                  onChange={(key) => onChange(key)}
-                  className="mx-auto"
-                  classNames={{
-                    wrapper: clsx(value ? "bg-green-500" : "bg-red-500"),
-                  }}
-                  startContent={<CheckIcon />}
-                  endContent={<XMarkIcon />}
-                />
-              </div>
-            )}
-          />
+            <Controller
+              control={control}
+              name="droppedNotes"
+              render={({ field: { value, onChange } }) => (
+                <div className="flex flex-col space-y-2">
+                  <div className="grow">Robot dropped notes?</div>
+                  <Switch
+                    isSelected={value}
+                    onChange={(key) => onChange(key)}
+                    className="mx-auto"
+                    classNames={{
+                      wrapper: clsx(value ? "bg-green-500" : "bg-red-500"),
+                    }}
+                    startContent={<CheckIcon />}
+                    endContent={<XMarkIcon />}
+                  />
+                </div>
+              )}
+            />
 
-          <Controller
-            control={control}
-            name="potentialPartner"
-            render={({ field: { value, onChange } }) => (
-              <div className="flex flex-col space-y-2">
-                <div className="grow">Good alliance partner?</div>
-                <Switch
-                  isSelected={value}
-                  onChange={(key) => onChange(key)}
-                  className="mx-auto"
-                  classNames={{
-                    wrapper: clsx(value ? "bg-green-500" : "bg-red-500"),
-                  }}
-                  startContent={<CheckIcon />}
-                  endContent={<XMarkIcon />}
-                />
-              </div>
-            )}
-          />
-        </div>
+            <Controller
+              control={control}
+              name="potentialPartner"
+              render={({ field: { value, onChange } }) => (
+                <div className="flex flex-col space-y-2">
+                  <div className="grow">Good alliance partner?</div>
+                  <Switch
+                    isSelected={value}
+                    onChange={(key) => onChange(key)}
+                    className="mx-auto"
+                    classNames={{
+                      wrapper: clsx(value ? "bg-green-500" : "bg-red-500"),
+                    }}
+                    startContent={<CheckIcon />}
+                    endContent={<XMarkIcon />}
+                  />
+                </div>
+              )}
+            />
+          </div>
+        </CardBody>
       </Card>
-      <div className="flex gap-4 flex-wrap md:flex-nowrap justify-around [&>*]:flex-1">
-        <Controller
-          control={control}
-          name="died"
-          render={({ field: { value, onChange } }) => (
-            <div className="flex flex-col space-y-2">
-              <div className="grow">Robot died?</div>
-              <Switch
-                isSelected={value}
-                onChange={(key) => onChange(key)}
-                className="mx-auto"
-                classNames={{
-                  wrapper: clsx(value ? "bg-green-500" : "bg-red-500"),
-                }}
-                startContent={<CheckIcon />}
-                endContent={<XMarkIcon />}
-              />
-            </div>
-          )}
-        />
-
-        <Controller
-          control={control}
-          name="unstable"
-          render={({ field: { value, onChange } }) => (
-            <div className="flex flex-col space-y-2">
-              <div className="grow">Robot unstable?</div>
-              <Switch
-                isSelected={value}
-                onChange={(key) => onChange(key)}
-                className="mx-auto"
-                classNames={{
-                  wrapper: clsx(value ? "bg-green-500" : "bg-red-500"),
-                }}
-                startContent={<CheckIcon />}
-                endContent={<XMarkIcon />}
-              />
-            </div>
-          )}
-        />
-
-        <Controller
-          control={control}
-          name="droppedNotes"
-          render={({ field: { value, onChange } }) => (
-            <div className="flex flex-col space-y-2">
-              <div className="grow">Robot dropped notes?</div>
-              <Switch
-                isSelected={value}
-                onChange={(key) => onChange(key)}
-                className="mx-auto"
-                classNames={{
-                  wrapper: clsx(value ? "bg-green-500" : "bg-red-500"),
-                }}
-                startContent={<CheckIcon />}
-                endContent={<XMarkIcon />}
-              />
-            </div>
-          )}
-        />
-
-        <Controller
-          control={control}
-          name="potentialPartner"
-          render={({ field: { value, onChange } }) => (
-            <div className="flex flex-col space-y-2">
-              <div className="grow">Good alliance partner?</div>
-              <Switch
-                isSelected={value}
-                onChange={(key) => onChange(key)}
-                className="mx-auto"
-                classNames={{
-                  wrapper: clsx(value ? "bg-green-500" : "bg-red-500"),
-                }}
-                startContent={<CheckIcon />}
-                endContent={<XMarkIcon />}
-              />
-            </div>
-          )}
-        />
-      </div>
 
       <Controller
         control={control}

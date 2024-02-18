@@ -20,7 +20,7 @@ export default function FormInput({ name, ...props }: Props): JSX.Element {
             name={field.name}
             isInvalid={!!formState.errors?.[name]?.message}
             // errorMessage={formState.errors?.[name]?.message?.toString()}
-            value={field.value || ""}
+            value={field.value}
             onChange={(e) =>
               field.onChange(
                 props.type === "number"
