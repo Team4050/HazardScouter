@@ -1,8 +1,13 @@
-import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/20/solid";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  CheckBadgeIcon,
+} from "@heroicons/react/20/solid";
 import { Button, Card, CardBody, Tab, Tabs } from "@nextui-org/react";
 import { useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 
+import useCompiledData from "../hooks/useCompiledData";
 import { useMetaStore } from "../store/useDataStore";
 
 type Props = {
@@ -22,6 +27,7 @@ export default function Pager({ pages }: Props): JSX.Element {
   const isPhone = useMediaQuery("(max-width: 768px)");
   const { currentPage, setPage } = useMetaStore();
   const [currentPageValid, setCurrentPageValid] = useState(false);
+  const data = useCompiledData();
 
   const onChanged = (valid: boolean) => {
     setCurrentPageValid(valid);
@@ -37,6 +43,19 @@ export default function Pager({ pages }: Props): JSX.Element {
   };
 
   const Page = pages[currentPage].form;
+
+  const downloadData = () => {
+    const blob = new Blob([JSON.stringify(data)], { type: "application/json" });
+    const jsonObjectUrl = URL.createObjectURL(blob);
+
+    const filename = `${data.preMatchData.matchNumber}_${data.preMatchData.teamNumber}_${data.preMatchData.scouter}.json`;
+    const anchorEl = document.createElement("a");
+    anchorEl.href = jsonObjectUrl;
+    anchorEl.download = filename;
+
+    anchorEl.click();
+    URL.revokeObjectURL(jsonObjectUrl);
+  };
 
   return (
     <>
@@ -75,12 +94,20 @@ export default function Pager({ pages }: Props): JSX.Element {
         <Button
           isIconOnly
           color="primary"
-          onClick={() => onNext()}
-          isDisabled={
-            currentPage === pages.length - 1 || (!currentPageValid && !isDev)
-          }
+          onClick={() => {
+            if (currentPage !== pages.length - 1) {
+              onNext();
+            } else {
+              downloadData();
+            }
+          }}
+          isDisabled={!currentPageValid && !isDev}
         >
-          <ArrowRightIcon className="w-8" />
+          {currentPage !== pages.length - 1 ? (
+            <ArrowRightIcon className="w-8" />
+          ) : (
+            <CheckBadgeIcon className="w-8" />
+          )}
         </Button>
       </div>
     </>

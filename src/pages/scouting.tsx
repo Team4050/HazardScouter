@@ -93,7 +93,19 @@ export default function Scouting(): JSX.Element {
       </div>
       {isDev ? (
         <div className="hidden md:block md:w-1/2 mt-10">
-          <pre className="mx-10">{data}</pre>
+          <pre className="mx-10">
+            {JSON.stringify(
+              {
+                preMatchData: data.preMatchData,
+                autoData: data.autoData,
+                teleopData: data.teleopData,
+                endGameData: data.endGameData,
+                postMatchData: data.postMatchData,
+              },
+              null,
+              2,
+            )}
+          </pre>
         </div>
       ) : null}
     </div>

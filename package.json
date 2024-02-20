@@ -16,6 +16,7 @@
     "@heroicons/react": "^2.1.1",
     "@hookform/resolvers": "^3.3.4",
     "@nextui-org/react": "^2.2.9",
+    "@tanstack/react-router": "^1.16.6",
     "clsx": "^2.1.0",
     "csv-writer": "^1.6.0",
     "framer-motion": "^11.0.3",
