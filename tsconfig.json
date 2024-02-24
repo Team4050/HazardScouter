@@ -21,7 +21,11 @@
     "noFallthroughCasesInSwitch": true,
 
     "types": ["vite-plugin-pwa/react"],
+
+    "paths": {
+      "@app/*": ["./src/*"]
+    }
   },
   "include": ["src", "config.ts"],
-  "references": [{ "path": "./tsconfig.node.json" }],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }

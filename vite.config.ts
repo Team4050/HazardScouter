@@ -1,10 +1,17 @@
+import { TanStackRouterVite } from "@tanstack/router-vite-plugin";
 import basicSsl from "@vitejs/plugin-basic-ssl";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      "@app": "/src",
+    },
+  },
   plugins: [
+    TanStackRouterVite({ routesDirectory: "src/pages", quoteStyle: "double" }),
     basicSsl(),
     react(),
     VitePWA({

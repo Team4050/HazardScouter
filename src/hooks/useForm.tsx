@@ -18,7 +18,7 @@ export default function useForm<
   schema,
 }: {
   setData: (data: T) => void;
-  onChanged: (valid: boolean) => void;
+  onChanged?: (valid: boolean) => void;
   defaultValues: DefaultValues<T>;
   schema: TSchema;
 }): UseFormReturn<T> {
@@ -34,7 +34,7 @@ export default function useForm<
   } = form;
 
   useEffect(() => {
-    onChanged(isValid);
+    onChanged?.(isValid);
   }, [onChanged, isValid]);
 
   useEffect(() => {

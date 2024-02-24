@@ -4,6 +4,6 @@ module.exports = {
     require.resolve("prettier-plugin-tailwindcss"),
     require.resolve("@trivago/prettier-plugin-sort-imports"),
   ],
-  importOrder: ["^[./]"],
+  importOrder: ["^@app/(.*)$", "^[./]"],
   importOrderSeparation: true,
 };
