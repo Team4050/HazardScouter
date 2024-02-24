@@ -2,9 +2,9 @@ import { Select, SelectItem, Tab, Tabs } from "@nextui-org/react";
 import clsx from "clsx";
 import { Controller } from "react-hook-form";
 
-import FormInput from "@app/components/form/Input";
-import { FormProps } from "@app/formPages/forms";
-import useForm from "@app/hooks/useForm";
+import FormInput from "../components/form/Input";
+import { FormProps } from "../formPages/forms";
+import useForm from "../hooks/useForm";
 import {
   Alliance,
   DrivePosition,
@@ -12,8 +12,8 @@ import {
   PreMatchData,
   preMatchDataDefaults,
   preMatchDataSchema,
-} from "@app/store/schema";
-import { usePreMatchStore } from "@app/store/useDataStore";
+} from "../store/schema";
+import { usePreMatchStore } from "../store/useDataStore";
 
 export default function PreMatch({ onChanged }: FormProps): JSX.Element {
   const { setData, data } = usePreMatchStore();

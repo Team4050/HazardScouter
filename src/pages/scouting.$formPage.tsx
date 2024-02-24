@@ -14,11 +14,10 @@ import {
 } from "@nextui-org/react";
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { useMediaQuery } from "usehooks-ts";
 
-import { scoutingFormPages } from "@app/formPages/forms";
-import useCompiledData from "@app/hooks/useCompiledData";
-import { resetStores } from "@app/store/useDataStore";
+import { scoutingFormPages } from "./../formPages/forms";
+import useCompiledData from "./../hooks/useCompiledData";
+import { resetStores } from "./../store/useDataStore";
 
 export const Route = createFileRoute("/scouting/$formPage")({
   component: ScoutingForm,

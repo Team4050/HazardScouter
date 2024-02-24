@@ -1,8 +1,8 @@
-import Auto from "@app/formPages/autonomous";
-import Endgame from "@app/formPages/endGame";
-import PostMatch from "@app/formPages/postMatch";
-import PreMatch from "@app/formPages/preMatch";
-import Teleop from "@app/formPages/teleop";
+import Auto from "../formPages/autonomous";
+import Endgame from "../formPages/endGame";
+import PostMatch from "../formPages/postMatch";
+import PreMatch from "../formPages/preMatch";
+import Teleop from "../formPages/teleop";
 
 export type FormProps = {
   onChanged: (isValid: boolean) => void;

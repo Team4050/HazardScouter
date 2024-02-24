@@ -1,16 +1,16 @@
 import { Select, SelectItem } from "@nextui-org/react";
 import { Controller } from "react-hook-form";
 
-import { Counter } from "@app/components/form/Counter";
-import { FormProps } from "@app/formPages/forms";
-import useForm from "@app/hooks/useForm";
+import { Counter } from "../components/form/Counter";
+import { FormProps } from "../formPages/forms";
+import useForm from "../hooks/useForm";
 import {
   PickupType,
   TeleopData,
   teleopDataDefaults,
   teleopDataSchema,
-} from "@app/store/schema";
-import { useTeleopStore } from "@app/store/useDataStore";
+} from "../store/schema";
+import { useTeleopStore } from "../store/useDataStore";
 
 export default function Teleop({ onChanged }: FormProps): JSX.Element {
   const { setData, data } = useTeleopStore();

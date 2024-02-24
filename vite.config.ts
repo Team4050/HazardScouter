@@ -5,11 +5,6 @@ import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
-  resolve: {
-    alias: {
-      "@app": "/src",
-    },
-  },
   plugins: [
     TanStackRouterVite({ routesDirectory: "src/pages", quoteStyle: "double" }),
     basicSsl(),

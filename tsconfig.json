@@ -20,11 +20,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
-    "types": ["vite-plugin-pwa/react"],
-
-    "paths": {
-      "@app/*": ["./src/*"]
-    }
+    "types": ["vite-plugin-pwa/react"]
   },
   "include": ["src", "config.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]

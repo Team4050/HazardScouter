@@ -3,10 +3,10 @@ import { Card, CardBody, Slider, Switch, Textarea } from "@nextui-org/react";
 import clsx from "clsx";
 import { Controller } from "react-hook-form";
 
-import { FormProps } from "@app/formPages/forms";
-import useForm from "@app/hooks/useForm";
-import { PostMatchData, postMatchDataSchema } from "@app/store/schema";
-import { usePostMatchStore } from "@app/store/useDataStore";
+import { FormProps } from "../formPages/forms";
+import useForm from "../hooks/useForm";
+import { PostMatchData, postMatchDataSchema } from "../store/schema";
+import { usePostMatchStore } from "../store/useDataStore";
 
 export default function PostMatch({ onChanged }: FormProps): JSX.Element {
   const { setData, data } = usePostMatchStore();

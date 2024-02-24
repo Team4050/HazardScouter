@@ -8,7 +8,7 @@ import {
 import { Outlet, createRootRoute } from "@tanstack/react-router";
 import clsx from "clsx";
 
-import ModeSwitch from "@app/components/ModeSwitch";
+import ModeSwitch from "./../components/ModeSwitch";
 
 export const Route = createRootRoute({
   component: Root,

@@ -3,15 +3,15 @@ import { Select, SelectItem, Switch } from "@nextui-org/react";
 import clsx from "clsx";
 import { Controller } from "react-hook-form";
 
-import { FormProps } from "@app/formPages/forms";
-import useForm from "@app/hooks/useForm";
+import { FormProps } from "../formPages/forms";
+import useForm from "../hooks/useForm";
 import {
   EndGameData,
   EndStatus,
   endGameDataDefaults,
   endGameDataSchema,
-} from "@app/store/schema";
-import { useEndGameStore } from "@app/store/useDataStore";
+} from "../store/schema";
+import { useEndGameStore } from "../store/useDataStore";
 
 export default function Endgame({ onChanged }: FormProps): JSX.Element {
   const { setData, data } = useEndGameStore();

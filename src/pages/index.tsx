@@ -1,7 +1,7 @@
 import { Button, Link } from "@nextui-org/react";
 import { createFileRoute } from "@tanstack/react-router";
 
-import logo from "@app/images/crescendo.png";
+import logo from "../images/crescendo.png";
 
 export const Route = createFileRoute("/")({
   component: Home,
