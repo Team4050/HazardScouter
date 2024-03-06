@@ -1,11 +1,17 @@
 import { TanStackRouterVite } from "@tanstack/router-vite-plugin";
 import react from "@vitejs/plugin-react";
+import { execSync } from "child_process";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
+
+const commitHash = execSync("git rev-parse --short HEAD").toString();
 
 export default defineConfig({
   server: {
     port: 4050,
+  },
+  define: {
+    __COMMIT_HASH__: JSON.stringify(commitHash),
   },
   plugins: [
     TanStackRouterVite({ routesDirectory: "src/pages", quoteStyle: "double" }),

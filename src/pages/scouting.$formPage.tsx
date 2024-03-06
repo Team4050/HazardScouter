@@ -15,6 +15,7 @@ import {
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 
+import { cn } from "../util";
 import { scoutingFormPages } from "./../formPages/forms";
 import useCompiledData from "./../hooks/useCompiledData";
 import { resetStores } from "./../store/useDataStore";
@@ -107,6 +108,7 @@ function ScoutingForm(): JSX.Element {
             color="primary"
             onPress={onPrev}
             isDisabled={!canGoBack}
+            className={cn(pageIndex === 0 ? "opacity-0" : "")}
           >
             <ArrowLeftIcon className="w-8" />
           </Button>

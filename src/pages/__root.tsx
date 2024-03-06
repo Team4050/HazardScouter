@@ -8,7 +8,6 @@ import {
 import { Outlet, createRootRoute } from "@tanstack/react-router";
 
 import { cn } from "../util";
-import ModeSwitch from "./../components/ModeSwitch";
 
 export const Route = createRootRoute({
   component: Root,
@@ -36,13 +35,13 @@ function Root(): JSX.Element {
               </NavbarBrand>
             </NavbarContent>
 
-            {scanning ? (
-              <NavbarContent justify="end">
-                <NavbarItem>
-                  <ModeSwitch />
-                </NavbarItem>
-              </NavbarContent>
-            ) : null}
+            <NavbarContent justify="end">
+              <NavbarItem>
+                <div className="font-mono text-sm opacity-40">
+                  {__COMMIT_HASH__}
+                </div>
+              </NavbarItem>
+            </NavbarContent>
           </Navbar>
 
           <div className="m-4">
