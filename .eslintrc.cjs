@@ -16,7 +16,7 @@ module.exports = {
       { allowConstantExport: true },
     ],
     "@typescript-eslint/consistent-type-imports": [
-      "off",
+      "warn",
       {
         disallowTypeAnnotations: false,
       },
