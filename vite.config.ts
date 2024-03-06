@@ -5,6 +5,9 @@ import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
+  server: {
+    port: 4050,
+  },
   plugins: [
     TanStackRouterVite({ routesDirectory: "src/pages", quoteStyle: "double" }),
     basicSsl(),
