@@ -1,12 +1,13 @@
 import { CheckIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { Card, CardBody, Slider, Switch, Textarea } from "@nextui-org/react";
-import clsx from "clsx";
 import { Controller } from "react-hook-form";
 
-import { FormProps } from "../formPages/forms";
+import type { FormProps } from "../formPages/forms";
 import useForm from "../hooks/useForm";
-import { PostMatchData, postMatchDataSchema } from "../store/schema";
+import type { PostMatchData } from "../store/schema";
+import { postMatchDataSchema } from "../store/schema";
 import { usePostMatchStore } from "../store/useDataStore";
+import { cn } from "../util";
 
 export default function PostMatch({ onChanged }: FormProps): JSX.Element {
   const { setData, data } = usePostMatchStore();
@@ -82,7 +83,7 @@ export default function PostMatch({ onChanged }: FormProps): JSX.Element {
                     onChange={(key) => onChange(key)}
                     className="mx-auto"
                     classNames={{
-                      wrapper: clsx(value ? "bg-green-500" : "bg-red-500"),
+                      wrapper: cn(value ? "bg-green-500" : "bg-red-500"),
                     }}
                     startContent={<CheckIcon />}
                     endContent={<XMarkIcon />}
@@ -102,7 +103,7 @@ export default function PostMatch({ onChanged }: FormProps): JSX.Element {
                     onChange={(key) => onChange(key)}
                     className="mx-auto"
                     classNames={{
-                      wrapper: clsx(value ? "bg-green-500" : "bg-red-500"),
+                      wrapper: cn(value ? "bg-green-500" : "bg-red-500"),
                     }}
                     startContent={<CheckIcon />}
                     endContent={<XMarkIcon />}
@@ -122,7 +123,7 @@ export default function PostMatch({ onChanged }: FormProps): JSX.Element {
                     onChange={(key) => onChange(key)}
                     className="mx-auto"
                     classNames={{
-                      wrapper: clsx(value ? "bg-green-500" : "bg-red-500"),
+                      wrapper: cn(value ? "bg-green-500" : "bg-red-500"),
                     }}
                     startContent={<CheckIcon />}
                     endContent={<XMarkIcon />}
@@ -142,7 +143,7 @@ export default function PostMatch({ onChanged }: FormProps): JSX.Element {
                     onChange={(key) => onChange(key)}
                     className="mx-auto"
                     classNames={{
-                      wrapper: clsx(value ? "bg-green-500" : "bg-red-500"),
+                      wrapper: cn(value ? "bg-green-500" : "bg-red-500"),
                     }}
                     startContent={<CheckIcon />}
                     endContent={<XMarkIcon />}

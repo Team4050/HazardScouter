@@ -1,17 +1,18 @@
 import { CheckIcon, XMarkIcon } from "@heroicons/react/20/solid";
-import { Select, SelectItem, Switch } from "@nextui-org/react";
-import clsx from "clsx";
+import { Switch } from "@nextui-org/react";
 import { Controller } from "react-hook-form";
 
-import { FormProps } from "../formPages/forms";
+import Select from "../components/fields/Select";
+import type { FormProps } from "../formPages/forms";
 import useForm from "../hooks/useForm";
+import type { EndGameData } from "../store/schema";
 import {
-  EndGameData,
   EndStatus,
   endGameDataDefaults,
   endGameDataSchema,
 } from "../store/schema";
 import { useEndGameStore } from "../store/useDataStore";
+import { cn } from "../util";
 
 export default function Endgame({ onChanged }: FormProps): JSX.Element {
   const { setData, data } = useEndGameStore();
@@ -25,28 +26,19 @@ export default function Endgame({ onChanged }: FormProps): JSX.Element {
 
   return (
     <form className="flex flex-col space-y-8 text-center [&>*]:mx-auto">
-      <Controller
+      <Select
         control={control}
         name="endStatus"
-        render={({ field: { value, onChange } }) => (
-          <Select
-            label="End Status"
-            selectedKeys={[value]}
-            onChange={(e) => onChange(e.target.value as EndStatus)}
-            className="max-w-[300px]"
-          >
-            <SelectItem key={EndStatus.Parked}>Parked</SelectItem>
-            <SelectItem key={EndStatus.OnStage}>On Stage</SelectItem>
-            <SelectItem key={EndStatus.OnStageSpotlight}>
-              On Stage, Spotlight
-            </SelectItem>
-            <SelectItem key={EndStatus.Harmony}>Harmony</SelectItem>
-            <SelectItem key={EndStatus.FailedAttempt}>
-              Failed Attempt
-            </SelectItem>
-            <SelectItem key={EndStatus.NotAttempted}>Not Attempted</SelectItem>
-          </Select>
-        )}
+        label="End Status"
+        className="max-w-[300px]"
+        items={[
+          { key: EndStatus.Parked, label: "Parked" },
+          { key: EndStatus.OnStage, label: "On Stage" },
+          { key: EndStatus.OnStageSpotlight, label: "On Stage, Spotlight" },
+          { key: EndStatus.Harmony, label: "Harmony" },
+          { key: EndStatus.FailedAttempt, label: "Failed Attempt" },
+          { key: EndStatus.NotAttempted, label: "Not Attempted" },
+        ]}
       />
 
       <Controller
@@ -60,7 +52,7 @@ export default function Endgame({ onChanged }: FormProps): JSX.Element {
               onChange={(key) => onChange(key)}
               className="mx-auto"
               classNames={{
-                wrapper: clsx(value ? "bg-green-500" : "bg-red-500"),
+                wrapper: cn(value ? "bg-green-500" : "bg-red-500"),
               }}
               startContent={<CheckIcon />}
               endContent={<XMarkIcon />}

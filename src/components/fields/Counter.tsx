@@ -1,7 +1,8 @@
 import { MinusIcon, PlusIcon } from "@heroicons/react/20/solid";
 import { Button } from "@nextui-org/react";
-import clsx from "clsx";
 import { useEffect, useState } from "react";
+
+import { cn } from "../../util";
 
 type CounterProps = {
   label?: string;
@@ -41,15 +42,15 @@ export function Counter({
 
   return (
     <div
-      className={clsx(
+      className={cn(
         "flex",
         labelLeft ? "flex-row space-x-1" : "flex-col space-y-1",
         className,
       )}
     >
-      <div className={clsx(classNames?.label)}>{label}</div>
+      <div className={cn(classNames?.label)}>{label}</div>
       <div
-        className={clsx(
+        className={cn(
           "flex flex-row bg-background w-fit rounded-xl p-1",
           classNames?.container,
         )}
@@ -58,16 +59,16 @@ export function Counter({
           isIconOnly
           radius="md"
           size={size}
-          className={clsx(classNames?.buttons)}
+          className={cn(classNames?.buttons)}
           onClick={() => setCount(count - 1)}
           disabled={count <= minCount}
         >
           <MinusIcon
-            className={clsx(count <= minCount ? "opacity-50" : null, "w-6")}
+            className={cn(count <= minCount ? "opacity-50" : null, "w-6")}
           />
         </Button>
         <div
-          className={clsx(
+          className={cn(
             "text-center mx-3 my-auto text-lg font-tech w-8",
             classNames?.counter,
           )}
@@ -78,12 +79,12 @@ export function Counter({
           isIconOnly
           radius="md"
           size={size}
-          className={clsx(classNames?.buttons)}
+          className={cn(classNames?.buttons)}
           onClick={() => setCount(count + 1)}
           disabled={count >= maxCount}
         >
           <PlusIcon
-            className={clsx(count >= maxCount ? "opacity-50" : null, "w-6")}
+            className={cn(count >= maxCount ? "opacity-50" : null, "w-6")}
           />
         </Button>
       </div>

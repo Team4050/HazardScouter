@@ -1,4 +1,5 @@
-import { OnResultFunction, QrReader as Reader } from "react-qr-reader";
+import type { OnResultFunction } from "react-qr-reader";
+import { QrReader as Reader } from "react-qr-reader";
 
 type Props = {
   onResult: OnResultFunction;

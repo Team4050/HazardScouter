@@ -12,6 +12,9 @@ export default defineConfig({
     // basicSsl(),
     react(),
     VitePWA({
+      devOptions: {
+        enabled: true,
+      },
       registerType: "autoUpdate",
       workbox: {
         globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
@@ -20,7 +23,7 @@ export default defineConfig({
       manifest: {
         theme_color: "#16A34A",
         background_color: "#4B5563",
-        display: "standalone",
+        display: "fullscreen",
         scope: "/",
         start_url: "/",
         short_name: "HazardScouter",

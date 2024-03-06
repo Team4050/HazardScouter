@@ -1,11 +1,13 @@
 import { create } from "zustand";
 
-import {
+import type {
   AutoData,
   EndGameData,
   PostMatchData,
   PreMatchData,
   TeleopData,
+} from "./schema";
+import {
   autoDataDefaults,
   endGameDataDefaults,
   postMatchDataDefaults,

@@ -1,12 +1,12 @@
-import { Select, SelectItem } from "@nextui-org/react";
 import { Controller } from "react-hook-form";
 
-import { Counter } from "../components/form/Counter";
-import { FormProps } from "../formPages/forms";
+import { Counter } from "../components/fields/Counter";
+import Select from "../components/fields/Select";
+import type { FormProps } from "../formPages/forms";
 import useForm from "../hooks/useForm";
+import type { TeleopData } from "../store/schema";
 import {
   PickupType,
-  TeleopData,
   teleopDataDefaults,
   teleopDataSchema,
 } from "../store/schema";
@@ -48,22 +48,17 @@ export default function Teleop({ onChanged }: FormProps): JSX.Element {
         )}
       />
 
-      <Controller
+      <Select
         control={control}
         name="pickupType"
-        render={({ field: { value, onChange } }) => (
-          <Select
-            label="Pickup Type"
-            selectedKeys={[value]}
-            onChange={(e) => onChange(e.target.value as PickupType)}
-            className="max-w-[300px]"
-          >
-            <SelectItem key={PickupType.None}>None</SelectItem>
-            <SelectItem key={PickupType.Floor}>Floor</SelectItem>
-            <SelectItem key={PickupType.Source}>Source</SelectItem>
-            <SelectItem key={PickupType.Both}>Floor + Source</SelectItem>
-          </Select>
-        )}
+        className="max-w-[300px]"
+        label="Pickup Type"
+        items={[
+          { key: PickupType.None, label: "None" },
+          { key: PickupType.Floor, label: "Floor" },
+          { key: PickupType.Source, label: "Source" },
+          { key: PickupType.Both, label: "Floor + Source" },
+        ]}
       />
     </form>
   );

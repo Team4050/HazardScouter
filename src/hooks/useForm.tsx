@@ -1,12 +1,12 @@
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useEffect } from "react";
-import {
+import type {
   DefaultValues,
   FieldValues,
   UseFormReturn,
-  useForm as useRhfForm,
 } from "react-hook-form";
-import { BaseSchema } from "valibot";
+import { useForm as useRhfForm } from "react-hook-form";
+import type { BaseSchema } from "valibot";
 
 export default function useForm<
   T extends FieldValues,

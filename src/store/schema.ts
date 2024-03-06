@@ -1,3 +1,4 @@
+import type { Output } from "valibot";
 import {
   object,
   string,
@@ -5,7 +6,6 @@ import {
   maxValue,
   enum_,
   number,
-  Output,
   boolean,
   minLength,
   maxLength,

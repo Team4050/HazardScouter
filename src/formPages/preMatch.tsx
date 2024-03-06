@@ -1,19 +1,20 @@
-import { Select, SelectItem, Tab, Tabs } from "@nextui-org/react";
-import clsx from "clsx";
+import { Tab, Tabs } from "@nextui-org/react";
 import { Controller } from "react-hook-form";
 
-import FormInput from "../components/form/Input";
-import { FormProps } from "../formPages/forms";
+import Text from "../components/fields/Input";
+import Select from "../components/fields/Select";
+import type { FormProps } from "../formPages/forms";
 import useForm from "../hooks/useForm";
+import type { PreMatchData } from "../store/schema";
 import {
   Alliance,
   DrivePosition,
   MatchType,
-  PreMatchData,
   preMatchDataDefaults,
   preMatchDataSchema,
 } from "../store/schema";
 import { usePreMatchStore } from "../store/useDataStore";
+import { cn } from "../util";
 
 export default function PreMatch({ onChanged }: FormProps): JSX.Element {
   const { setData, data } = usePreMatchStore();
@@ -38,9 +39,7 @@ export default function PreMatch({ onChanged }: FormProps): JSX.Element {
             fullWidth
             className="col-span-full"
             classNames={{
-              cursor: clsx(
-                value === Alliance.Red ? "bg-red-500" : "bg-blue-500",
-              ),
+              cursor: cn(value === Alliance.Red ? "bg-red-500" : "bg-blue-500"),
             }}
             selectedKey={value}
             onSelectionChange={onChange}
@@ -51,7 +50,7 @@ export default function PreMatch({ onChanged }: FormProps): JSX.Element {
         )}
       />
 
-      <FormInput
+      <Text
         type="text"
         label="Scouter Name"
         variant="faded"
@@ -60,7 +59,7 @@ export default function PreMatch({ onChanged }: FormProps): JSX.Element {
         control={control}
       />
 
-      <FormInput
+      <Text
         type="number"
         label="Match Number"
         variant="faded"
@@ -69,7 +68,7 @@ export default function PreMatch({ onChanged }: FormProps): JSX.Element {
         control={control}
       />
 
-      <FormInput
+      <Text
         type="number"
         label="Team Number"
         variant="faded"
@@ -78,22 +77,17 @@ export default function PreMatch({ onChanged }: FormProps): JSX.Element {
         control={control}
       />
 
-      <Controller
+      <Select
         control={control}
         name="matchType"
-        render={({ field: { value, onChange } }) => (
-          <Select
-            label="Match Type"
-            selectedKeys={[value]}
-            onChange={(e) => onChange(e.target.value as MatchType)}
-            className="col-span-2"
-          >
-            <SelectItem key={MatchType.Practice}>Practice</SelectItem>
-            <SelectItem key={MatchType.Quals}>Qualifications</SelectItem>
-            <SelectItem key={MatchType.Semi}>Semi-finals</SelectItem>
-            <SelectItem key={MatchType.Finals}>Finals</SelectItem>
-          </Select>
-        )}
+        label="Match Type"
+        items={[
+          { key: MatchType.Practice, label: "Practice" },
+          { key: MatchType.Quals, label: "Qualifications" },
+          { key: MatchType.Semi, label: "Semi-finals" },
+          { key: MatchType.Finals, label: "Finals" },
+        ]}
+        className="col-span-2"
       />
 
       <Controller
@@ -108,7 +102,7 @@ export default function PreMatch({ onChanged }: FormProps): JSX.Element {
             <Tabs
               fullWidth
               classNames={{
-                cursor: clsx(
+                cursor: cn(
                   alliance === Alliance.Red ? "bg-red-500" : "bg-blue-500",
                 ),
               }}

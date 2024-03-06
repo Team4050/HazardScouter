@@ -1,6 +1,6 @@
 import { nextui } from "@nextui-org/react";
-import { ColorScale as NUIColorScale } from "@nextui-org/react";
-import { Config } from "tailwindcss";
+import type { ColorScale as NUIColorScale } from "@nextui-org/react";
+import type { Config } from "tailwindcss";
 
 export type ColorScale = Exclude<NUIColorScale, string>;
 

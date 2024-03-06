@@ -1,13 +1,14 @@
 import { CheckIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { Switch } from "@nextui-org/react";
-import clsx from "clsx";
 import { Controller } from "react-hook-form";
 
-import { Counter } from "../components/form/Counter";
-import { FormProps } from "../formPages/forms";
+import { Counter } from "../components/fields/Counter";
+import type { FormProps } from "../formPages/forms";
 import useForm from "../hooks/useForm";
-import { AutoData, autoDataDefaults, autoDataSchema } from "../store/schema";
+import type { AutoData } from "../store/schema";
+import { autoDataDefaults, autoDataSchema } from "../store/schema";
 import { useAutoStore } from "../store/useDataStore";
+import { cn } from "../util";
 
 export default function Auto({ onChanged }: FormProps): JSX.Element {
   const { setData, data } = useAutoStore();
@@ -32,7 +33,7 @@ export default function Auto({ onChanged }: FormProps): JSX.Element {
               onChange={(key) => onChange(key)}
               className="mx-auto"
               classNames={{
-                wrapper: clsx(value ? "bg-green-500" : "bg-red-500"),
+                wrapper: cn(value ? "bg-green-500" : "bg-red-500"),
               }}
               startContent={<CheckIcon />}
               endContent={<XMarkIcon />}
