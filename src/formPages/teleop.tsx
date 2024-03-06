@@ -1,5 +1,3 @@
-import { Controller } from "react-hook-form";
-
 import { Counter } from "../components/fields/Counter";
 import Select from "../components/fields/Select";
 import type { FormProps } from "../formPages/forms";
@@ -24,28 +22,14 @@ export default function Teleop({ onChanged }: FormProps): JSX.Element {
 
   return (
     <form className="flex flex-col space-y-8 text-center [&>*]:mx-auto">
-      <Controller
-        control={control}
-        name="ampScores"
-        render={({ field: { value, onChange } }) => (
-          <Counter label="Amp Scores" value={value} onChange={onChange} />
-        )}
-      />
+      <Counter control={control} name="ampScores" label="Amp Scores" />
 
-      <Controller
-        control={control}
-        name="speakerScores"
-        render={({ field: { value, onChange } }) => (
-          <Counter label="Speaker Scores" value={value} onChange={onChange} />
-        )}
-      />
+      <Counter control={control} name="speakerScores" label="Speaker Scores" />
 
-      <Controller
+      <Counter
         control={control}
         name="timesAmplified"
-        render={({ field: { value, onChange } }) => (
-          <Counter label="Times Amplified" value={value} onChange={onChange} />
-        )}
+        label="Times Amplified"
       />
 
       <Select

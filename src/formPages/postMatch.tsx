@@ -1,13 +1,13 @@
-import { CheckIcon, XMarkIcon } from "@heroicons/react/20/solid";
-import { Card, CardBody, Slider, Switch, Textarea } from "@nextui-org/react";
+import { Card, CardBody, Textarea } from "@nextui-org/react";
 import { Controller } from "react-hook-form";
 
+import { Slider } from "../components/fields/Slider";
+import { Switch } from "../components/fields/Switch";
 import type { FormProps } from "../formPages/forms";
 import useForm from "../hooks/useForm";
 import type { PostMatchData } from "../store/schema";
 import { postMatchDataSchema } from "../store/schema";
 import { usePostMatchStore } from "../store/useDataStore";
-import { cn } from "../util";
 
 export default function PostMatch({ onChanged }: FormProps): JSX.Element {
   const { setData, data } = usePostMatchStore();
@@ -22,134 +22,40 @@ export default function PostMatch({ onChanged }: FormProps): JSX.Element {
   return (
     <form className="flex flex-col space-y-10 text-center [&>*]:mx-auto">
       <div className="w-full space-y-2">
-        <Controller
-          control={control}
-          name="driverRating"
-          render={({ field: { value, onChange } }) => (
-            <Slider
-              step={1}
-              label="Driver Rating"
-              showSteps
-              minValue={0}
-              maxValue={10}
-              value={value}
-              onChange={onChange}
-            />
-          )}
-        />
-        <Controller
-          control={control}
-          name="defenseRating"
-          render={({ field: { value, onChange } }) => (
-            <Slider
-              step={1}
-              label="Defense Rating"
-              showSteps
-              minValue={0}
-              maxValue={10}
-              value={value}
-              onChange={onChange}
-            />
-          )}
-        />
-        <Controller
-          control={control}
-          name="speedRating"
-          render={({ field: { value, onChange } }) => (
-            <Slider
-              step={1}
-              label="Speed Rating"
-              showSteps
-              minValue={0}
-              maxValue={10}
-              value={value}
-              onChange={onChange}
-            />
-          )}
-        />
+        <Slider control={control} name="driverRating" label="Driver Rating" />
+        <Slider control={control} name="defenseRating" label="Defense Rating" />
+        <Slider control={control} name="speedRating" label="Speed Rating" />
       </div>
 
       <Card shadow="md" className="p-2">
         <CardBody>
           <div className="flex gap-4 flex-wrap md:flex-nowrap justify-around [&>*]:flex-1 text-center">
-            <Controller
+            <Switch
               control={control}
               name="died"
-              render={({ field: { value, onChange } }) => (
-                <div className="flex flex-col space-y-2">
-                  <div className="grow">Robot died?</div>
-                  <Switch
-                    isSelected={value}
-                    onChange={(key) => onChange(key)}
-                    className="mx-auto"
-                    classNames={{
-                      wrapper: cn(value ? "bg-green-500" : "bg-red-500"),
-                    }}
-                    startContent={<CheckIcon />}
-                    endContent={<XMarkIcon />}
-                  />
-                </div>
-              )}
+              label="Robot died?"
+              classNames={{ label: "grow text-md" }}
             />
 
-            <Controller
+            <Switch
               control={control}
               name="unstable"
-              render={({ field: { value, onChange } }) => (
-                <div className="flex flex-col space-y-2">
-                  <div className="grow">Robot unstable?</div>
-                  <Switch
-                    isSelected={value}
-                    onChange={(key) => onChange(key)}
-                    className="mx-auto"
-                    classNames={{
-                      wrapper: cn(value ? "bg-green-500" : "bg-red-500"),
-                    }}
-                    startContent={<CheckIcon />}
-                    endContent={<XMarkIcon />}
-                  />
-                </div>
-              )}
+              label="Robot unstable?"
+              classNames={{ label: "grow text-md" }}
             />
 
-            <Controller
+            <Switch
               control={control}
               name="droppedNotes"
-              render={({ field: { value, onChange } }) => (
-                <div className="flex flex-col space-y-2">
-                  <div className="grow">Robot dropped notes?</div>
-                  <Switch
-                    isSelected={value}
-                    onChange={(key) => onChange(key)}
-                    className="mx-auto"
-                    classNames={{
-                      wrapper: cn(value ? "bg-green-500" : "bg-red-500"),
-                    }}
-                    startContent={<CheckIcon />}
-                    endContent={<XMarkIcon />}
-                  />
-                </div>
-              )}
+              label="Robot dropped notes?"
+              classNames={{ label: "grow text-md" }}
             />
 
-            <Controller
+            <Switch
               control={control}
               name="potentialPartner"
-              render={({ field: { value, onChange } }) => (
-                <div className="flex flex-col space-y-2">
-                  <div className="grow">Good alliance partner?</div>
-                  <Switch
-                    isSelected={value}
-                    onChange={(key) => onChange(key)}
-                    className="mx-auto"
-                    classNames={{
-                      wrapper: cn(value ? "bg-green-500" : "bg-red-500"),
-                    }}
-                    startContent={<CheckIcon />}
-                    endContent={<XMarkIcon />}
-                  />
-                </div>
-              )}
+              label="Good alliance partner?"
+              classNames={{ label: "grow text-md" }}
             />
           </div>
         </CardBody>

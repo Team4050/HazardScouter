@@ -1,7 +1,7 @@
 import { Tab, Tabs } from "@nextui-org/react";
 import { Controller } from "react-hook-form";
 
-import Text from "../components/fields/Input";
+import Input from "../components/fields/Input";
 import Select from "../components/fields/Select";
 import type { FormProps } from "../formPages/forms";
 import useForm from "../hooks/useForm";
@@ -50,7 +50,7 @@ export default function PreMatch({ onChanged }: FormProps): JSX.Element {
         )}
       />
 
-      <Text
+      <Input
         type="text"
         label="Scouter Name"
         variant="faded"
@@ -59,7 +59,7 @@ export default function PreMatch({ onChanged }: FormProps): JSX.Element {
         control={control}
       />
 
-      <Text
+      <Input
         type="number"
         label="Match Number"
         variant="faded"
@@ -68,7 +68,7 @@ export default function PreMatch({ onChanged }: FormProps): JSX.Element {
         control={control}
       />
 
-      <Text
+      <Input
         type="number"
         label="Team Number"
         variant="faded"

@@ -1,8 +1,5 @@
-import {
-  Select as NUISelect,
-  SelectItem,
-  SelectProps,
-} from "@nextui-org/react";
+import type { SelectProps } from "@nextui-org/react";
+import { Select as NUISelect, SelectItem } from "@nextui-org/react";
 import type { FieldValues } from "react-hook-form";
 import { Controller } from "react-hook-form";
 
@@ -31,9 +28,6 @@ export default function Select<T extends FieldValues>({
       name={name}
       render={({ field: { value, onChange }, formState: { dirtyFields } }) => (
         <NUISelect
-          {...props}
-          selectedKeys={[value]}
-          onChange={(e) => onChange(e.target.value)}
           classNames={{
             trigger: cn(
               dirtyFields[name] === true
@@ -41,7 +35,11 @@ export default function Select<T extends FieldValues>({
                 : null,
             ),
           }}
+          {...props}
+          selectedKeys={[value]}
+          onChange={(e) => onChange(e.target.value)}
           items={items}
+          name={name}
         >
           {(item) => <SelectItem key={item.key}>{item.label}</SelectItem>}
         </NUISelect>

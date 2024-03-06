@@ -1,10 +1,29 @@
 import { MinusIcon, PlusIcon } from "@heroicons/react/20/solid";
 import { Button } from "@nextui-org/react";
 import { useEffect, useState } from "react";
+import type { FieldValues } from "react-hook-form";
+import { Controller } from "react-hook-form";
 
 import { cn } from "../../util";
+import type { FieldProps } from "./props";
 
-type CounterProps = {
+export function Counter<T extends FieldValues>({
+  control,
+  name,
+  ...props
+}: FieldProps<T, Omit<CounterInputProps, "onChange">>): JSX.Element {
+  return (
+    <Controller
+      control={control}
+      name={name}
+      render={({ field: { value, onChange } }) => (
+        <CounterInput {...props} value={value} onChange={onChange} />
+      )}
+    />
+  );
+}
+
+type CounterInputProps = {
   label?: string;
   labelLeft?: boolean;
   className?: string;
@@ -21,7 +40,7 @@ type CounterProps = {
   onChange?: (value: number) => void;
 };
 
-export function Counter({
+function CounterInput({
   label,
   labelLeft,
   className,
@@ -31,7 +50,7 @@ export function Counter({
   minCount = 0,
   maxCount = 99,
   onChange,
-}: CounterProps): JSX.Element {
+}: CounterInputProps): JSX.Element {
   const [count, setCount] = useState<number>(value || 0);
 
   useEffect(() => {
