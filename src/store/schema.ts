@@ -1,7 +1,6 @@
 import {
   object,
   string,
-  length,
   minValue,
   maxValue,
   enum_,
