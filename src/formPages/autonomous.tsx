@@ -3,11 +3,11 @@ import { Switch } from "@nextui-org/react";
 import clsx from "clsx";
 import { Controller } from "react-hook-form";
 
-import { Counter } from "@app/components/form/Counter";
-import { FormProps } from "@app/formPages/forms";
-import useForm from "@app/hooks/useForm";
-import { AutoData, autoDataDefaults, autoDataSchema } from "@app/store/schema";
-import { useAutoStore } from "@app/store/useDataStore";
+import { Counter } from "../components/form/Counter";
+import { FormProps } from "../formPages/forms";
+import useForm from "../hooks/useForm";
+import { AutoData, autoDataDefaults, autoDataSchema } from "../store/schema";
+import { useAutoStore } from "../store/useDataStore";
 
 export default function Auto({ onChanged }: FormProps): JSX.Element {
   const { setData, data } = useAutoStore();

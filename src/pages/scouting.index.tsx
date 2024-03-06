@@ -1,5 +1,8 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/scouting/")({
-  loader: () => redirect({ to: "/scouting/pre-match" }),
+  component: () => null,
+  loader: () => {
+    redirect({ to: "/scouting/$formPage", params: { formPage: "pre-match" } });
+  },
 });
