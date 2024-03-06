@@ -53,7 +53,7 @@ export default function PreMatch({ onChanged }: FormProps): JSX.Element {
 
       <FormInput
         type="text"
-        label="Scouter Initials"
+        label="Scouter Name"
         variant="faded"
         name="scouter"
         className="col-span-2"

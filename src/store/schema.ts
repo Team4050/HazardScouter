@@ -8,6 +8,8 @@ import {
   number,
   Output,
   boolean,
+  minLength,
+  maxLength,
 } from "valibot";
 
 export enum MatchType {
@@ -45,7 +47,7 @@ export enum EndStatus {
 }
 
 export const preMatchDataSchema = object({
-  scouter: string([length(2)]),
+  scouter: string([minLength(1), maxLength(50)]),
   matchNumber: number([minValue(1), maxValue(999)]),
   teamNumber: number([minValue(1)]),
   matchType: enum_(MatchType),
