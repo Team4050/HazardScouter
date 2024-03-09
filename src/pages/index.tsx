@@ -12,7 +12,7 @@ function Home(): JSX.Element {
     <div className="flex flex-col mx-auto max-w-xl gap-8">
       <img src={logo} alt="Crescendo" />
 
-      <Button as={Link} color="primary" className="my-auto" href="/scouting">
+      <Button as={Link} color="primary" href="/scouting">
         Begin
       </Button>
     </div>

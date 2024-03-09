@@ -2,10 +2,13 @@ import {
   Navbar,
   NavbarBrand,
   NavbarContent,
-  NavbarItem,
+  NavbarMenu,
+  NavbarMenuItem,
+  NavbarMenuToggle,
   NextUIProvider,
 } from "@nextui-org/react";
 import { Outlet, createRootRoute } from "@tanstack/react-router";
+import { useState } from "react";
 
 import { cn } from "../util";
 
@@ -14,11 +17,12 @@ export const Route = createRootRoute({
 });
 
 function Root(): JSX.Element {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const scanning = false;
 
   return (
     <>
-      <NextUIProvider className="fixed h-screen w-screen">
+      <NextUIProvider className="fixed h-[100dvh] w-screen">
         <main
           className={cn(
             "text-foreground bg-background h-full bg-gradient-to-tr",
@@ -27,21 +31,33 @@ function Root(): JSX.Element {
               : "green from-red-600 to-blue-800",
           )}
         >
-          <Navbar position="static" isBordered className="font-tech">
-            <NavbarContent justify="start" className="">
-              <NavbarBrand className="space-x-2">
+          <Navbar
+            position="static"
+            isBordered
+            className="font-tech"
+            onMenuOpenChange={setIsMenuOpen}
+          >
+            <NavbarContent className="gap-x-3">
+              <NavbarMenuToggle
+                aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                className="sm:hidden"
+              />
+              <NavbarBrand className="gap-x-1">
                 <img src="/logo.svg" className="max-h-10" />
-                <span className="text-2xl">Hazard Scouter</span>
+                <span className="text-2xl font-bold italic">Scouter</span>
               </NavbarBrand>
             </NavbarContent>
 
-            <NavbarContent justify="end">
-              <NavbarItem>
-                <div className="font-mono text-sm opacity-40">
-                  {__COMMIT_HASH__}
-                </div>
-              </NavbarItem>
-            </NavbarContent>
+            <NavbarContent
+              justify="end"
+              className="hidden sm:flex"
+            ></NavbarContent>
+
+            <NavbarMenu className="max-h-[calc(100dvh-var(--navbar-height))]">
+              <NavbarMenuItem className="mt-auto mx-auto mb-2 opacity-40 font-mono">
+                {__COMMIT_HASH__}
+              </NavbarMenuItem>
+            </NavbarMenu>
           </Navbar>
 
           <div className="m-4">

@@ -41,6 +41,7 @@ export default function Input<T extends FieldValues>({
             }
             onBlur={onBlur}
             disabled={disabled}
+            inputMode={props.type === "number" ? "numeric" : undefined}
           />
         );
       }}
