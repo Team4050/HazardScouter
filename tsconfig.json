@@ -23,5 +23,6 @@
     "types": ["vite-plugin-pwa/react"]
   },
   "include": ["src", "config.ts"],
+  "exclude": ["functions/**/*"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
