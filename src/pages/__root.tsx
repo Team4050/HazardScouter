@@ -10,26 +10,16 @@ import {
 import { Outlet, createRootRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
-import { cn } from "../util";
-
 export const Route = createRootRoute({
   component: Root,
 });
 
 function Root(): JSX.Element {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const scanning = false;
 
   return (
     <NextUIProvider>
-      <main
-        className={cn(
-          "text-foreground bg-background min-h-[100dvh] bg-gradient-to-tr overflow-hidden",
-          scanning
-            ? "orange from-green-800 to-orange-700"
-            : "green from-red-600 to-blue-800",
-        )}
-      >
+      <main className="text-foreground bg-background absolute inset-0 bg-gradient-to-tr overflow-hidden green from-red-600 to-blue-800">
         <Navbar
           position="static"
           isBordered

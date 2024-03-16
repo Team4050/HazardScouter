@@ -8,11 +8,8 @@ import {
   minValue,
   number,
   object,
-  picklist,
   string,
 } from "valibot";
-
-import { teams } from "./teams";
 
 export enum MatchType {
   Practice = "practice",
@@ -51,7 +48,7 @@ export enum EndStatus {
 export const preMatchDataSchema = object({
   scouter: string([minLength(1), maxLength(50)]),
   matchNumber: number([minValue(1), maxValue(999)]),
-  teamNumber: picklist(teams),
+  teamNumber: string(),
   matchType: enum_(MatchType),
   alliance: enum_(Alliance),
   drivePosition: enum_(DrivePosition),

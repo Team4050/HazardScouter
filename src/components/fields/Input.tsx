@@ -26,6 +26,7 @@ export default function Input<T extends FieldValues>({
                 error ? "border-red-500" : value ? "border-green-500/70" : null,
               ),
             }}
+            inputMode={props.type === "number" ? "numeric" : undefined}
             {...props}
             name={name}
             isInvalid={!!error}
@@ -40,7 +41,6 @@ export default function Input<T extends FieldValues>({
             }
             onBlur={onBlur}
             disabled={disabled}
-            inputMode={props.type === "number" ? "numeric" : undefined}
           />
         );
       }}
