@@ -74,7 +74,7 @@ function ScoutingForm(): JSX.Element {
     const blob = new Blob([JSON.stringify(data)], { type: "application/json" });
     const jsonObjectUrl = URL.createObjectURL(blob);
 
-    const filename = `${data.preMatchData.matchNumber}_${data.preMatchData.teamNumber}_${data.preMatchData.scouter}.json`;
+    const filename = `${data.preMatch.matchNumber}_${data.preMatch.teamNumber}_${data.preMatch.scouter}.json`;
     const anchorEl = document.createElement("a");
     anchorEl.href = jsonObjectUrl;
     anchorEl.download = filename;
@@ -95,54 +95,39 @@ function ScoutingForm(): JSX.Element {
 
   return (
     <>
-      <div className="mx-auto max-w-xl">
-        <div className="font-tech text-2xl font-semibold text-center my-4 md:my-8">
-          {page.title}
-        </div>
-
-        {page.component ? <page.component onChanged={onChanged} /> : null}
-
-        <div className="fixed z-10 bottom-0 left-0 w-full flex flex-row mb-4 px-4 justify-between select-none items-center">
-          <Button
-            isIconOnly
-            color="primary"
-            onPress={onPrev}
-            isDisabled={!canGoBack}
-            className={cn(pageIndex === 0 ? "opacity-0" : "")}
-          >
-            <ArrowLeftIcon className="w-8" />
-          </Button>
-
-          {/* {isPhone ? (
-          <Card isBlurred>
-            <CardBody>{page.title}</CardBody>
-          </Card>
-        ) : (
-          <Tabs
-            color="primary"
-            // onSelectionChange={(key) => setPage(parseInt(key.toString()))}
-            selectedKey={page.slug}
-          >
-            {scoutingFormPages.map((page, i) => (
-              <Tab key={i} title={page.title} />
-            ))}
-          </Tabs>
-        )} */}
-
-          <Button
-            isIconOnly
-            color="primary"
-            onPress={canGoForward ? onNext : downloadData}
-            isDisabled={!currentPageValid}
-          >
-            {canGoForward ? (
-              <ArrowRightIcon className="w-8" />
-            ) : (
-              <ArrowDownTrayIcon className="w-7" />
-            )}
-          </Button>
-        </div>
+      <div className="font-tech text-2xl font-semibold text-center my-4 md:my-8">
+        {page.title}
       </div>
+
+      <div className="mx-auto max-w-xl">
+        {page.component ? <page.component onChanged={onChanged} /> : null}
+      </div>
+
+      <div className="fixed bottom-0 z-10 left-0 w-full flex flex-row my-4 px-4 justify-between select-none items-center">
+        <Button
+          isIconOnly
+          color="primary"
+          onPress={onPrev}
+          isDisabled={!canGoBack}
+          className={cn(pageIndex === 0 ? "opacity-0" : "")}
+        >
+          <ArrowLeftIcon className="w-8" />
+        </Button>
+
+        <Button
+          isIconOnly
+          color="primary"
+          onPress={canGoForward ? onNext : downloadData}
+          isDisabled={!currentPageValid}
+        >
+          {canGoForward ? (
+            <ArrowRightIcon className="w-8" />
+          ) : (
+            <ArrowDownTrayIcon className="w-7" />
+          )}
+        </Button>
+      </div>
+
       <Modal
         backdrop="blur"
         isOpen={isResetModalOpen}

@@ -1,3 +1,4 @@
+import type { MatchDataType } from "../store/schema";
 import {
   useAutoStore,
   useEndGameStore,
@@ -6,12 +7,12 @@ import {
   useTeleopStore,
 } from "../store/useDataStore";
 
-export default function useCompiledData() {
-  const { data: preMatchData } = usePreMatchStore();
-  const { data: autoData } = useAutoStore();
-  const { data: teleopData } = useTeleopStore();
-  const { data: endGameData } = useEndGameStore();
-  const { data: postMatchData } = usePostMatchStore();
+export default function useCompiledData(): MatchDataType {
+  const { data: preMatch } = usePreMatchStore();
+  const { data: auto } = useAutoStore();
+  const { data: teleop } = useTeleopStore();
+  const { data: endGame } = useEndGameStore();
+  const { data: postMatch } = usePostMatchStore();
 
-  return { preMatchData, autoData, teleopData, endGameData, postMatchData };
+  return { preMatch, auto, teleop, endGame, postMatch };
 }

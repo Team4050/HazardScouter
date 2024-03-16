@@ -21,12 +21,12 @@ export default function Endgame({ onChanged }: FormProps): JSX.Element {
   });
 
   return (
-    <form className="flex flex-col space-y-8 text-center [&>*]:mx-auto">
+    <form className="flex flex-col space-y-4 text-center [&>*]:mx-auto">
       <Select
         control={control}
         name="endStatus"
         label="End Status"
-        className="max-w-[300px]"
+        className="max-w-[250px]"
         items={[
           { key: EndStatus.Parked, label: "Parked" },
           { key: EndStatus.OnStage, label: "On Stage" },

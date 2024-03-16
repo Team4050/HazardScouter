@@ -3,6 +3,7 @@ import { Button } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import type { FieldValues } from "react-hook-form";
 import { Controller } from "react-hook-form";
+import { useMediaQuery } from "usehooks-ts";
 
 import { cn } from "../../util";
 import type { FieldProps } from "./props";
@@ -45,13 +46,21 @@ function CounterInput({
   labelLeft,
   className,
   classNames,
-  size = "md",
+  size,
   value,
   minCount = 0,
   maxCount = 99,
   onChange,
 }: CounterInputProps): JSX.Element {
   const [count, setCount] = useState<number>(value || 0);
+  const [computedSize, setComputedSize] = useState(size);
+  const isMobile = useMediaQuery("(max-width: 640px)");
+
+  useEffect(() => {
+    if (size === undefined) {
+      setComputedSize(isMobile ? "lg" : "md");
+    }
+  }, [isMobile, size, setComputedSize]);
 
   useEffect(() => {
     if (onChange) {
@@ -62,7 +71,7 @@ function CounterInput({
   return (
     <div
       className={cn(
-        "flex",
+        "flex text-lg",
         labelLeft ? "flex-row space-x-1" : "flex-col space-y-1",
         className,
       )}
@@ -77,7 +86,7 @@ function CounterInput({
         <Button
           isIconOnly
           radius="md"
-          size={size}
+          size={computedSize}
           className={cn(classNames?.buttons)}
           onClick={() => setCount(count - 1)}
           disabled={count <= minCount}
@@ -88,7 +97,8 @@ function CounterInput({
         </Button>
         <div
           className={cn(
-            "text-center mx-3 my-auto text-lg font-tech w-8",
+            "text-center mx-3 my-auto font-tech w-8",
+            isMobile ? "text-xl" : "text-lg",
             classNames?.counter,
           )}
         >
@@ -97,7 +107,7 @@ function CounterInput({
         <Button
           isIconOnly
           radius="md"
-          size={size}
+          size={computedSize}
           className={cn(classNames?.buttons)}
           onClick={() => setCount(count + 1)}
           disabled={count >= maxCount}

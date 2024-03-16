@@ -1,14 +1,14 @@
 import type { Output } from "valibot";
 import {
+  boolean,
+  enum_,
+  maxLength,
+  maxValue,
+  minLength,
+  minValue,
+  number,
   object,
   string,
-  minValue,
-  maxValue,
-  enum_,
-  number,
-  boolean,
-  minLength,
-  maxLength,
 } from "valibot";
 
 export enum MatchType {
@@ -127,6 +127,6 @@ export type MatchDataType = {
   preMatch: PreMatchData;
   auto: AutoData;
   teleop: TeleopData;
-  endgame: EndGameData;
+  endGame: EndGameData;
   postMatch: PostMatchData;
 };

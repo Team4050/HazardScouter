@@ -17,7 +17,7 @@ export default function Auto({ onChanged }: FormProps): JSX.Element {
   });
 
   return (
-    <form className="flex flex-col space-y-8 text-center [&>*]:mx-auto">
+    <form className="flex flex-col space-y-4 text-center [&>*]:mx-auto">
       <Switch
         control={control}
         name="leaveStartingZone"

@@ -6,7 +6,7 @@ import { Switch } from "../components/fields/Switch";
 import type { FormProps } from "../formPages/forms";
 import useForm from "../hooks/useForm";
 import type { PostMatchData } from "../store/schema";
-import { postMatchDataSchema } from "../store/schema";
+import { postMatchDataDefaults, postMatchDataSchema } from "../store/schema";
 import { usePostMatchStore } from "../store/useDataStore";
 
 export default function PostMatch({ onChanged }: FormProps): JSX.Element {
@@ -15,12 +15,12 @@ export default function PostMatch({ onChanged }: FormProps): JSX.Element {
   const { control } = useForm<PostMatchData, typeof postMatchDataSchema>({
     setData,
     onChanged,
-    defaultValues: data ?? postMatchDataSchema,
+    defaultValues: data ?? postMatchDataDefaults,
     schema: postMatchDataSchema,
   });
 
   return (
-    <form className="flex flex-col space-y-10 text-center [&>*]:mx-auto">
+    <form className="flex flex-col space-y-6 text-center [&>*]:mx-auto">
       <div className="w-full space-y-2">
         <Slider control={control} name="driverRating" label="Driver Rating" />
         <Slider control={control} name="defenseRating" label="Defense Rating" />
@@ -29,7 +29,7 @@ export default function PostMatch({ onChanged }: FormProps): JSX.Element {
 
       <Card shadow="md" className="p-2">
         <CardBody>
-          <div className="flex gap-4 flex-wrap md:flex-nowrap justify-around [&>*]:flex-1 text-center">
+          <div className="flex gap-2 sm:gap-4 flex-wrap md:flex-nowrap justify-around [&>*]:flex-1 text-center">
             <Switch
               control={control}
               name="died"
@@ -69,7 +69,10 @@ export default function PostMatch({ onChanged }: FormProps): JSX.Element {
             label="Comments"
             value={value}
             onValueChange={onChange}
-            classNames={{ input: "min-h-[200px]" }}
+            classNames={{
+              input: "min-h-[200px]",
+              inputWrapper: "bg-content1",
+            }}
           />
         )}
       />

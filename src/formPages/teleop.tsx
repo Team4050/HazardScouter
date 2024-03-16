@@ -21,7 +21,7 @@ export default function Teleop({ onChanged }: FormProps): JSX.Element {
   });
 
   return (
-    <form className="flex flex-col space-y-8 text-center [&>*]:mx-auto">
+    <form className="flex flex-col space-y-4 text-center [&>*]:mx-auto">
       <Counter control={control} name="ampScores" label="Amp Scores" />
 
       <Counter control={control} name="speakerScores" label="Speaker Scores" />
@@ -35,7 +35,7 @@ export default function Teleop({ onChanged }: FormProps): JSX.Element {
       <Select
         control={control}
         name="pickupType"
-        className="max-w-[300px]"
+        className="max-w-[250px]"
         label="Pickup Type"
         items={[
           { key: PickupType.None, label: "None" },
