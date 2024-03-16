@@ -3,11 +3,11 @@ import { Controller } from "react-hook-form";
 
 import { Slider } from "../components/fields/Slider";
 import { Switch } from "../components/fields/Switch";
+import type { PostMatchData } from "../data/schema";
+import { postMatchDataDefaults, postMatchDataSchema } from "../data/schema";
+import { usePostMatchStore } from "../data/useDataStore";
 import type { FormProps } from "../formPages/forms";
 import useForm from "../hooks/useForm";
-import type { PostMatchData } from "../store/schema";
-import { postMatchDataDefaults, postMatchDataSchema } from "../store/schema";
-import { usePostMatchStore } from "../store/useDataStore";
 
 export default function PostMatch({ onChanged }: FormProps): JSX.Element {
   const { setData, data } = usePostMatchStore();

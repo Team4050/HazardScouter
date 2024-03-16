@@ -1,14 +1,14 @@
 import { Counter } from "../components/fields/Counter";
 import Select from "../components/fields/Select";
-import type { FormProps } from "../formPages/forms";
-import useForm from "../hooks/useForm";
-import type { TeleopData } from "../store/schema";
+import type { TeleopData } from "../data/schema";
 import {
   PickupType,
   teleopDataDefaults,
   teleopDataSchema,
-} from "../store/schema";
-import { useTeleopStore } from "../store/useDataStore";
+} from "../data/schema";
+import { useTeleopStore } from "../data/useDataStore";
+import type { FormProps } from "../formPages/forms";
+import useForm from "../hooks/useForm";
 
 export default function Teleop({ onChanged }: FormProps): JSX.Element {
   const { setData, data } = useTeleopStore();

@@ -1,14 +1,14 @@
 import Select from "../components/fields/Select";
 import { Switch } from "../components/fields/Switch";
-import type { FormProps } from "../formPages/forms";
-import useForm from "../hooks/useForm";
-import type { EndGameData } from "../store/schema";
+import type { EndGameData } from "../data/schema";
 import {
   EndStatus,
   endGameDataDefaults,
   endGameDataSchema,
-} from "../store/schema";
-import { useEndGameStore } from "../store/useDataStore";
+} from "../data/schema";
+import { useEndGameStore } from "../data/useDataStore";
+import type { FormProps } from "../formPages/forms";
+import useForm from "../hooks/useForm";
 
 export default function Endgame({ onChanged }: FormProps): JSX.Element {
   const { setData, data } = useEndGameStore();

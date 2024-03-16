@@ -15,10 +15,10 @@ import {
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 
+import { resetStores } from "../data/useDataStore";
 import { cn } from "../util";
 import { scoutingFormPages } from "./../formPages/forms";
 import useCompiledData from "./../hooks/useCompiledData";
-import { resetStores } from "./../store/useDataStore";
 
 export const Route = createFileRoute("/scouting/$formPage")({
   component: ScoutingForm,

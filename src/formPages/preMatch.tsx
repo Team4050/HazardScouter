@@ -3,17 +3,17 @@ import { Controller } from "react-hook-form";
 
 import Input from "../components/fields/Input";
 import Select from "../components/fields/Select";
-import type { FormProps } from "../formPages/forms";
-import useForm from "../hooks/useForm";
-import type { PreMatchData } from "../store/schema";
+import type { PreMatchData } from "../data/schema";
 import {
   Alliance,
   DrivePosition,
   MatchType,
   preMatchDataDefaults,
   preMatchDataSchema,
-} from "../store/schema";
-import { usePreMatchStore } from "../store/useDataStore";
+} from "../data/schema";
+import { usePreMatchStore } from "../data/useDataStore";
+import type { FormProps } from "../formPages/forms";
+import useForm from "../hooks/useForm";
 import { cn } from "../util";
 
 export default function PreMatch({ onChanged }: FormProps): JSX.Element {

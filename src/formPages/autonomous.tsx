@@ -1,10 +1,10 @@
 import { Counter } from "../components/fields/Counter";
 import { Switch } from "../components/fields/Switch";
+import type { AutoData } from "../data/schema";
+import { autoDataDefaults, autoDataSchema } from "../data/schema";
+import { useAutoStore } from "../data/useDataStore";
 import type { FormProps } from "../formPages/forms";
 import useForm from "../hooks/useForm";
-import type { AutoData } from "../store/schema";
-import { autoDataDefaults, autoDataSchema } from "../store/schema";
-import { useAutoStore } from "../store/useDataStore";
 
 export default function Auto({ onChanged }: FormProps): JSX.Element {
   const { setData, data } = useAutoStore();

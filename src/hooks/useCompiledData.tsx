@@ -1,11 +1,11 @@
-import type { MatchDataType } from "../store/schema";
+import type { MatchDataType } from "../data/schema";
 import {
   useAutoStore,
   useEndGameStore,
   usePostMatchStore,
   usePreMatchStore,
   useTeleopStore,
-} from "../store/useDataStore";
+} from "../data/useDataStore";
 
 export default function useCompiledData(): MatchDataType {
   const { data: preMatch } = usePreMatchStore();
