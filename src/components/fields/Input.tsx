@@ -15,21 +15,20 @@ export default function Input<T extends FieldValues>({
     <Controller
       name={name}
       control={control}
-      render={({ field: { value, onChange, onBlur, disabled }, formState }) => {
+      render={({
+        field: { value, onChange, onBlur, disabled },
+        fieldState: { error },
+      }) => {
         return (
           <NUIInput
             classNames={{
               inputWrapper: cn(
-                formState.errors?.[name]?.message
-                  ? "border-red-500"
-                  : value
-                    ? "border-green-500/70"
-                    : null,
+                error ? "border-red-500" : value ? "border-green-500/70" : null,
               ),
             }}
             {...props}
             name={name}
-            isInvalid={!!formState.errors?.[name]?.message}
+            isInvalid={!!error}
             // errorMessage={formState.errors?.[name]?.message?.toString()}
             value={value}
             onChange={(e) =>

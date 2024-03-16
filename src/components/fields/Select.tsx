@@ -26,14 +26,12 @@ export default function Select<T extends FieldValues>({
     <Controller
       control={control}
       name={name}
-      render={({ field: { value, onChange }, formState: { dirtyFields } }) => (
+      render={({ field: { value, onChange }, fieldState: { invalid } }) => (
         <NUISelect
           classNames={{
             trigger: cn(
-              // TODO: `name as string` is a hack because of the Path<T> type RHF uses
-              dirtyFields[name as string] === true
-                ? "border-green-500/70 border-2"
-                : null,
+              "border-2",
+              invalid ? "border-red-500" : "border-green-500/70",
             ),
           }}
           {...props}

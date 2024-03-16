@@ -1,4 +1,4 @@
-import { Tab, Tabs } from "@nextui-org/react";
+import { Autocomplete, AutocompleteItem, Tab, Tabs } from "@nextui-org/react";
 import { Controller } from "react-hook-form";
 
 import Input from "../components/fields/Input";
@@ -11,6 +11,7 @@ import {
   preMatchDataDefaults,
   preMatchDataSchema,
 } from "../data/schema";
+import { teams } from "../data/teams";
 import { usePreMatchStore } from "../data/useDataStore";
 import type { FormProps } from "../formPages/forms";
 import useForm from "../hooks/useForm";
@@ -68,13 +69,30 @@ export default function PreMatch({ onChanged }: FormProps): JSX.Element {
         control={control}
       />
 
-      <Input
-        type="number"
-        label="Team Number"
-        variant="faded"
-        name="teamNumber"
-        className="col-span-2"
+      <Controller
         control={control}
+        name="teamNumber"
+        render={({
+          field: { value, onChange },
+          fieldState: { invalid, error },
+        }) => (
+          <Autocomplete
+            label="Team Number"
+            selectedKey={value}
+            onSelectionChange={onChange}
+            className={cn(
+              "col-span-2 rounded-xl",
+              invalid || error || !value
+                ? "border-red-500 border-2"
+                : "border-green-500/70 border-2",
+            )}
+            inputMode="numeric"
+          >
+            {teams.map((team) => (
+              <AutocompleteItem key={team}>{team}</AutocompleteItem>
+            ))}
+          </Autocomplete>
+        )}
       />
 
       <Select
