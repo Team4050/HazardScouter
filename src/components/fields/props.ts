@@ -1,6 +1,10 @@
-import type { Control, FieldValues, Path } from "react-hook-form";
+import type { Control, FieldPath, FieldValues } from "react-hook-form";
 
-export type FieldProps<T extends FieldValues, CT> = Omit<CT, "name"> & {
-  control: Control<T, object>;
-  name: Path<T>;
+export type FieldProps<
+  TFieldValues extends FieldValues,
+  CT,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> = Omit<CT, "name"> & {
+  control: Control<TFieldValues, object>;
+  name: TName;
 };

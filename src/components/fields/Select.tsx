@@ -30,7 +30,8 @@ export default function Select<T extends FieldValues>({
         <NUISelect
           classNames={{
             trigger: cn(
-              dirtyFields[name] === true
+              // TODO: `name as string` is a hack because of the Path<T> type RHF uses
+              dirtyFields[name as string] === true
                 ? "border-green-500/70 border-2"
                 : null,
             ),
