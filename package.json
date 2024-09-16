@@ -14,6 +14,7 @@
     "@mantine/core": "^7.12.2",
     "@mantine/form": "^7.12.2",
     "@mantine/hooks": "^7.12.2",
+    "@tanstack/react-router": "^1.57.15",
     "clsx": "2.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -22,6 +23,8 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.1",
+    "@tanstack/router-devtools": "^1.57.15",
+    "@tanstack/router-plugin": "^1.57.15",
     "@types/node": "^22.5.5",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",

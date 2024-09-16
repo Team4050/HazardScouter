@@ -1,4 +1,5 @@
 import { MantineProvider, createTheme } from "@mantine/core";
+import type { ReactNode } from "react";
 
 const theme = createTheme({
   primaryColor: "green",
@@ -22,7 +23,7 @@ const theme = createTheme({
   },
 });
 
-export default function Provider({ children }: { children: React.ReactNode }) {
+export default function Provider({ children }: { children: ReactNode }) {
   return (
     <MantineProvider theme={theme} defaultColorScheme="dark">
       {children}
