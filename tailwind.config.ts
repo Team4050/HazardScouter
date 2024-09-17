@@ -1,12 +1,9 @@
+import pluginMantine from "@devoss/tailwind-plugin-mantine";
 import type { Config } from "tailwindcss";
+import { theme } from "./src/styles/theme";
 
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx,mdx}"],
-  theme: {
-    extend: {},
-    fontFamily: {
-      sans: ["Inter", "sans-serif"],
-      headings: ["Orbitron", "sans-serif"],
-    },
-  },
+  theme: {},
+  plugins: [pluginMantine(theme)],
 } satisfies Config;
