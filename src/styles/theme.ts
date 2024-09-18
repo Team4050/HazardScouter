@@ -4,7 +4,7 @@ export const theme = createTheme({
   primaryColor: "green",
   black: "#171717",
   white: "#fafafa",
-  fontFamily: "'Inter Variable'",
+  fontFamily: "Inter",
   headings: { fontFamily: "'Jersey 25'", fontWeight: "400" },
   colors: {
     green: [
