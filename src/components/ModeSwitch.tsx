@@ -4,9 +4,10 @@ import { useLocation, useNavigate } from "@tanstack/react-router";
 
 type Props = {
   className?: string;
+  onChange?: () => void;
 };
 
-export function ModeSwitch({ className }: Props): JSX.Element {
+export function ModeSwitch({ className, onChange }: Props): JSX.Element {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -18,12 +19,16 @@ export function ModeSwitch({ className }: Props): JSX.Element {
   if (collectionRoute) mode = "collection";
   if (scanningRoute) mode = "scanning";
 
-  const onChange = (v: string | null) => {
+  const handleChange = (v: string | null) => {
+    if (!v) return;
+
     if (v === "collection") {
       navigate({ to: "/collection" });
     } else if (v === "scanning") {
       navigate({ to: "/scanning" });
     }
+
+    onChange?.();
   };
 
   return (
@@ -33,8 +38,8 @@ export function ModeSwitch({ className }: Props): JSX.Element {
         { label: "Scanning", value: "scanning" },
       ]}
       value={mode}
-      onChange={onChange}
-      className={cn(className, otherLocation ? "hidden" : "")}
+      onChange={handleChange}
+      className={cn(otherLocation ? "hidden" : "", className)}
     />
   );
 }

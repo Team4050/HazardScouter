@@ -5,7 +5,7 @@ export const theme = createTheme({
   black: "#171717",
   white: "#fafafa",
   fontFamily: "Inter",
-  headings: { fontFamily: "'Jersey 25'", fontWeight: "400" },
+  headings: { fontFamily: "'Jersey 20'", fontWeight: "400" },
   colors: {
     green: [
       "#e5feee",

@@ -1,3 +1,4 @@
+import { AppLogo } from "@/components/Logo";
 import { routeTree } from "@/routeTree.gen";
 import { Center, Title } from "@mantine/core";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
@@ -19,8 +20,9 @@ export default function Provider(): JSX.Element {
 
 function NotFound(): JSX.Element {
   return (
-    <Center className="size-full">
+    <Center className="size-full flex flex-col">
       <Title className="text-6xl">Not Found</Title>
+      <AppLogo />
     </Center>
   );
 }
