@@ -1,6 +1,5 @@
-import { AppLogo } from "@/components/Logo";
 import { routeTree } from "@/routeTree.gen";
-import { Center, Title } from "@mantine/core";
+import { Title } from "@mantine/core";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 
 const router = createRouter({
@@ -20,9 +19,9 @@ export default function Provider(): JSX.Element {
 
 function NotFound(): JSX.Element {
   return (
-    <Center className="size-full flex flex-col">
+    <div className="w-full h-[calc(100vh-var(--app-shell-header-offset))] flex flex-col items-center justify-center absolute">
+      <img src="/boom.gif" className="absolute size-full z-10" />
       <Title className="text-6xl">Not Found</Title>
-      <AppLogo />
-    </Center>
+    </div>
   );
 }

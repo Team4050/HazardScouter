@@ -11,7 +11,7 @@ type Props = {
 
 export function AppLogo({ className, classNames }: Props): JSX.Element {
   return (
-    <div className={cn("flex items-center h-full w-fit", className)}>
+    <div className={cn("flex items-center size-full", className)}>
       <Logo className={cn("h-full", classNames?.logo)} />
       <HazardScouter className={cn("h-full py-1", classNames?.text)} />
     </div>

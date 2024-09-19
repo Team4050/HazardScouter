@@ -124,10 +124,17 @@ export const postMatchDataDefaults: PostMatchData = {
   comments: "",
 };
 
-export type MatchDataType = {
+export type MatchData = {
   preMatch: PreMatchData;
   auto: AutoData;
   teleop: TeleopData;
   endGame: EndGameData;
   postMatch: PostMatchData;
+};
+export const matchDataDefaults: MatchData = {
+  preMatch: preMatchDataDefaults,
+  auto: autoDataDefaults,
+  teleop: teleopDataDefaults,
+  endGame: endGameDataDefaults,
+  postMatch: postMatchDataDefaults,
 };
