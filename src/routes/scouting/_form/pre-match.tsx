@@ -1,46 +1,37 @@
-import { SegmentedControl } from "@/components/SegmentedControl";
-import { preMatchCollection } from "@/data/db";
+import { NumberInput, SegmentedControl, TextInput } from "@/components/mantine";
+import { idFromMatchData, matchDataCollection, set } from "@/data/db";
 import {
-  type PreMatch,
-  preMatchDefaults,
-  preMatchSchema,
+  type MatchData,
+  matchDataDefaults,
+  matchDataSchema,
 } from "@/data/games/shared";
 import { useAppState } from "@/data/state";
-import { NumberInput, TextInput } from "@mantine/core";
-import { useForm } from "@mantine/form";
+import { useForm } from "@/hooks/useForm";
 import { createFileRoute } from "@tanstack/react-router";
-import { valibotResolver } from "mantine-form-valibot-resolver";
 import { useState } from "react";
 
 export const Route = createFileRoute("/scouting/_form/pre-match")({
   component: Page,
   loader: () => {
-    useAppState.getState().setFormPageName("Pre-Match");
+    useAppState.getState().setPageName("Pre-Match");
   },
 });
 
 function Page(): JSX.Element {
-  const setCurrentMatch = useAppState((state) => state.setCurrentMatch);
   const [allianceColor, setAllianceColor] = useState<"red" | "blue">(
-    preMatchDefaults.alliance,
+    matchDataDefaults.alliance,
   );
+  const collectionId = useAppState((state) => state.collectionId);
+  const setCollectionId = useAppState((state) => state.setCollectionId);
 
-  const form = useForm<PreMatch>({
-    mode: "uncontrolled",
-    initialValues: preMatchDefaults,
-    validateInputOnBlur: true,
-    transformValues: (values) => ({
-      ...values,
-      matchNumber: Number(values.matchNumber) || 0,
-    }),
-    validate: (values) => {
-      const errors = valibotResolver(preMatchSchema)(values);
-
-      useAppState
-        .getState()
-        .setCurrentPageValid(Object.keys(errors).length === 0);
-
-      return errors;
+  const form = useForm<MatchData>({
+    initialValues:
+      matchDataCollection.findOne({ id: collectionId }) || matchDataDefaults,
+    schema: matchDataSchema,
+    onValid: (values) => {
+      const id = idFromMatchData(values);
+      set(matchDataCollection, id, values);
+      setCollectionId(id);
     },
   });
 
@@ -48,17 +39,9 @@ function Page(): JSX.Element {
     setAllianceColor(value);
   });
 
-  const handleSubmit = (values: typeof form.values) => {
-    preMatchCollection.insert(values);
-    setCurrentMatch(values);
-  };
-
   return (
     <>
-      <form
-        onSubmit={form.onSubmit(handleSubmit)}
-        className="grid md:grid-cols-2 gap-x-4 gap-y-1"
-      >
+      <div className="grid md:grid-cols-2 gap-x-4 gap-y-2">
         <SegmentedControl
           className="col-span-full"
           label="Alliance"
@@ -123,7 +106,7 @@ function Page(): JSX.Element {
           color={allianceColor}
           {...form.getInputProps("drivePosition")}
         />
-      </form>
+      </div>
     </>
   );
 }

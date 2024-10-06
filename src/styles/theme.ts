@@ -1,5 +1,7 @@
 import { createTheme } from "@mantine/core";
 
+export const navbarHeight = 60;
+
 export const theme = createTheme({
   primaryColor: "green",
   black: "#171717",

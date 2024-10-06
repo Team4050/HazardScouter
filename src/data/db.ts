@@ -3,7 +3,7 @@ import type {
   EndGame as EndGame2024,
   Teleop as Teleop2024,
 } from "@/data/games/2024";
-import type { PostMatch, PreMatch } from "@/data/games/shared";
+import type { MatchData, PostMatch } from "@/data/games/shared";
 import { effect } from "@maverick-js/signals";
 import { Collection, createLocalStorageAdapter } from "signaldb";
 import maverickReactivityAdapter from "signaldb-plugin-maverickjs";
@@ -31,7 +31,7 @@ enum MatchPhase {
 //   - At a minimum, could contain the current id of the match being scouter
 // - The universal id field can be used to query for all data for a given match
 
-export const preMatchCollection = new Collection<PreMatch & ID>({
+export const matchDataCollection = new Collection<MatchData & ID>({
   persistence: createLocalStorageAdapter(named(MatchPhase.PreMatch)),
   reactivity: maverickReactivityAdapter,
 });
@@ -57,24 +57,41 @@ export const postMatchCollection = new Collection<PostMatch & ID>({
 });
 
 const collections = [
-  preMatchCollection,
+  matchDataCollection,
   autoCollection,
   teleopCollection,
   endgameCollection,
   postMatchCollection,
 ];
 
-function named(phase: MatchPhase): string {
+function named(phase: string): string {
   return `scouter-${phase}`;
 }
 
-function id(matchNumber: number, teamNumber: string): string {
-  return `${matchNumber}-${teamNumber}`;
+export function idFromMatchData(matchData: MatchData): string {
+  return `${matchData.matchNumber}-${matchData.teamNumber}`;
 }
 
 export function resetCollections() {
   for (const collection of collections) {
     collection.removeMany({});
+  }
+}
+
+// Sometimes I truely can't be bothered to deal with Typescript... hence // @ts-ignore
+export function set<T extends Record<string, any>>(
+  collection: Collection<T & ID>,
+  id: string,
+  data: T,
+) {
+  // @ts-ignore
+  const d = collection.findOne({ id });
+  if (d) {
+    // @ts-ignore
+    collection.updateOne({ id }, { $set: data });
+  } else {
+    // @ts-ignore
+    collection.insert({ id, ...data });
   }
 }
 

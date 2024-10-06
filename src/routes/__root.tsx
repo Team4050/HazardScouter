@@ -1,10 +1,12 @@
 import { AppLogo } from "@/components/Logo";
 import { ModeSwitch } from "@/components/ModeSwitch";
 import { TailwindIndicator } from "@/components/TailwindIndicator";
+import { resetCollections } from "@/data/db";
 import { useAppState } from "@/data/state";
-import DevTools from "@/providers/DevTools";
-import { AppShell, Burger, Drawer, Title } from "@mantine/core";
+import { navbarHeight } from "@/styles/theme";
+import { AppShell, Burger, Button, Drawer, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { IconRefresh } from "@tabler/icons-react";
 import { Outlet, createRootRoute } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 
@@ -16,7 +18,6 @@ function Page(): JSX.Element {
   return (
     <>
       <Layout content={<Outlet />} />
-      <DevTools />
       <TailwindIndicator />
     </>
   );
@@ -29,11 +30,20 @@ type LayoutProps = {
 function Layout({ content }: LayoutProps): JSX.Element {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
-  const formPage = useAppState((state) => state.formPage);
+  const formPage = useAppState((state) => state.pageName);
 
   const rightSection: JSX.Element = (
     <>
-      <ModeSwitch className="w-40 hidden lg:block" />
+      <div className="hidden lg:flex items-center space-x-2">
+        <ModeSwitch className="w-40" />
+        <Button
+          size="compact-md"
+          variant="subtle"
+          onClick={() => resetCollections()}
+        >
+          <IconRefresh />
+        </Button>
+      </div>
       <Burger
         opened={drawerOpened}
         onClick={toggleDrawer}
@@ -45,7 +55,7 @@ function Layout({ content }: LayoutProps): JSX.Element {
 
   return (
     <>
-      <AppShell header={{ height: 60 }} padding="sm">
+      <AppShell header={{ height: navbarHeight }} padding="sm">
         <AppShell.Header className="flex items-center px-2 first-child:mr-auto first-child:justify-start last-child:justify-end last-child:ml-auto middle-child:justify-center">
           <AppLogo
             className="py-0.5 flex-1 flex"

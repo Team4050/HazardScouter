@@ -1,12 +1,15 @@
+import { matchDataCollection, useReactivity } from "@/data/db";
 import { useAppState } from "@/data/state";
-import type { Icon } from "@/util";
-import { Button, Stepper as MStepper } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
+import { navbarHeight } from "@/styles/theme";
+import { type Icon, cn } from "@/util";
+import { Affix, Button, getThemeColor, useMantineTheme } from "@mantine/core";
 import {
   IconDeviceGamepad2,
   IconListCheck,
+  IconRobot,
   IconRoute2,
   IconStopwatch,
+  IconSwords,
 } from "@tabler/icons-react";
 import {
   Outlet,
@@ -14,6 +17,7 @@ import {
   useLocation,
   useNavigate,
 } from "@tanstack/react-router";
+import { useRef } from "react";
 
 export const Route = createFileRoute("/scouting/_form")({
   component: FormLayout,
@@ -59,7 +63,15 @@ const routes = formPages.map((page) => page.slug);
 function FormLayout(): JSX.Element {
   const navigate = useNavigate();
   const location = useLocation();
-  const currentPageValid = useAppState((state) => state.currentPageValid);
+  const currentFormValid = useAppState((state) => state.currentFormValid);
+  const bannerRef = useRef<HTMLDivElement>(null);
+  const theme = useMantineTheme();
+  const collectionId = useAppState((state) => state.collectionId);
+
+  const matchData = useReactivity(
+    () => matchDataCollection.findOne({ id: collectionId }),
+    [collectionId],
+  );
 
   const currentRouteIndex = routes.findIndex((route) =>
     location.pathname.includes(route),
@@ -67,7 +79,39 @@ function FormLayout(): JSX.Element {
 
   return (
     <>
-      <div className="container mx-auto max-w-screen-md m-5">
+      {matchData && currentRouteIndex !== 0 ? (
+        <Affix
+          position={{ top: navbarHeight }}
+          className="w-full"
+          ref={bannerRef}
+        >
+          <div
+            className="sm:mx-auto sm:w-64 mx-5 rounded-b-xl shadow-2xl px-2 flex space-x-2 justify-center text-white text-2xl *:flex *:items-center *:space-x-1"
+            style={{
+              backgroundColor: getThemeColor(matchData.alliance, theme),
+            }}
+          >
+            <div>
+              <div>{matchData.matchType.toLocaleUpperCase()}:</div>
+            </div>
+            <div>
+              <IconSwords />
+              <div>{matchData.matchNumber}</div>
+            </div>
+            <div>
+              <IconRobot />
+              <div>{matchData.teamNumber}</div>
+            </div>
+          </div>
+        </Affix>
+      ) : null}
+
+      <div className="max-w-screen-md mx-auto m-5 mt-0">
+        <div
+          style={{
+            height: matchData ? bannerRef.current?.clientHeight : undefined,
+          }}
+        />
         <Outlet />
         <div className="flex justify-between mt-5">
           <Button
@@ -76,8 +120,10 @@ function FormLayout(): JSX.Element {
             }
             disabled={currentRouteIndex === 0}
             size="compact-lg"
-            classNames={{ label: "text-xs" }}
-            className="w-40"
+            className={cn(
+              "w-40 font-normal",
+              currentRouteIndex === 0 ? "opacity-0" : null,
+            )}
           >
             {"< Prev"}
           </Button>
@@ -86,52 +132,22 @@ function FormLayout(): JSX.Element {
               navigate({ to: `/scouting/${routes[currentRouteIndex + 1]}` })
             }
             disabled={
-              currentRouteIndex === routes.length - 1 || !currentPageValid
+              currentRouteIndex === routes.length - 1 || !currentFormValid
             }
+            data-allow-next={currentRouteIndex !== routes.length - 1}
             size="compact-lg"
-            className="w-40"
+            className={cn(
+              "w-40 font-normal",
+              currentRouteIndex !== routes.length - 1 ? null : "opacity-0",
+            )}
           >
             {"Next >"}
           </Button>
         </div>
+        <div className="mt-5">
+          <pre>{collectionId}</pre>
+        </div>
       </div>
     </>
-  );
-}
-
-type StepperProps = {
-  steps: FormPageInfo[];
-  currentStep: number;
-  allowNextStep: boolean;
-  onStepChange: (step: number) => void;
-  className?: string;
-};
-
-function Stepper({
-  steps,
-  currentStep,
-  onStepChange,
-  allowNextStep,
-  className,
-}: StepperProps): JSX.Element {
-  const mobile = useMediaQuery("(max-width: 768px)");
-
-  return (
-    <MStepper
-      active={currentStep}
-      onStepClick={onStepChange}
-      className={className}
-      size={mobile ? "xs" : "md"}
-      wrap={false}
-    >
-      {steps.map((step) => (
-        <MStepper.Step
-          key={step.title.toLowerCase()}
-          icon={<step.icon className="m-1 md:m-0.5" />}
-          label={step.title}
-          description={step.description}
-        />
-      ))}
-    </MStepper>
   );
 }
