@@ -4,7 +4,21 @@ export const theme = createTheme({
   primaryColor: "green",
   black: "#171717",
   white: "#fafafa",
-  fontFamily: "Inter",
+  fontFamily: "'Jersey 10'",
+  fontSizes: {
+    xs: "26px",
+    sm: "28px",
+    md: "32px",
+    lg: "36px",
+    xl: "40px",
+  },
+  lineHeights: {
+    xs: "1",
+    sm: "1.05",
+    md: "1.1",
+    lg: "1.15",
+    xl: "1.2",
+  },
   headings: { fontFamily: "'Jersey 20'", fontWeight: "400" },
   colors: {
     green: [

@@ -12,18 +12,18 @@ export function ModeSwitch({ className, onChange }: Props): JSX.Element {
   const navigate = useNavigate();
 
   const scanningRoute = location.pathname.includes("scanning");
-  const collectionRoute = location.pathname.includes("collection");
+  const collectionRoute = location.pathname.includes("scouting");
   const otherLocation = !(scanningRoute || collectionRoute);
 
   let mode: string | undefined;
-  if (collectionRoute) mode = "collection";
+  if (collectionRoute) mode = "scouting";
   if (scanningRoute) mode = "scanning";
 
   const handleChange = (v: string | null) => {
     if (!v) return;
 
-    if (v === "collection") {
-      navigate({ to: "/collection" });
+    if (v === "scouting") {
+      navigate({ to: "/scouting" });
     } else if (v === "scanning") {
       navigate({ to: "/scanning" });
     }
@@ -34,7 +34,7 @@ export function ModeSwitch({ className, onChange }: Props): JSX.Element {
   return (
     <Select
       data={[
-        { label: "Collection", value: "collection" },
+        { label: "Scouting", value: "scouting" },
         { label: "Scanning", value: "scanning" },
       ]}
       value={mode}

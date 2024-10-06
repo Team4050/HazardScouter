@@ -1,3 +1,4 @@
+import { useMediaQuery } from "@mantine/hooks";
 import { lazy } from "react";
 
 const TanStackRouterDevtools =
@@ -10,5 +11,9 @@ const TanStackRouterDevtools =
       );
 
 export default function Provider(): JSX.Element {
-  return <TanStackRouterDevtools position="bottom-right" />;
+  const mobile = useMediaQuery("(max-width: 768px)");
+
+  return (
+    <>{mobile ? null : <TanStackRouterDevtools position="bottom-left" />}</>
+  );
 }
