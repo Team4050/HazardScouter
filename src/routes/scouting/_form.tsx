@@ -6,6 +6,7 @@ import { Affix, Button, getThemeColor, useMantineTheme } from "@mantine/core";
 import {
   IconDeviceGamepad2,
   IconListCheck,
+  IconListNumbers,
   IconRobot,
   IconRoute2,
   IconStopwatch,
@@ -17,7 +18,7 @@ import {
   useLocation,
   useNavigate,
 } from "@tanstack/react-router";
-import { useRef } from "react";
+import { useState } from "react";
 
 export const Route = createFileRoute("/scouting/_form")({
   component: FormLayout,
@@ -64,35 +65,38 @@ function FormLayout(): JSX.Element {
   const navigate = useNavigate();
   const location = useLocation();
   const currentFormValid = useAppState((state) => state.currentFormValid);
-  const bannerRef = useRef<HTMLDivElement>(null);
   const theme = useMantineTheme();
   const collectionId = useAppState((state) => state.collectionId);
-
   const matchData = useReactivity(
     () => matchDataCollection.findOne({ id: collectionId }),
     [collectionId],
   );
+  const [bannerRef, setBannerRef] = useState<HTMLDivElement | null>(null);
 
   const currentRouteIndex = routes.findIndex((route) =>
     location.pathname.includes(route),
   );
+  const canGoNext = currentRouteIndex !== routes.length - 1 && currentFormValid;
+  const canGoPrevious = currentRouteIndex !== 0;
+  const showMatchBanner = matchData && currentRouteIndex !== 0;
 
   return (
     <>
-      {matchData && currentRouteIndex !== 0 ? (
+      {showMatchBanner ? (
         <Affix
           position={{ top: navbarHeight }}
           className="w-full"
-          ref={bannerRef}
+          ref={setBannerRef}
         >
           <div
-            className="sm:mx-auto sm:w-64 mx-5 rounded-b-xl shadow-2xl px-2 flex space-x-2 justify-center text-white text-2xl *:flex *:items-center *:space-x-1"
+            className="w-fit max-w-full mx-auto rounded-b-xl shadow-2xl px-2 py-1.5 flex justify-center text-white text-2xl *:flex *:items-center *:gap-x-0.5 space-x-1.5 divide-x-2 divide-solid divide-y-0 leading-none middle-child:pl-1"
             style={{
               backgroundColor: getThemeColor(matchData.alliance, theme),
             }}
           >
             <div>
-              <div>{matchData.matchType.toLocaleUpperCase()}:</div>
+              <IconListNumbers />
+              <div>{matchData.matchType.toLocaleUpperCase()}</div>
             </div>
             <div>
               <IconSwords />
@@ -109,20 +113,22 @@ function FormLayout(): JSX.Element {
       <div className="max-w-screen-md mx-auto m-5 mt-0">
         <div
           style={{
-            height: matchData ? bannerRef.current?.clientHeight : undefined,
+            height: showMatchBanner ? bannerRef?.clientHeight : undefined,
           }}
         />
+
         <Outlet />
+
         <div className="flex justify-between mt-5">
           <Button
             onClick={() =>
               navigate({ to: `/scouting/${routes[currentRouteIndex - 1]}` })
             }
-            disabled={currentRouteIndex === 0}
+            disabled={!canGoPrevious}
             size="compact-lg"
             className={cn(
               "w-40 font-normal",
-              currentRouteIndex === 0 ? "opacity-0" : null,
+              canGoPrevious ? null : "opacity-0",
             )}
           >
             {"< Prev"}
@@ -131,9 +137,7 @@ function FormLayout(): JSX.Element {
             onClick={() =>
               navigate({ to: `/scouting/${routes[currentRouteIndex + 1]}` })
             }
-            disabled={
-              currentRouteIndex === routes.length - 1 || !currentFormValid
-            }
+            disabled={!canGoNext}
             data-allow-next={currentRouteIndex !== routes.length - 1}
             size="compact-lg"
             className={cn(

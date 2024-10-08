@@ -5,14 +5,14 @@ import type { BaseSchema } from "valibot";
 
 type Props<T> = {
   initialValues: T;
-  onValid: (values: T) => void;
   schema: BaseSchema<T, T, any>;
+  onValid: (values: T) => void;
 };
 
 export function useForm<T extends Record<string, any>>({
   initialValues,
-  onValid,
   schema,
+  onValid,
 }: Props<T>): UseFormReturnType<T> {
   const setFormValid = useAppState((state) => state.setCurrentFormValid);
 

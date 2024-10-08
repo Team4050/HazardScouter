@@ -3,6 +3,8 @@ import {
   NumberInput as MNumberInput,
   SegmentedControl as MSegmentedControl,
   type SegmentedControlProps as MSegmentedControlProps,
+  Switch as MSwitch,
+  type SwitchProps as MSwitchProps,
   TextInput as MTextInput,
 } from "@mantine/core";
 
@@ -29,8 +31,23 @@ export function SegmentedControl({
 }: SegmentedControlProps): JSX.Element {
   return (
     <div className={cn(className)}>
-      {label ? <div className="text-mtn-sm ml-1">{label}</div> : null}
+      {label ? <label className="text-mtn-sm ml-1">{label}</label> : null}
       <MSegmentedControl fullWidth {...segmentedControlProps} />
+    </div>
+  );
+}
+
+type SwitchProps = MSwitchProps;
+
+export function Switch({
+  label,
+  className,
+  ...switchProps
+}: SwitchProps): JSX.Element {
+  return (
+    <div className={cn("flex flex-col items-center", className)}>
+      {label ? <label className="mb-1">{label}</label> : null}
+      <MSwitch radius="xs" size="lg" {...switchProps} />
     </div>
   );
 }

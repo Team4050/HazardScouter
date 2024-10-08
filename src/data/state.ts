@@ -1,7 +1,5 @@
 import { create } from "zustand";
 
-type AccentColor = "blue" | "red" | "green";
-
 interface AppState {
   collectionId?: string;
   setCollectionId: (id: string) => void;
