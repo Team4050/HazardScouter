@@ -47,7 +47,7 @@ export function Switch({
   return (
     <div className={cn("flex flex-col items-center", className)}>
       {label ? <label className="mb-1">{label}</label> : null}
-      <MSwitch radius="xs" size="lg" {...switchProps} />
+      <MSwitch radius="xs" size="xl" {...switchProps} />
     </div>
   );
 }

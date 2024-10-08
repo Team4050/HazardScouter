@@ -5,13 +5,16 @@ import { type Auto, autoDefaults, autoSchema } from "@/data/games/2024";
 import { useAppState } from "@/data/state";
 import { useForm } from "@/hooks/useForm";
 import { IconCheck, IconX } from "@tabler/icons-react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/scouting/_form/auto")({
-  component: Page,
-  loader: () => {
-    useAppState.getState().setPageName("Pre-Match");
+  beforeLoad: async () => {
+    if (useAppState.getState().collectionId === undefined) {
+      throw redirect({ to: "/scouting/pre-match" });
+    }
+    useAppState.getState().setPageName("Autonomous");
   },
+  component: Page,
 });
 
 function Page(): JSX.Element {

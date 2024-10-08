@@ -1,12 +1,10 @@
+import { DevTools } from "@/components/DevTools";
 import { AppLogo } from "@/components/Logo";
 import { ModeSwitch } from "@/components/ModeSwitch";
-import { TailwindIndicator } from "@/components/TailwindIndicator";
-import { resetCollections } from "@/data/db";
 import { useAppState } from "@/data/state";
 import { navbarHeight } from "@/styles/theme";
-import { AppShell, Burger, Button, Drawer, Title } from "@mantine/core";
+import { AppShell, Burger, Drawer, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconRefresh } from "@tabler/icons-react";
 import { Outlet, createRootRoute } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 
@@ -18,7 +16,7 @@ function Page(): JSX.Element {
   return (
     <>
       <Layout content={<Outlet />} />
-      <TailwindIndicator />
+      <DevTools />
     </>
   );
 }
@@ -36,13 +34,6 @@ function Layout({ content }: LayoutProps): JSX.Element {
     <>
       <div className="hidden lg:flex items-center space-x-2">
         <ModeSwitch className="w-40" />
-        <Button
-          size="compact-md"
-          variant="subtle"
-          onClick={() => resetCollections()}
-        >
-          <IconRefresh />
-        </Button>
       </div>
       <Burger
         opened={drawerOpened}
