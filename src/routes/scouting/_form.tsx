@@ -148,9 +148,6 @@ function FormLayout(): JSX.Element {
             {"Next >"}
           </Button>
         </div>
-        <div className="mt-5">
-          <pre>{collectionId}</pre>
-        </div>
       </div>
     </>
   );

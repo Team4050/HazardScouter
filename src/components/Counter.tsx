@@ -35,7 +35,7 @@ export function Counter({
         className,
       )}
     >
-      {label ? <label className="mb-1">{label}</label> : null}
+      {label ? <label className="mb-1 text-mtn-sm">{label}</label> : null}
       <div className="flex w-full gap-x-1.5">
         <Button
           onClick={() => handlerRef.current?.decrement()}
@@ -58,6 +58,7 @@ export function Counter({
           onChange={handleChange}
           {...numberInputProps}
           handlersRef={handlerRef}
+          readOnly={true}
         />
         <Button
           onClick={() => handlerRef.current?.increment()}

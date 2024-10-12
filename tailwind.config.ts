@@ -27,6 +27,7 @@ const config: Config = {
       },
       colors: {
         ...mantineConfig?.theme?.colors,
+        primary: "var(--mantine-primary-color-filled)",
       },
     },
   },

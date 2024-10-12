@@ -1,12 +1,16 @@
 import { NumberInput, SegmentedControl, TextInput } from "@/components/mantine";
 import { idFromMatchData, matchDataCollection, set } from "@/data/db";
 import {
+  Alliance,
+  DrivePosition,
   type MatchData,
+  MatchType,
   matchDataDefaults,
   matchDataSchema,
 } from "@/data/games/shared";
 import { useAppState } from "@/data/state";
 import { useForm } from "@/hooks/useForm";
+import { enumToSelectItem } from "@/util";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
@@ -44,11 +48,7 @@ function Page(): JSX.Element {
       <SegmentedControl
         className="col-span-full"
         label="Alliance"
-        data={[
-          { label: "Red", value: "red" },
-          { label: "Blue", value: "blue" },
-        ]}
-        key={form.key("alliance")}
+        data={enumToSelectItem(Alliance)}
         fullWidth
         color={allianceColor}
         {...form.getInputProps("alliance")}
@@ -58,13 +58,11 @@ function Page(): JSX.Element {
         label="Scouter Name"
         placeholder="Captain Safety"
         className="col-span-full"
-        key={form.key("scouter")}
         {...form.getInputProps("scouter")}
       />
 
       <NumberInput
         label="Match Number"
-        key={form.key("matchNumber")}
         inputMode="numeric"
         hideControls
         {...form.getInputProps("matchNumber")}
@@ -73,7 +71,6 @@ function Page(): JSX.Element {
       <TextInput
         label="Team Number"
         placeholder="4050"
-        key={form.key("teamNumber")}
         inputMode="numeric"
         {...form.getInputProps("teamNumber")}
       />
@@ -81,13 +78,7 @@ function Page(): JSX.Element {
       <SegmentedControl
         className="col-span-full"
         label="Match Type"
-        data={[
-          { label: "Practice", value: "practice" },
-          { label: "Quals", value: "quals" },
-          { label: "Semi", value: "semi" },
-          { label: "Finals", value: "finals" },
-        ]}
-        key={form.key("matchType")}
+        data={enumToSelectItem(MatchType)}
         fullWidth
         color={allianceColor}
         {...form.getInputProps("matchType")}
@@ -96,12 +87,7 @@ function Page(): JSX.Element {
       <SegmentedControl
         className="col-span-full"
         label="Drive Position"
-        key={form.key("drivePosition")}
-        data={[
-          { label: "Near", value: "near" },
-          { label: "Middle", value: "middle" },
-          { label: "Far", value: "far" },
-        ]}
+        data={enumToSelectItem(DrivePosition)}
         color={allianceColor}
         {...form.getInputProps("drivePosition")}
       />

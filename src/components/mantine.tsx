@@ -3,6 +3,7 @@ import {
   NumberInput as MNumberInput,
   SegmentedControl as MSegmentedControl,
   type SegmentedControlProps as MSegmentedControlProps,
+  Select as MSelect,
   Switch as MSwitch,
   type SwitchProps as MSwitchProps,
   TextInput as MTextInput,
@@ -17,6 +18,12 @@ export const TextInput = MTextInput.withProps({
 export const NumberInput = MNumberInput.withProps({
   classNames: {
     label: "ml-1",
+  },
+});
+
+export const Select = MSelect.withProps({
+  classNames: {
+    label: "ml-1 mb-2 font-medium",
   },
 });
 
@@ -46,7 +53,7 @@ export function Switch({
 }: SwitchProps): JSX.Element {
   return (
     <div className={cn("flex flex-col items-center", className)}>
-      {label ? <label className="mb-1">{label}</label> : null}
+      {label ? <label className="mb-1 text-mtn-sm">{label}</label> : null}
       <MSwitch radius="xs" size="xl" {...switchProps} />
     </div>
   );
