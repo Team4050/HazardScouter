@@ -1,4 +1,4 @@
-import { NumberInput, SegmentedControl, TextInput } from "@/components/mantine";
+import { NumberInput, SegmentedControl, TextInput } from "@/components/inputs";
 import { idFromMatchData, matchDataCollection, set } from "@/data/db";
 import {
   Alliance,

@@ -8,7 +8,7 @@ export const theme = createTheme({
   white: "#fafafa",
   fontFamily: "'Jersey 10'",
   fontSizes: {
-    xs: "26px",
+    xs: "24px",
     sm: "28px",
     md: "32px",
     lg: "36px",

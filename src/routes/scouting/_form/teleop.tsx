@@ -1,5 +1,4 @@
-import { Counter } from "@/components/Counter";
-import { Select } from "@/components/mantine";
+import { Counter, Select } from "@/components/inputs";
 import { set, teleopCollection } from "@/data/db";
 import {
   PickupType,
@@ -53,6 +52,7 @@ function Page(): JSX.Element {
         label="Pickup Type"
         className="w-fit mx-auto"
         data={enumToSelectItem(PickupType)}
+        {...form.getInputProps("pickupType")}
       />
     </div>
   );

@@ -1,4 +1,4 @@
-import { Select, Switch } from "@/components/mantine";
+import { Select, Switch } from "@/components/inputs";
 import { endgameCollection, set } from "@/data/db";
 import {
   type EndGame,
@@ -45,7 +45,10 @@ function Page(): JSX.Element {
         data={enumToSelectItem(EndStatus)}
         {...form.getInputProps("endStatus")}
       />
-      <Switch label="Trap" {...form.getInputProps("trap")} />
+      <Switch
+        label="Trap"
+        {...form.getInputProps("trap", { type: "checkbox" })}
+      />
     </div>
   );
 }

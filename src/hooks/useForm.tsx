@@ -19,7 +19,7 @@ export function useForm<T extends Record<string, any>>({
   return useFormM<T>({
     mode: "uncontrolled",
     initialValues,
-    validateInputOnBlur: true,
+    validateInputOnChange: true,
     validate: (values) => {
       const errors = valibotResolver(schema)(values);
 

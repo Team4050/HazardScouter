@@ -115,6 +115,7 @@ function FormLayout(): JSX.Element {
           style={{
             height: showMatchBanner ? bannerRef?.clientHeight : undefined,
           }}
+          className="md:mb-4"
         />
 
         <Outlet />
@@ -133,20 +134,22 @@ function FormLayout(): JSX.Element {
           >
             {"< Prev"}
           </Button>
-          <Button
-            onClick={() =>
-              navigate({ to: `/scouting/${routes[currentRouteIndex + 1]}` })
-            }
-            disabled={!canGoNext}
-            data-allow-next={currentRouteIndex !== routes.length - 1}
-            size="compact-lg"
-            className={cn(
-              "w-40 font-normal",
-              currentRouteIndex !== routes.length - 1 ? null : "opacity-0",
-            )}
-          >
-            {"Next >"}
-          </Button>
+          <div className="w-40">
+            <Button
+              onClick={() =>
+                navigate({ to: `/scouting/${routes[currentRouteIndex + 1]}` })
+              }
+              disabled={!canGoNext}
+              data-allow-next={currentRouteIndex !== routes.length - 1}
+              size="compact-lg"
+              className={cn(
+                "w-full font-normal",
+                currentRouteIndex !== routes.length - 1 ? null : "opacity-0",
+              )}
+            >
+              {"Next >"}
+            </Button>
+          </div>
         </div>
       </div>
     </>
