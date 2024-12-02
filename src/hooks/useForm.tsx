@@ -1,36 +1,46 @@
-import { useAppState } from "@/data/state";
+import { useFormContext } from "@/providers/Form";
 import { type UseFormReturnType, useForm as useFormM } from "@mantine/form";
+import { useDebouncedCallback } from "@mantine/hooks";
 import { valibotResolver } from "mantine-form-valibot-resolver";
 import type { BaseSchema } from "valibot";
 
 type Props<T> = {
   initialValues: T;
   schema: BaseSchema<T, T, any>;
-  onValid: (values: T) => void;
+  save?: (values: T) => void;
 };
 
 export function useForm<T extends Record<string, any>>({
   initialValues,
   schema,
-  onValid,
+  save,
 }: Props<T>): UseFormReturnType<T> {
-  const setFormValid = useAppState((state) => state.setCurrentFormValid);
+  const { setCurrentPageValid } = useFormContext();
 
-  return useFormM<T>({
+  const debouncedSetValid = useDebouncedCallback(
+    (isValid: boolean) => setCurrentPageValid(isValid),
+    300,
+  );
+
+  const debouncedSave = useDebouncedCallback(
+    (values: T) => save?.(values),
+    300,
+  );
+
+  const form = useFormM<T>({
     mode: "uncontrolled",
     initialValues,
     validateInputOnChange: true,
     validate: (values) => {
       const errors = valibotResolver(schema)(values);
-
-      if (Object.keys(errors).length === 0) {
-        setFormValid(true);
-        onValid(values);
-      } else {
-        setFormValid(false);
+      const isValid = Object.keys(errors).length === 0;
+      debouncedSetValid(isValid);
+      if (isValid) {
+        debouncedSave(values);
       }
-
       return errors;
     },
   });
+
+  return form;
 }

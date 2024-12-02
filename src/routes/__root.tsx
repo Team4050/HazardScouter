@@ -1,6 +1,7 @@
 import { DevTools } from "@/components/DevTools";
 import { AppLogo } from "@/components/Logo";
 import { ModeSwitch } from "@/components/ModeSwitch";
+import { scoutingPhaseName } from "@/data/match";
 import { useAppState } from "@/data/state";
 import { navbarHeight } from "@/styles/theme";
 import { AppShell, Burger, Drawer, Title } from "@mantine/core";
@@ -30,7 +31,7 @@ type LayoutProps = {
 function Layout({ content }: LayoutProps): JSX.Element {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
-  const formPage = useAppState((state) => state.pageName);
+  const matchPhase = useAppState((state) => state.matchPhase);
 
   const rightSection: JSX.Element = (
     <>
@@ -56,7 +57,7 @@ function Layout({ content }: LayoutProps): JSX.Element {
           />
           <div className="flex-1 flex">
             <Title className="text-2xl lg:text-4xl leading-none text-center">
-              {formPage}
+              {scoutingPhaseName(matchPhase) ?? "Scouting"}
             </Title>
           </div>
           <div className="flex-1 flex">{rightSection}</div>

@@ -1,40 +1,30 @@
 import { Counter, Select } from "@/components/inputs";
-import { set, teleopCollection } from "@/data/db";
+import { matchCollection } from "@/data/db";
 import {
   PickupType,
   type Teleop,
   teleopDefaults,
   teleopSchema,
-} from "@/data/games/2024";
+} from "@/data/match/2024";
 import { useAppState } from "@/data/state";
 import { useForm } from "@/hooks/useForm";
 import { enumToSelectItem } from "@/util";
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/scouting/_form/teleop")({
+export const Route = createFileRoute("/scouting/$matchId/teleop")({
   beforeLoad: async () => {
-    if (useAppState.getState().collectionId === undefined) {
-      throw redirect({ to: "/scouting/pre-match" });
-    }
-    useAppState.getState().setPageName("Teleop");
+    useAppState.getState().setMatchPhase("teleop");
   },
   component: Page,
 });
 
 function Page(): JSX.Element {
-  const collectionId = useAppState((state) => state.collectionId);
-
-  if (!collectionId) {
-    throw new Error("Collection ID not set");
-  }
-
+  const { matchId } = Route.useParams();
   const form = useForm<Teleop>({
     initialValues:
-      teleopCollection.findOne({ id: collectionId }) || teleopDefaults,
+      matchCollection.findOne({ id: matchId })?.phases.teleop?.data ||
+      teleopDefaults,
     schema: teleopSchema,
-    onValid: (values) => {
-      set(teleopCollection, collectionId, values);
-    },
   });
 
   return (

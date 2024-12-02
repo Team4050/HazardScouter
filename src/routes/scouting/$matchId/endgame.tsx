@@ -1,40 +1,30 @@
 import { Select, Switch } from "@/components/inputs";
-import { endgameCollection, set } from "@/data/db";
+import { matchCollection } from "@/data/db";
 import {
   type EndGame,
   EndStatus,
   endGameDefaults,
   endGameSchema,
-} from "@/data/games/2024";
+} from "@/data/match/2024";
 import { useAppState } from "@/data/state";
 import { useForm } from "@/hooks/useForm";
 import { enumToSelectItem } from "@/util";
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/scouting/_form/endgame")({
+export const Route = createFileRoute("/scouting/$matchId/endgame")({
   beforeLoad: async () => {
-    if (useAppState.getState().collectionId === undefined) {
-      throw redirect({ to: "/scouting/pre-match" });
-    }
-    useAppState.getState().setPageName("End Game");
+    useAppState.getState().setMatchPhase("endgame");
   },
   component: Page,
 });
 
 function Page(): JSX.Element {
-  const collectionId = useAppState((state) => state.collectionId);
-
-  if (!collectionId) {
-    throw new Error("Collection ID not set");
-  }
-
+  const { matchId } = Route.useParams();
   const form = useForm<EndGame>({
     initialValues:
-      endgameCollection.findOne({ id: collectionId }) || endGameDefaults,
+      matchCollection.findOne({ id: matchId })?.phases.endgame ||
+      endGameDefaults,
     schema: endGameSchema,
-    onValid: (values) => {
-      set(endgameCollection, collectionId, values);
-    },
   });
 
   return (

@@ -36,4 +36,24 @@ export const theme = createTheme({
       "#00963c",
     ],
   },
+  components: {
+    Table: {
+      styles: {
+        th: {
+          fontWeight: "normal",
+        },
+        table: {
+          fontSize: "24px",
+          textTransform: "capitalize",
+        },
+      },
+    },
+    Button: {
+      styles: {
+        root: {
+          fontWeight: "normal",
+        },
+      },
+    },
+  },
 });

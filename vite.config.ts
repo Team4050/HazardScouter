@@ -9,6 +9,7 @@ export default defineConfig({
     TanStackRouterVite({
       quoteStyle: "double",
       semicolons: true,
+      // routeToken: "layout",
     }),
     react(),
     VitePWA({

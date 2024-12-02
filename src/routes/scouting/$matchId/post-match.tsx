@@ -1,48 +1,37 @@
 import { Slider, Switch, Textarea } from "@/components/inputs";
+import { matchCollection, useReactivity } from "@/data/db";
 import {
-  matchDataCollection,
-  postMatchCollection,
-  set,
-  useReactivity,
-} from "@/data/db";
-import {
-  type PostMatch,
-  postMatchDefaults,
-  postMatchSchema,
-} from "@/data/games/shared";
+  type TeamReview,
+  teamReviewDefaults,
+  teamReviewSchema,
+} from "@/data/match/shared";
 import { useAppState } from "@/data/state";
 import { useForm } from "@/hooks/useForm";
 import { Paper } from "@mantine/core";
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/scouting/_form/post-match")({
+export const Route = createFileRoute("/scouting/$matchId/post-match")({
   beforeLoad: async () => {
-    if (useAppState.getState().collectionId === undefined) {
-      throw redirect({ to: "/scouting/pre-match" });
-    }
-    useAppState.getState().setPageName("Post Match");
+    useAppState.getState().setMatchPhase("postMatch");
   },
   component: Page,
 });
 
 function Page(): JSX.Element {
-  const collectionId = useAppState((state) => state.collectionId);
+  const { matchId } = Route.useParams();
+
   const teamNumber = useReactivity(
-    () => matchDataCollection.findOne({ id: collectionId })?.teamNumber,
-    [collectionId],
+    () =>
+      matchCollection.findOne({ id: matchId })?.phases.preMatch?.data
+        .teamNumber,
+    [matchId],
   );
 
-  if (!collectionId) {
-    throw new Error("Collection ID not set");
-  }
-
-  const form = useForm<PostMatch>({
+  const form = useForm<TeamReview>({
     initialValues:
-      postMatchCollection.findOne({ id: collectionId }) || postMatchDefaults,
-    schema: postMatchSchema,
-    onValid: (values) => {
-      set(postMatchCollection, collectionId, values);
-    },
+      matchCollection.findOne({ id: matchId })?.phases.postMatch?.data ||
+      teamReviewDefaults,
+    schema: teamReviewSchema,
   });
 
   return (

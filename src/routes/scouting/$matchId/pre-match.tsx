@@ -1,5 +1,5 @@
 import { NumberInput, SegmentedControl, TextInput } from "@/components/inputs";
-import { idFromMatchData, matchDataCollection, set } from "@/data/db";
+import { matchCollection } from "@/data/db";
 import {
   Alliance,
   DrivePosition,
@@ -7,17 +7,17 @@ import {
   MatchType,
   matchDataDefaults,
   matchDataSchema,
-} from "@/data/games/shared";
+} from "@/data/match/shared";
 import { useAppState } from "@/data/state";
 import { useForm } from "@/hooks/useForm";
 import { enumToSelectItem } from "@/util";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
-export const Route = createFileRoute("/scouting/_form/pre-match")({
+export const Route = createFileRoute("/scouting/$matchId/pre-match")({
   component: Page,
   loader: () => {
-    useAppState.getState().setPageName("Pre-Match");
+    useAppState.getState().setMatchPhase("preMatch");
   },
 });
 
@@ -25,18 +25,13 @@ function Page(): JSX.Element {
   const [allianceColor, setAllianceColor] = useState<"red" | "blue">(
     matchDataDefaults.alliance,
   );
-  const collectionId = useAppState((state) => state.collectionId);
-  const setCollectionId = useAppState((state) => state.setCollectionId);
+  const { matchId } = Route.useParams();
 
   const form = useForm<MatchData>({
     initialValues:
-      matchDataCollection.findOne({ id: collectionId }) || matchDataDefaults,
+      matchCollection.findOne({ id: matchId })?.phases.preMatch?.data ||
+      matchDataDefaults,
     schema: matchDataSchema,
-    onValid: (values) => {
-      const id = idFromMatchData(values);
-      set(matchDataCollection, id, values);
-      setCollectionId(id);
-    },
   });
 
   form.watch("alliance", ({ value }) => {

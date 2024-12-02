@@ -60,24 +60,24 @@ export const matchDataDefaults: MatchData = {
   drivePosition: DrivePosition.Near,
 };
 
-export const postMatchSchema = object({
+export const teamReviewSchema = object({
   driverRating: pipe(number(), minValue(0), maxValue(10)),
   defenseRating: pipe(number(), minValue(0), maxValue(10)),
   speedRating: pipe(number(), minValue(0), maxValue(10)),
-  died: boolean(),
+  malfunctioned: boolean(),
   unstable: boolean(),
-  droppedNotes: boolean(),
+  droppedGamePieces: boolean(),
   potentialPartner: boolean(),
   comments: string(),
 });
-export type PostMatch = InferOutput<typeof postMatchSchema>;
-export const postMatchDefaults: PostMatch = {
+export type TeamReview = InferOutput<typeof teamReviewSchema>;
+export const teamReviewDefaults: TeamReview = {
   driverRating: 5,
   defenseRating: 5,
   speedRating: 5,
-  died: false,
+  malfunctioned: false,
   unstable: false,
-  droppedNotes: false,
+  droppedGamePieces: false,
   potentialPartner: false,
   comments: "",
 };

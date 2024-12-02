@@ -99,10 +99,6 @@ export function Switch({
     }
   };
 
-  useEffect(() => {
-    console.log(checked);
-  }, [checked]);
-
   return (
     <div className={cn("flex flex-col items-center h-full", className)}>
       {label ? (

@@ -1,27 +1,17 @@
 import type {
-  Auto as Auto2024,
-  EndGame as EndGame2024,
-  Teleop as Teleop2024,
-} from "@/data/games/2024";
-import type { MatchData, PostMatch } from "@/data/games/shared";
+  Auto,
+  EndGame,
+  MatchData,
+  ScoutingPhase,
+  TeamReview,
+  Teleop,
+} from "@/data/match";
 import { effect } from "@maverick-js/signals";
 import { Collection, createLocalStorageAdapter } from "signaldb";
 import maverickReactivityAdapter from "signaldb-plugin-maverickjs";
 import { createUseReactivityHook } from "signaldb-react";
 
-type Auto = Auto2024;
-type Teleop = Teleop2024;
-type EndGame = EndGame2024;
-
 type ID = { id: string };
-
-enum MatchPhase {
-  PreMatch = "preMatch",
-  Auto = "auto",
-  Teleop = "teleop",
-  Endgame = "endgame",
-  PostMatch = "postMatch",
-}
 
 // Data storage gist:
 // - Use SignalDB for match data, synced to localstorage
@@ -31,45 +21,67 @@ enum MatchPhase {
 //   - At a minimum, could contain the current id of the match being scouter
 // - The universal id field can be used to query for all data for a given match
 
-export const matchDataCollection = new Collection<MatchData & ID>({
-  persistence: createLocalStorageAdapter(named(MatchPhase.PreMatch)),
+type PhaseDataMap = {
+  preMatch: MatchData;
+  auto: Auto;
+  teleop: Teleop;
+  endgame: EndGame;
+  postMatch: TeamReview;
+};
+
+type Match = {
+  phases: {
+    [K in ScoutingPhase]?: PhaseDataMap[K];
+  };
+  started: Date;
+  finished?: Date;
+};
+
+export const matchCollection = new Collection<Match & ID>({
+  persistence: createLocalStorageAdapter("hs-matches"),
   reactivity: maverickReactivityAdapter,
 });
 
-export const autoCollection = new Collection<Auto & ID>({
-  persistence: createLocalStorageAdapter(named(MatchPhase.Auto)),
-  reactivity: maverickReactivityAdapter,
-});
+// export const matchDataCollection = new Collection<MatchData & ID>({
+//   persistence: createLocalStorageAdapter(named("preMatch")),
+//   reactivity: maverickReactivityAdapter,
+// });
 
-export const teleopCollection = new Collection<Teleop & ID>({
-  persistence: createLocalStorageAdapter(named(MatchPhase.Teleop)),
-  reactivity: maverickReactivityAdapter,
-});
+// export const autoCollection = new Collection<Auto & ID>({
+//   persistence: createLocalStorageAdapter(named("auto")),
+//   reactivity: maverickReactivityAdapter,
+// });
 
-export const endgameCollection = new Collection<EndGame & ID>({
-  persistence: createLocalStorageAdapter(named(MatchPhase.Endgame)),
-  reactivity: maverickReactivityAdapter,
-});
+// export const teleopCollection = new Collection<Teleop & ID>({
+//   persistence: createLocalStorageAdapter(named("teleop")),
+//   reactivity: maverickReactivityAdapter,
+// });
 
-export const postMatchCollection = new Collection<PostMatch & ID>({
-  persistence: createLocalStorageAdapter(named(MatchPhase.PostMatch)),
-  reactivity: maverickReactivityAdapter,
-});
+// export const endgameCollection = new Collection<EndGame & ID>({
+//   persistence: createLocalStorageAdapter(named("endgame")),
+//   reactivity: maverickReactivityAdapter,
+// });
+
+// export const postMatchCollection = new Collection<TeamReview & ID>({
+//   persistence: createLocalStorageAdapter(named("teamReview")),
+//   reactivity: maverickReactivityAdapter,
+// });
 
 const collections = [
-  matchDataCollection,
-  autoCollection,
-  teleopCollection,
-  endgameCollection,
-  postMatchCollection,
+  matchCollection,
+  //   matchDataCollection,
+  //   autoCollection,
+  //   teleopCollection,
+  //   endgameCollection,
+  //   postMatchCollection,
 ];
 
-function named(phase: string): string {
-  return `scouter-${phase}`;
-}
+// function named(name: ScoutingPhase): string {
+//   return `hs-${name}`;
+// }
 
-export function idFromMatchData(matchData: MatchData): string {
-  return `${matchData.matchNumber}-${matchData.teamNumber}`;
+export function idFromPreMatchData(preMatch: MatchData): string {
+  return `${preMatch.matchNumber}-${preMatch.teamNumber}`;
 }
 
 export function resetCollections() {
@@ -96,3 +108,10 @@ export function set<T extends Record<string, any>>(
 }
 
 export const useReactivity = createUseReactivityHook(effect);
+
+export function newId(): string {
+  return (
+    Date.now().toString(36) +
+    Math.random().toString(36).substring(2, 12).padStart(12, "0")
+  );
+}
