@@ -8,6 +8,7 @@ import {
 } from "@mantine/core";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 
 export const Route = createFileRoute("/scouting/")({
   component: Page,
@@ -22,10 +23,12 @@ function Page(): JSX.Element {
     () => matchCollection.find({ finished: { $exists: true } }),
     [],
   );
+  const [loadingNew, setLoadingNew] = useState(false);
 
-  const handleNew = () => {
+  const handleNew = async () => {
+    setLoadingNew(true);
+
     const id = newId();
-    console.log("New", id, id.length);
 
     matchCollection.insert({
       id,
@@ -33,6 +36,9 @@ function Page(): JSX.Element {
       phases: {},
     });
 
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    setLoadingNew(false);
     navigate({ to: "/scouting/$matchId/pre-match", params: { matchId: id } });
   };
 
@@ -52,7 +58,9 @@ function Page(): JSX.Element {
     <div className="">
       <div className="flex mb-10">
         <div className="text-4xl flex-grow">Match List</div>
-        <Button onClick={handleNew}>Scout New Match</Button>
+        <Button onClick={handleNew} loading={loadingNew}>
+          Scout New Match
+        </Button>
       </div>
 
       {/* TODO: It's probably overkill, but this nearly justifies a data grid */}

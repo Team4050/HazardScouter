@@ -1,10 +1,6 @@
 import { Slider, Switch, Textarea } from "@/components/inputs";
 import { matchCollection, useReactivity } from "@/data/db";
-import {
-  type TeamReview,
-  teamReviewDefaults,
-  teamReviewSchema,
-} from "@/data/match/shared";
+import { teamReviewDefaults, teamReviewSchema } from "@/data/match/shared";
 import { useAppState } from "@/data/state";
 import { useForm } from "@/hooks/useForm";
 import { Paper } from "@mantine/core";
@@ -21,15 +17,15 @@ function Page(): JSX.Element {
   const { matchId } = Route.useParams();
 
   const teamNumber = useReactivity(
-    () =>
-      matchCollection.findOne({ id: matchId })?.phases.preMatch?.data
-        .teamNumber,
+    () => matchCollection.findOne({ id: matchId })?.phases.preMatch?.teamNumber,
     [matchId],
   );
 
-  const form = useForm<TeamReview>({
+  const form = useForm<"postMatch">({
+    matchId,
+    phase: "postMatch",
     initialValues:
-      matchCollection.findOne({ id: matchId })?.phases.postMatch?.data ||
+      matchCollection.findOne({ id: matchId })?.phases.postMatch ||
       teamReviewDefaults,
     schema: teamReviewSchema,
   });

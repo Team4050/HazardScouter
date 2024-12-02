@@ -1,11 +1,6 @@
 import { Counter, Select } from "@/components/inputs";
 import { matchCollection } from "@/data/db";
-import {
-  PickupType,
-  type Teleop,
-  teleopDefaults,
-  teleopSchema,
-} from "@/data/match/2024";
+import { PickupType, teleopDefaults, teleopSchema } from "@/data/match/2024";
 import { useAppState } from "@/data/state";
 import { useForm } from "@/hooks/useForm";
 import { enumToSelectItem } from "@/util";
@@ -20,10 +15,11 @@ export const Route = createFileRoute("/scouting/$matchId/teleop")({
 
 function Page(): JSX.Element {
   const { matchId } = Route.useParams();
-  const form = useForm<Teleop>({
+  const form = useForm<"teleop">({
+    matchId,
+    phase: "teleop",
     initialValues:
-      matchCollection.findOne({ id: matchId })?.phases.teleop?.data ||
-      teleopDefaults,
+      matchCollection.findOne({ id: matchId })?.phases.teleop || teleopDefaults,
     schema: teleopSchema,
   });
 

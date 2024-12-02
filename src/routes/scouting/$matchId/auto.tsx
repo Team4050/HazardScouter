@@ -1,6 +1,6 @@
 import { Counter, Switch } from "@/components/inputs";
 import { matchCollection } from "@/data/db";
-import { type Auto, autoDefaults, autoSchema } from "@/data/match/2024";
+import { autoDefaults, autoSchema } from "@/data/match/2024";
 import { useAppState } from "@/data/state";
 import { useForm } from "@/hooks/useForm";
 import { createFileRoute } from "@tanstack/react-router";
@@ -15,10 +15,11 @@ export const Route = createFileRoute("/scouting/$matchId/auto")({
 function Page(): JSX.Element {
   const { matchId } = Route.useParams();
 
-  const form = useForm<Auto>({
+  const form = useForm<"auto">({
+    matchId,
+    phase: "auto",
     initialValues:
-      matchCollection.findOne({ id: matchId })?.phases.auto?.data ||
-      autoDefaults,
+      matchCollection.findOne({ id: matchId })?.phases.auto || autoDefaults,
     schema: autoSchema,
   });
 

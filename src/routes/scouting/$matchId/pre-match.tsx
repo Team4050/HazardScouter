@@ -1,9 +1,8 @@
 import { NumberInput, SegmentedControl, TextInput } from "@/components/inputs";
-import { matchCollection } from "@/data/db";
+import { matchCollection, useReactivity } from "@/data/db";
 import {
   Alliance,
   DrivePosition,
-  type MatchData,
   MatchType,
   matchDataDefaults,
   matchDataSchema,
@@ -26,11 +25,15 @@ function Page(): JSX.Element {
     matchDataDefaults.alliance,
   );
   const { matchId } = Route.useParams();
+  const match = useReactivity(
+    () => matchCollection.findOne({ id: matchId }),
+    [matchId],
+  );
 
-  const form = useForm<MatchData>({
-    initialValues:
-      matchCollection.findOne({ id: matchId })?.phases.preMatch?.data ||
-      matchDataDefaults,
+  const form = useForm<"preMatch">({
+    matchId,
+    phase: "preMatch",
+    initialValues: match?.phases.preMatch || matchDataDefaults,
     schema: matchDataSchema,
   });
 

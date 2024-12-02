@@ -1,20 +1,26 @@
+import { type PhaseDataMap, setScoutingPhaseData } from "@/data/db";
+import type { ScoutingPhase } from "@/data/match";
 import { useFormContext } from "@/providers/Form";
 import { type UseFormReturnType, useForm as useFormM } from "@mantine/form";
 import { useDebouncedCallback } from "@mantine/hooks";
 import { valibotResolver } from "mantine-form-valibot-resolver";
 import type { BaseSchema } from "valibot";
 
-type Props<T> = {
-  initialValues: T;
-  schema: BaseSchema<T, T, any>;
-  save?: (values: T) => void;
+type Props<T extends ScoutingPhase> = {
+  matchId: string;
+  phase: T;
+  initialValues: PhaseDataMap[T];
+  schema: BaseSchema<PhaseDataMap[T], PhaseDataMap[T], any>;
 };
 
-export function useForm<T extends Record<string, any>>({
+export function useForm<T extends ScoutingPhase>({
   initialValues,
   schema,
-  save,
-}: Props<T>): UseFormReturnType<T> {
+  matchId,
+  phase,
+}: Props<T>): UseFormReturnType<typeof initialValues> {
+  type TV = typeof initialValues;
+
   const { setCurrentPageValid } = useFormContext();
 
   const debouncedSetValid = useDebouncedCallback(
@@ -22,12 +28,11 @@ export function useForm<T extends Record<string, any>>({
     300,
   );
 
-  const debouncedSave = useDebouncedCallback(
-    (values: T) => save?.(values),
-    300,
-  );
+  const debouncedSave = useDebouncedCallback((values: TV) => {
+    setScoutingPhaseData(matchId, phase, values);
+  }, 300);
 
-  const form = useFormM<T>({
+  const form = useFormM<TV>({
     mode: "uncontrolled",
     initialValues,
     validateInputOnChange: true,

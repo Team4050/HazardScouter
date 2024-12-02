@@ -1,11 +1,6 @@
 import { Select, Switch } from "@/components/inputs";
 import { matchCollection } from "@/data/db";
-import {
-  type EndGame,
-  EndStatus,
-  endGameDefaults,
-  endGameSchema,
-} from "@/data/match/2024";
+import { EndStatus, endGameDefaults, endGameSchema } from "@/data/match/2024";
 import { useAppState } from "@/data/state";
 import { useForm } from "@/hooks/useForm";
 import { enumToSelectItem } from "@/util";
@@ -20,7 +15,9 @@ export const Route = createFileRoute("/scouting/$matchId/endgame")({
 
 function Page(): JSX.Element {
   const { matchId } = Route.useParams();
-  const form = useForm<EndGame>({
+  const form = useForm<"endgame">({
+    matchId,
+    phase: "endgame",
     initialValues:
       matchCollection.findOne({ id: matchId })?.phases.endgame ||
       endGameDefaults,

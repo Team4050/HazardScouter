@@ -21,7 +21,7 @@ type ID = { id: string };
 //   - At a minimum, could contain the current id of the match being scouter
 // - The universal id field can be used to query for all data for a given match
 
-type PhaseDataMap = {
+export type PhaseDataMap = {
   preMatch: MatchData;
   auto: Auto;
   teleop: Teleop;
@@ -88,6 +88,33 @@ export function resetCollections() {
   for (const collection of collections) {
     collection.removeMany({});
   }
+}
+
+export function setScoutingPhaseData(
+  id: string,
+  phase: ScoutingPhase,
+  data: PhaseDataMap[typeof phase],
+) {
+  const phases = matchCollection.findOne({ id })?.phases || undefined;
+
+  let finished = undefined;
+  if (phase === "postMatch") {
+    finished = new Date();
+  }
+
+  matchCollection.updateOne(
+    { id },
+    {
+      $set: {
+        phases: {
+          ...phases,
+          [phase]: data,
+        },
+        // TODO: This is temporary
+        finished,
+      },
+    },
+  );
 }
 
 // Sometimes I truely can't be bothered to deal with Typescript... hence // @ts-ignore
