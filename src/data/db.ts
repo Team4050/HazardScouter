@@ -1,7 +1,7 @@
 import type {
   Auto,
   EndGame,
-  MatchData,
+  PreMatch,
   ScoutingPhase,
   TeamReview,
   Teleop,
@@ -22,19 +22,22 @@ type ID = { id: string };
 // - The universal id field can be used to query for all data for a given match
 
 export type PhaseDataMap = {
-  preMatch: MatchData;
+  preMatch: PreMatch;
   auto: Auto;
   teleop: Teleop;
   endgame: EndGame;
   postMatch: TeamReview;
 };
 
-type Match = {
+export type Match = {
+  scouter: string;
+  matchNumber: number;
+  teamNumber: number;
+  started: Date;
+  finished?: Date;
   phases: {
     [K in ScoutingPhase]?: PhaseDataMap[K];
   };
-  started: Date;
-  finished?: Date;
 };
 
 export const matchCollection = new Collection<Match & ID>({
@@ -79,10 +82,6 @@ const collections = [
 // function named(name: ScoutingPhase): string {
 //   return `hs-${name}`;
 // }
-
-export function idFromPreMatchData(preMatch: MatchData): string {
-  return `${preMatch.matchNumber}-${preMatch.teamNumber}`;
-}
 
 export function resetCollections() {
   for (const collection of collections) {

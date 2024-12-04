@@ -42,7 +42,7 @@ function NotFound(): JSX.Element {
     <div className="flex flex-col items-center space-y-5">
       <div>Match '{matchId}' not found...</div>
       <Button onClick={() => navigate({ to: "/scouting" })}>
-        {"<"} Go Back
+        {"< Go Back"}
       </Button>
     </div>
   );

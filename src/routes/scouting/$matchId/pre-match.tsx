@@ -1,17 +1,17 @@
-import { NumberInput, SegmentedControl, TextInput } from "@/components/inputs";
+import { SegmentedControl } from "@/components/inputs";
 import { matchCollection, useReactivity } from "@/data/db";
 import {
   Alliance,
   DrivePosition,
   MatchType,
-  matchDataDefaults,
-  matchDataSchema,
+  preMatchDefaults,
+  preMatchSchema,
 } from "@/data/match/shared";
 import { useAppState } from "@/data/state";
 import { useForm } from "@/hooks/useForm";
 import { enumToSelectItem } from "@/util";
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/scouting/$matchId/pre-match")({
   component: Page,
@@ -21,20 +21,27 @@ export const Route = createFileRoute("/scouting/$matchId/pre-match")({
 });
 
 function Page(): JSX.Element {
-  const [allianceColor, setAllianceColor] = useState<"red" | "blue">(
-    matchDataDefaults.alliance,
-  );
+  const [allianceColor, setAllianceColor] = useState<
+    "red" | "blue" | undefined
+  >();
   const { matchId } = Route.useParams();
+
   const match = useReactivity(
     () => matchCollection.findOne({ id: matchId }),
     [matchId],
   );
 
+  useEffect(() => {
+    setAllianceColor(
+      match?.phases.preMatch?.alliance || preMatchDefaults.alliance,
+    );
+  }, [match]);
+
   const form = useForm<"preMatch">({
     matchId,
     phase: "preMatch",
-    initialValues: match?.phases.preMatch || matchDataDefaults,
-    schema: matchDataSchema,
+    initialValues: match?.phases.preMatch || preMatchDefaults,
+    schema: preMatchSchema,
   });
 
   form.watch("alliance", ({ value }) => {
@@ -50,27 +57,6 @@ function Page(): JSX.Element {
         fullWidth
         color={allianceColor}
         {...form.getInputProps("alliance")}
-      />
-
-      <TextInput
-        label="Scouter Name"
-        placeholder="Captain Safety"
-        className="col-span-full"
-        {...form.getInputProps("scouter")}
-      />
-
-      <NumberInput
-        label="Match Number"
-        inputMode="numeric"
-        hideControls
-        {...form.getInputProps("matchNumber")}
-      />
-
-      <TextInput
-        label="Team Number"
-        placeholder="4050"
-        inputMode="numeric"
-        {...form.getInputProps("teamNumber")}
       />
 
       <SegmentedControl

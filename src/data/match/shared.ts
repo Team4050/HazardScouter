@@ -2,9 +2,7 @@ import {
   type InferOutput,
   boolean,
   enum_,
-  maxLength,
   maxValue,
-  minLength,
   minValue,
   number,
   object,
@@ -30,31 +28,13 @@ export enum DrivePosition {
   Far = "far",
 }
 
-export const matchDataSchema = object({
-  scouter: pipe(
-    string(),
-    minLength(1, "Name too short"),
-    maxLength(50, "Name too long"),
-  ),
-  matchNumber: pipe(
-    number(),
-    minValue(1, "Match number too low"),
-    maxValue(999, "Match number too high"),
-  ),
-  teamNumber: pipe(
-    string(),
-    minLength(1, "Team number too short"),
-    maxLength(5, "Team number too long"),
-  ),
+export const preMatchSchema = object({
   matchType: enum_(MatchType),
   alliance: enum_(Alliance),
   drivePosition: enum_(DrivePosition),
 });
-export type MatchData = InferOutput<typeof matchDataSchema>;
-export const matchDataDefaults: MatchData = {
-  scouter: "",
-  matchNumber: 0,
-  teamNumber: "",
+export type PreMatch = InferOutput<typeof preMatchSchema>;
+export const preMatchDefaults: PreMatch = {
   matchType: MatchType.Practice,
   alliance: Alliance.Red,
   drivePosition: DrivePosition.Near,

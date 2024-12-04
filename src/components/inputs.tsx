@@ -1,6 +1,7 @@
 import { cn } from "@/util";
 import {
   Button,
+  Autocomplete as MAutocomplete,
   NumberInput as MNumberInput,
   SegmentedControl as MSegmentedControl,
   type SegmentedControlProps as MSegmentedControlProps,
@@ -26,6 +27,12 @@ type InputProps = {
   error?: string;
 };
 
+export const Autocomplete = MAutocomplete.withProps({
+  classNames: {
+    label: "ml-1",
+  },
+});
+
 export const TextInput = MTextInput.withProps({
   classNames: {
     label: "ml-1",
@@ -36,6 +43,8 @@ export const NumberInput = MNumberInput.withProps({
   classNames: {
     label: "ml-1",
   },
+  inputMode: "numeric",
+  hideControls: true,
 });
 
 export const Select = MSelect.withProps({

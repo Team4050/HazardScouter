@@ -16,17 +16,15 @@ export const Route = createFileRoute("/scouting/$matchId/post-match")({
 function Page(): JSX.Element {
   const { matchId } = Route.useParams();
 
-  const teamNumber = useReactivity(
-    () => matchCollection.findOne({ id: matchId })?.phases.preMatch?.teamNumber,
+  const match = useReactivity(
+    () => matchCollection.findOne({ id: matchId }),
     [matchId],
   );
 
   const form = useForm<"postMatch">({
     matchId,
     phase: "postMatch",
-    initialValues:
-      matchCollection.findOne({ id: matchId })?.phases.postMatch ||
-      teamReviewDefaults,
+    initialValues: match?.phases.postMatch || teamReviewDefaults,
     schema: teamReviewSchema,
   });
 
@@ -47,7 +45,7 @@ function Page(): JSX.Element {
         radius="sm"
         bg="dark"
       >
-        <div>{teamNumber}'s Robot</div>
+        <div>{match !== undefined ? match.teamNumber : "Unknown"}'s Robot</div>
         <div className="flex items-center justify-around *:flex-1 text-center">
           <Switch
             label="Died?"
