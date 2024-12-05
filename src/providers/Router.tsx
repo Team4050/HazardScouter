@@ -19,7 +19,7 @@ export default function Provider(): JSX.Element {
 
 function NotFound(): JSX.Element {
   return (
-    <div className="w-full h-[calc(100vh-var(--app-shell-header-offset))] flex flex-col items-center justify-center absolute">
+    <div className="h-[250px] aspect-video flex flex-col items-center justify-center mx-auto">
       <img src="/boom.gif" className="absolute size-full z-10" />
       <Title className="text-6xl">Not Found</Title>
     </div>

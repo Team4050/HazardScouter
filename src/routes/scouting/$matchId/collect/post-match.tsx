@@ -1,12 +1,12 @@
 import { Slider, Switch, Textarea } from "@/components/inputs";
-import { matchCollection, useReactivity } from "@/data/db";
+import { useMatch } from "@/data/db";
 import { teamReviewDefaults, teamReviewSchema } from "@/data/match/shared";
 import { useAppState } from "@/data/state";
 import { useForm } from "@/hooks/useForm";
 import { Paper } from "@mantine/core";
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/scouting/$matchId/post-match")({
+export const Route = createFileRoute("/scouting/$matchId/collect/post-match")({
   beforeLoad: async () => {
     useAppState.getState().setMatchPhase("postMatch");
   },
@@ -16,10 +16,7 @@ export const Route = createFileRoute("/scouting/$matchId/post-match")({
 function Page(): JSX.Element {
   const { matchId } = Route.useParams();
 
-  const match = useReactivity(
-    () => matchCollection.findOne({ id: matchId }),
-    [matchId],
-  );
+  const match = useMatch(matchId);
 
   const form = useForm<"postMatch">({
     matchId,

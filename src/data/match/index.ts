@@ -71,6 +71,8 @@ export const phaseDetails: { [key in ScoutingPhase]: PhaseDetail } = {
   },
 };
 
+export const phaseRoutes = phaseOrder.map((phase) => phaseDetails[phase].slug);
+
 // Pretty sure this is generally considered bad practice,
 // but allows us to swap out years easily
 export * from "@/data/match/2024";

@@ -21,7 +21,7 @@ export const Route = createFileRoute("/scouting/")({
 const tableHead = ["Match", "Team", "Scouter", "Started", "Finished"];
 
 function Page(): JSX.Element {
-  const navigate = useNavigate();
+  const navigate = Route.useNavigate();
   const matches = useReactivity(() => matchCollection.find().fetch(), []);
   const [matchId, setMatchId] = useState<string | null>(null);
 
@@ -41,7 +41,10 @@ function Page(): JSX.Element {
   }, [matches]);
 
   const handleEdit = (id: string) => {
-    navigate({ to: "/scouting/$matchId/pre-match", params: { matchId: id } });
+    navigate({
+      to: "/scouting/$matchId/collect/pre-match",
+      params: { matchId: id },
+    });
   };
 
   const handleDelete = (id: string) => {
@@ -50,7 +53,7 @@ function Page(): JSX.Element {
   };
 
   const handleOpen = (id: string) => {
-    console.log("Open", id);
+    navigate({ to: "/scouting/$matchId/review", params: { matchId: id } });
   };
 
   return (
@@ -67,7 +70,7 @@ function Page(): JSX.Element {
         onClose={closeDeleteModal}
       />
 
-      <div className="flex mb-10">
+      <div className="flex my-10">
         <div className="text-4xl flex-grow">Match List</div>
         <Button onClick={openNewModal}>Scout New Match</Button>
       </div>
@@ -190,7 +193,10 @@ function NewMatchModal({
     setLoading(false);
 
     onClose();
-    navigate({ to: "/scouting/$matchId/pre-match", params: { matchId: id } });
+    navigate({
+      to: "/scouting/$matchId/collect/pre-match",
+      params: { matchId: id },
+    });
   };
 
   return (

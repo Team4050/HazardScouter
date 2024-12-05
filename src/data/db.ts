@@ -134,6 +134,8 @@ export function set<T extends Record<string, any>>(
 }
 
 export const useReactivity = createUseReactivityHook(effect);
+export const useMatch = (id: string) =>
+  useReactivity(() => matchCollection.findOne({ id }), [id]);
 
 export function newId(): string {
   return (

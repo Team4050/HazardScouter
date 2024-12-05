@@ -1,5 +1,5 @@
 import { SegmentedControl } from "@/components/inputs";
-import { matchCollection, useReactivity } from "@/data/db";
+import { useMatch } from "@/data/db";
 import {
   Alliance,
   DrivePosition,
@@ -13,7 +13,7 @@ import { enumToSelectItem } from "@/util";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
-export const Route = createFileRoute("/scouting/$matchId/pre-match")({
+export const Route = createFileRoute("/scouting/$matchId/collect/pre-match")({
   component: Page,
   loader: () => {
     useAppState.getState().setMatchPhase("preMatch");
@@ -25,11 +25,7 @@ function Page(): JSX.Element {
     "red" | "blue" | undefined
   >();
   const { matchId } = Route.useParams();
-
-  const match = useReactivity(
-    () => matchCollection.findOne({ id: matchId }),
-    [matchId],
-  );
+  const match = useMatch(matchId);
 
   useEffect(() => {
     setAllianceColor(

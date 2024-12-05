@@ -6,7 +6,7 @@ import { useForm } from "@/hooks/useForm";
 import { enumToSelectItem } from "@/util";
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/scouting/$matchId/teleop")({
+export const Route = createFileRoute("/scouting/$matchId/collect/teleop")({
   beforeLoad: async () => {
     useAppState.getState().setMatchPhase("teleop");
   },

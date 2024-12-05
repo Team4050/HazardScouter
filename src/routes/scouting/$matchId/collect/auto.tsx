@@ -5,7 +5,7 @@ import { useAppState } from "@/data/state";
 import { useForm } from "@/hooks/useForm";
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/scouting/$matchId/auto")({
+export const Route = createFileRoute("/scouting/$matchId/collect/auto")({
   beforeLoad: async () => {
     useAppState.getState().setMatchPhase("auto");
   },

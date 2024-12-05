@@ -4,6 +4,7 @@ import { useFormContext } from "@/providers/Form";
 import { type UseFormReturnType, useForm as useFormM } from "@mantine/form";
 import { useDebouncedCallback } from "@mantine/hooks";
 import { valibotResolver } from "mantine-form-valibot-resolver";
+import { useEffect } from "react";
 import type { BaseSchema } from "valibot";
 
 type Props<T extends ScoutingPhase> = {
@@ -46,6 +47,11 @@ export function useForm<T extends ScoutingPhase>({
       return errors;
     },
   });
+
+  // biome-ignore lint: We only want this effect to run when the hook mounts
+  useEffect(() => {
+    form.validate();
+  }, []);
 
   return form;
 }
