@@ -1,6 +1,6 @@
 import { DeleteModal } from "@/components/modals";
 import { matchCollection, useMatch } from "@/data/db";
-import { type ScoutingPhase, phaseDetails, phaseOrder } from "@/data/match";
+import { phaseDetails, phaseOrder } from "@/data/match";
 import { cn } from "@/util";
 import { CodeHighlight } from "@mantine/code-highlight";
 import { Button, Timeline } from "@mantine/core";
@@ -42,7 +42,7 @@ function Page(): JSX.Element | null {
             <RenderObject obj={metadata} />
           </Timeline.Item>
           {phaseOrder.map((phase) => {
-            const { title, icon: Icon } = phaseDetails[phase as ScoutingPhase];
+            const { title, icon: Icon } = phaseDetails[phase];
             const data = phases[phase];
 
             return (

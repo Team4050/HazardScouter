@@ -1,6 +1,6 @@
 import { type PhaseDataMap, setScoutingPhaseData } from "@/data/db";
 import type { ScoutingPhase } from "@/data/match";
-import { useFormContext } from "@/providers/Form";
+import { useAppState } from "@/data/state";
 import { type UseFormReturnType, useForm as useFormM } from "@mantine/form";
 import { useDebouncedCallback } from "@mantine/hooks";
 import { valibotResolver } from "mantine-form-valibot-resolver";
@@ -22,15 +22,16 @@ export function useForm<T extends ScoutingPhase>({
 }: Props<T>): UseFormReturnType<typeof initialValues> {
   type TV = typeof initialValues;
 
-  const { setCurrentPageValid } = useFormContext();
+  const { setPhaseSaving, setPhaseValid } = useAppState();
 
   const debouncedSetValid = useDebouncedCallback(
-    (isValid: boolean) => setCurrentPageValid(isValid),
+    (isValid: boolean) => setPhaseValid(phase, isValid),
     300,
   );
 
   const debouncedSave = useDebouncedCallback((values: TV) => {
     setScoutingPhaseData(matchId, phase, values);
+    setPhaseSaving(phase, false);
   }, 300);
 
   const form = useFormM<TV>({
@@ -42,6 +43,7 @@ export function useForm<T extends ScoutingPhase>({
       const isValid = Object.keys(errors).length === 0;
       debouncedSetValid(isValid);
       if (isValid) {
+        setPhaseSaving(phase, true);
         debouncedSave(values);
       }
       return errors;

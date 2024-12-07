@@ -1,4 +1,4 @@
-import { type Match, matchCollection, newId } from "@/data/db";
+import { type Match, matchCollection, newId, useReactivity } from "@/data/db";
 import {
   Autocomplete,
   Button,
@@ -9,21 +9,26 @@ import {
 } from "@mantine/core";
 import { isNotEmpty, useForm } from "@mantine/form";
 import { useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 export function NewMatchModal({
   opened,
   onClose,
-  scouters,
-  teams,
 }: {
   opened: boolean;
   onClose: () => void;
-  scouters: string[];
-  teams: number[];
 }): JSX.Element {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const matches = useReactivity(() => matchCollection.find().fetch(), []);
+
+  const scouters = useMemo(() => {
+    return [...new Set(matches.map((match) => match.scouter))];
+  }, [matches]);
+
+  const teams = useMemo(() => {
+    return [...new Set(matches.map((match) => match.teamNumber))];
+  }, [matches]);
 
   const form = useForm<Omit<Match, "started" | "finished" | "phases">>({
     mode: "uncontrolled",

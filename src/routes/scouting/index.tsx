@@ -4,7 +4,7 @@ import { ActionIcon, Button, Table } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 export const Route = createFileRoute("/scouting/")({
   component: Page,
@@ -24,14 +24,6 @@ function Page(): JSX.Element {
     { open: openDeleteModal, close: closeDeleteModal },
   ] = useDisclosure();
 
-  const scouters = useMemo(() => {
-    return [...new Set(matches.map((match) => match.scouter))];
-  }, [matches]);
-
-  const teams = useMemo(() => {
-    return [...new Set(matches.map((match) => match.teamNumber))];
-  }, [matches]);
-
   const handleEdit = (id: string) => {
     navigate({
       to: "/scouting/$matchId/collect/pre-match",
@@ -50,12 +42,7 @@ function Page(): JSX.Element {
 
   return (
     <>
-      <NewMatchModal
-        opened={newModalOpened}
-        onClose={closeNewModal}
-        scouters={scouters}
-        teams={teams}
-      />
+      <NewMatchModal opened={newModalOpened} onClose={closeNewModal} />
       <DeleteModal
         opened={deleteModalOpened}
         onClose={closeDeleteModal}
@@ -64,9 +51,14 @@ function Page(): JSX.Element {
         }}
       />
 
-      <div className="flex my-10">
+      <div className="flex my-10 gap-x-2">
         <div className="text-4xl flex-grow">Match List</div>
-        <Button onClick={openNewModal}>Scout New Match</Button>
+        <Button className="text-2xl" onClick={openNewModal}>
+          Scout New Match
+        </Button>
+        <Button className="text-2xl" disabled={!matches} variant="subtle">
+          Finish Scouting
+        </Button>
       </div>
 
       <Table highlightOnHover>
