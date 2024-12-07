@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/scouting/$matchId/collect/pre-match")({
   component: Page,
-  loader: () => {
+  beforeLoad: () => {
     useAppState.getState().setMatchPhase("preMatch");
   },
 });

@@ -7,6 +7,7 @@ import { createRoot } from "react-dom/client";
 import "@/styles/fonts.css";
 import "@/styles/globals.css";
 
+import "@mantine/code-highlight/styles.layer.css";
 import "@mantine/core/styles.layer.css";
 import "@mantine/notifications/styles.layer.css";
 

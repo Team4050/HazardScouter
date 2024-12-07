@@ -13,21 +13,6 @@ export type ScoutingPhase =
   | "endgame"
   | "postMatch";
 
-export function scoutingPhaseName(phase?: ScoutingPhase): string | undefined {
-  switch (phase) {
-    case "preMatch":
-      return "Pre-Match";
-    case "auto":
-      return "Auto";
-    case "teleop":
-      return "Teleop";
-    case "endgame":
-      return "Endgame";
-    case "postMatch":
-      return "Post Match";
-  }
-}
-
 export const phaseOrder: ScoutingPhase[] = [
   "preMatch",
   "auto",

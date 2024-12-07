@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@devoss/tailwind-plugin-mantine": "^2.1.0",
+    "@mantine/code-highlight": "^7.14.3",
     "@mantine/core": "^7.14.3",
     "@mantine/dropzone": "^7.14.3",
     "@mantine/form": "^7.14.3",

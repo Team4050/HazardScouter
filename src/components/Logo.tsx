@@ -7,11 +7,23 @@ type Props = {
     logo?: string;
     text?: string;
   };
+  onClick?: () => void;
 };
 
-export function AppLogo({ className, classNames }: Props): JSX.Element {
+export function AppLogo({
+  className,
+  classNames,
+  onClick,
+}: Props): JSX.Element {
   return (
-    <div className={cn("flex items-center size-full", className)}>
+    <div
+      className={cn(
+        "flex items-center size-full",
+        onClick !== undefined ? "cursor-pointer" : null,
+        className,
+      )}
+      onClick={onClick}
+    >
       <Logo className={cn("h-full", classNames?.logo)} />
       <HazardScouter className={cn("h-full py-1", classNames?.text)} />
     </div>

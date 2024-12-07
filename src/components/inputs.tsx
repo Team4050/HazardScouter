@@ -93,7 +93,6 @@ export function Switch({
   ...switchProps
 }: SwitchProps): JSX.Element {
   const [checked, setChecked] = useState<boolean>(defaultValue ?? false);
-  // const theme = useMantineTheme();
 
   useEffect(() => {
     if (value !== undefined) {

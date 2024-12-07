@@ -1,7 +1,7 @@
 import { DevTools } from "@/components/DevTools";
 import { AppLogo } from "@/components/Logo";
 import { ModeSwitch } from "@/components/ModeSwitch";
-import { scoutingPhaseName } from "@/data/match";
+import { phaseDetails } from "@/data/match";
 import { useAppState } from "@/data/state";
 import { navbarHeight } from "@/styles/theme";
 import { AppShell, Burger, Drawer, Title } from "@mantine/core";
@@ -32,6 +32,7 @@ function Layout({ content }: LayoutProps): JSX.Element {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
   const matchPhase = useAppState((state) => state.matchPhase);
+  const navigate = Route.useNavigate();
 
   const rightSection: JSX.Element = (
     <>
@@ -54,10 +55,11 @@ function Layout({ content }: LayoutProps): JSX.Element {
           <AppLogo
             className="py-0.5 flex-1 flex"
             classNames={{ text: "md:block hidden" }}
+            onClick={() => navigate({ to: "/" })}
           />
           <div className="flex-1 flex">
             <Title className="text-2xl lg:text-4xl leading-none text-center">
-              {scoutingPhaseName(matchPhase) ?? "Scouting"}
+              {matchPhase ? phaseDetails[matchPhase].title : "Scouting"}
             </Title>
           </div>
           <div className="flex-1 flex">{rightSection}</div>

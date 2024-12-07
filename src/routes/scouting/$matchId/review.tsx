@@ -1,8 +1,11 @@
-import { useMatch } from "@/data/db";
-import { scoutingPhaseName } from "@/data/match";
-import { titleCase } from "@/util";
-import { Paper } from "@mantine/core";
-import { createFileRoute } from "@tanstack/react-router";
+import { DeleteModal } from "@/components/modals";
+import { matchCollection, useMatch } from "@/data/db";
+import { type ScoutingPhase, phaseDetails, phaseOrder } from "@/data/match";
+import { cn } from "@/util";
+import { CodeHighlight } from "@mantine/code-highlight";
+import { Button, Timeline } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/scouting/$matchId/review")({
   component: Page,
@@ -11,46 +14,82 @@ export const Route = createFileRoute("/scouting/$matchId/review")({
 function Page(): JSX.Element | null {
   const { matchId } = Route.useParams();
   const match = useMatch(matchId);
+  const { history } = useRouter();
+  const navigate = Route.useNavigate();
+  const [
+    deleteModalOpened,
+    { open: openDeleteModal, close: closeDeleteModal },
+  ] = useDisclosure();
 
   if (!match) return null;
 
   const { phases, ...metadata } = match;
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
-      <Paper shadow="sm" p="md" radius="md">
-        <h2 className="text-2xl mb-4">Match Details</h2>
-        <div className="grid grid-cols-2 gap-4">
-          {Object.entries(metadata).map(([key, value]) => (
-            <div key={key} className="flex justify-between">
-              <span className="font-medium">{titleCase(key)}:</span>
-              <span>
-                {value instanceof Date ? value.toLocaleString() : String(value)}
-              </span>
-            </div>
-          ))}
-        </div>
-      </Paper>
+    <>
+      <DeleteModal
+        opened={deleteModalOpened}
+        onClose={closeDeleteModal}
+        onDelete={() => {
+          matchCollection.removeOne({ id: matchId });
+          navigate({ to: "/scouting" });
+        }}
+      />
 
-      {Object.entries(phases).map(([phase, data]) => (
-        <Paper key={phase} shadow="sm" p="md" radius="md">
-          <h2 className="text-2xl mb-4">{scoutingPhaseName(phase as any)}</h2>
-          <div className="grid grid-cols-2 gap-4">
-            {Object.entries(data || {}).map(([key, value]) => (
-              <div key={key} className="flex justify-between">
-                <span className="font-medium">{titleCase(key)}:</span>
-                <span>
-                  {typeof value === "boolean"
-                    ? value
-                      ? "Yes"
-                      : "No"
-                    : String(value)}
-                </span>
-              </div>
-            ))}
-          </div>
-        </Paper>
-      ))}
-    </div>
+      <div className="max-w-2xl mx-auto space-y-6">
+        <Timeline active={Object.keys(phases).length} bulletSize={30}>
+          <Timeline.Item title="Metadata">
+            <RenderObject obj={metadata} />
+          </Timeline.Item>
+          {phaseOrder.map((phase) => {
+            const { title, icon: Icon } = phaseDetails[phase as ScoutingPhase];
+            const data = phases[phase];
+
+            return (
+              <Timeline.Item
+                key={phase}
+                title={title}
+                bullet={<Icon />}
+                classNames={{
+                  itemTitle: cn(data === undefined ? "opacity-50" : null),
+                }}
+              >
+                <RenderObject obj={data} />
+              </Timeline.Item>
+            );
+          })}
+        </Timeline>
+
+        <div className="flex">
+          <Button
+            onClick={() => history.go(-1)}
+            size="compact-lg"
+            className="w-40 font-normal"
+          >
+            {"< Back"}
+          </Button>
+          <Button
+            color="red"
+            size="compact-lg"
+            variant="subtle"
+            className="w-40 font-normal ml-auto"
+            onClick={() => openDeleteModal()}
+          >
+            Delete
+          </Button>
+        </div>
+      </div>
+    </>
+  );
+}
+
+// biome-ignore lint/suspicious/noExplicitAny: We don't really care about the type here
+function RenderObject({ obj }: { obj?: any }): JSX.Element {
+  return (
+    <CodeHighlight
+      code={obj ? JSON.stringify(obj, null, 2) : "// No data"}
+      language="json"
+      withCopyButton={false}
+    />
   );
 }

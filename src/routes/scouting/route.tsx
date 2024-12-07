@@ -6,7 +6,7 @@ export const Route = createFileRoute("/scouting")({
 
 function Page() {
   return (
-    <div className="max-w-screen-lg mx-auto m-5 mt-0">
+    <div className="max-w-screen-lg mx-auto m-5">
       <Outlet />
     </div>
   );
