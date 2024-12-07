@@ -1,5 +1,6 @@
 import { theme } from "@/styles/theme";
 import { MantineProvider } from "@mantine/core";
+import { ModalsProvider } from "@mantine/modals";
 import type { ReactNode } from "react";
 
 export default function Provider({
@@ -7,7 +8,7 @@ export default function Provider({
 }: { children: ReactNode }): JSX.Element {
   return (
     <MantineProvider theme={theme} defaultColorScheme="dark">
-      {children}
+      <ModalsProvider>{children}</ModalsProvider>
     </MantineProvider>
   );
 }

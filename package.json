@@ -17,6 +17,7 @@
     "@mantine/dropzone": "^7.14.3",
     "@mantine/form": "^7.14.3",
     "@mantine/hooks": "^7.14.3",
+    "@mantine/modals": "^7.14.3",
     "@mantine/notifications": "^7.14.3",
     "@maverick-js/signals": "^6.0.0",
     "@tabler/icons-react": "^3.24.0",

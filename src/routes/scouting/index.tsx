@@ -1,10 +1,13 @@
-import { DeleteModal, NewMatchModal } from "@/components/modals";
+import {
+  NewMatchModal,
+  openDeleteModal,
+  openExportModal,
+} from "@/components/modals";
 import { matchCollection, useReactivity } from "@/data/db";
 import { ActionIcon, Button, Table } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
 
 export const Route = createFileRoute("/scouting/")({
   component: Page,
@@ -15,14 +18,9 @@ const tableHead = ["Match", "Team", "Scouter", "Started", "Finished"];
 function Page(): JSX.Element {
   const navigate = Route.useNavigate();
   const matches = useReactivity(() => matchCollection.find().fetch(), []);
-  const [matchId, setMatchId] = useState<string | null>(null);
 
   const [newModalOpened, { open: openNewModal, close: closeNewModal }] =
     useDisclosure();
-  const [
-    deleteModalOpened,
-    { open: openDeleteModal, close: closeDeleteModal },
-  ] = useDisclosure();
 
   const handleEdit = (id: string) => {
     navigate({
@@ -32,31 +30,32 @@ function Page(): JSX.Element {
   };
 
   const handleDelete = (id: string) => {
-    setMatchId(id);
-    openDeleteModal();
+    openDeleteModal({ onConfirm: () => matchCollection.removeOne({ id }) });
   };
 
   const handleOpen = (id: string) => {
     navigate({ to: "/scouting/$matchId/review", params: { matchId: id } });
   };
 
+  const handleFinish = () => {
+    openExportModal({ onConfirm: () => navigate({ to: "/scouting/export" }) });
+  };
+
   return (
     <>
       <NewMatchModal opened={newModalOpened} onClose={closeNewModal} />
-      <DeleteModal
-        opened={deleteModalOpened}
-        onClose={closeDeleteModal}
-        onDelete={() => {
-          matchCollection.removeOne({ id: matchId! });
-        }}
-      />
 
       <div className="flex my-10 gap-x-2">
         <div className="text-4xl flex-grow">Match List</div>
         <Button className="text-2xl" onClick={openNewModal}>
           Scout New Match
         </Button>
-        <Button className="text-2xl" disabled={!matches} variant="subtle">
+        <Button
+          className="text-2xl"
+          disabled={!matches}
+          variant="subtle"
+          onClick={handleFinish}
+        >
           Finish Scouting
         </Button>
       </div>
