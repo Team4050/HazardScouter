@@ -1,16 +1,20 @@
 import { Slider, Switch, Textarea } from "@/components/inputs";
-import { useMatch } from "@/data/db";
+import type { PhaseDataMap } from "@/data/db";
 import { teamReviewDefaults, teamReviewSchema } from "@/data/match";
 import { useForm } from "@/hooks/useForm";
 import { Paper } from "@mantine/core";
+import type { ReactNode } from "react";
 
-export function PostMatch({ matchId }: { matchId: string }): JSX.Element {
-  const match = useMatch(matchId);
+type Props = {
+  matchId: string;
+  initialData?: PhaseDataMap["postMatch"];
+};
 
+export function PostMatch({ matchId, initialData }: Props): ReactNode {
   const form = useForm<"postMatch">({
     matchId,
     phase: "postMatch",
-    initialValues: match?.phases.postMatch || teamReviewDefaults,
+    initialValues: initialData || teamReviewDefaults,
     schema: teamReviewSchema,
   });
 
@@ -31,7 +35,6 @@ export function PostMatch({ matchId }: { matchId: string }): JSX.Element {
         radius="sm"
         bg="dark"
       >
-        <div>{match !== undefined ? match.teamNumber : "Unknown"}'s Robot</div>
         <div className="flex items-center justify-around *:flex-1 text-center">
           <Switch
             label="Died?"

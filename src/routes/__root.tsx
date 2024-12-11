@@ -15,7 +15,7 @@ export const Route = createRootRoute({
   component: Page,
 });
 
-function Page(): JSX.Element {
+function Page(): ReactNode {
   return (
     <>
       <Layout content={<Outlet />} />
@@ -28,13 +28,13 @@ type LayoutProps = {
   content: ReactNode;
 };
 
-function Layout({ content }: LayoutProps): JSX.Element {
+function Layout({ content }: LayoutProps): ReactNode {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
   const matchPhase = useAppState((state) => state.matchPhase);
   const navigate = Route.useNavigate();
 
-  const rightSection: JSX.Element = (
+  const rightSection: ReactNode = (
     <>
       <div className="hidden lg:flex items-center space-x-2">
         <ModeSwitch className="w-40" />
@@ -87,7 +87,7 @@ type SidebarProps = {
   closeDrawer: () => void;
 };
 
-function Sidebar({ closeDrawer }: SidebarProps): JSX.Element {
+function Sidebar({ closeDrawer }: SidebarProps): ReactNode {
   return (
     <>
       <ModeSwitch className="w-full" onChange={() => closeDrawer()} />

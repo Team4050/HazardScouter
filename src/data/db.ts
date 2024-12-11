@@ -1,10 +1,11 @@
-import type {
-  Auto,
-  EndGame,
-  PreMatch,
-  ScoutingPhase,
-  TeamReview,
-  Teleop,
+import {
+  type Auto,
+  type EndGame,
+  type PreMatch,
+  type ScoutingPhase,
+  type TeamReview,
+  type Teleop,
+  phaseOrder,
 } from "@/data/match";
 import { effect } from "@maverick-js/signals";
 import { Collection, createLocalStorageAdapter } from "signaldb";
@@ -53,7 +54,7 @@ export function setScoutingPhaseData(
   const phases = matchCollection.findOne({ id })?.phases || undefined;
 
   let finished = undefined;
-  if (phase === "postMatch") {
+  if (phase === phaseOrder[phaseOrder.length - 1]) {
     finished = new Date();
   }
 

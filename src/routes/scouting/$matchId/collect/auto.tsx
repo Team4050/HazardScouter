@@ -1,6 +1,8 @@
 import { Auto } from "@/components/form/Auto";
+import { useMatch } from "@/data/db";
 import { useAppState } from "@/data/state";
 import { createFileRoute } from "@tanstack/react-router";
+import type { ReactNode } from "react";
 
 export const Route = createFileRoute("/scouting/$matchId/collect/auto")({
   beforeLoad: async () => {
@@ -9,7 +11,8 @@ export const Route = createFileRoute("/scouting/$matchId/collect/auto")({
   component: Page,
 });
 
-function Page(): JSX.Element {
+function Page(): ReactNode {
   const { matchId } = Route.useParams();
-  return <Auto matchId={matchId} />;
+  const match = useMatch(matchId);
+  return <Auto matchId={matchId} initialData={match?.phases.auto} />;
 }

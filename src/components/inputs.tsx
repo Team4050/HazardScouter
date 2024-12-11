@@ -16,7 +16,7 @@ import {
   type NumberInputProps,
 } from "@mantine/core";
 import { IconCheck, IconX } from "@tabler/icons-react";
-import { useEffect, useRef, useState } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 
 type InputProps = {
   value?: boolean;
@@ -51,6 +51,7 @@ export const Select = MSelect.withProps({
   classNames: {
     label: "ml-1 mb-2 font-medium",
   },
+  allowDeselect: false,
 });
 
 export const Textarea = MTextArea.withProps({
@@ -67,7 +68,7 @@ export function SegmentedControl({
   label,
   className,
   ...segmentedControlProps
-}: SegmentedControlProps): JSX.Element {
+}: SegmentedControlProps): ReactNode {
   return (
     <div className={cn(className)}>
       {label ? <label className="text-mtn-sm ml-1">{label}</label> : null}
@@ -91,7 +92,7 @@ export function Switch({
   onChange,
   classNames,
   ...switchProps
-}: SwitchProps): JSX.Element {
+}: SwitchProps): ReactNode {
   const [checked, setChecked] = useState<boolean>(defaultValue ?? false);
 
   useEffect(() => {
@@ -142,7 +143,7 @@ export function Slider({
   max = 10,
   step = 1,
   ...sliderProps
-}: SliderProps): JSX.Element {
+}: SliderProps): ReactNode {
   const generateMarks = (): { value: number; label?: string }[] => {
     const marks = [];
     for (let i = min; i <= max; i += step) {
@@ -191,7 +192,7 @@ export function Counter({
   defaultValue,
   value,
   ...numberInputProps
-}: CounterProps): JSX.Element {
+}: CounterProps): ReactNode {
   const handlerRef = useRef<NumberInputHandlers>(null);
   const [internalValue, setInternalValue] = useState<number>(
     defaultValue ?? min,

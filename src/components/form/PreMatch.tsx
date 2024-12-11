@@ -1,5 +1,5 @@
 import { SegmentedControl } from "@/components/inputs";
-import { useMatch } from "@/data/db";
+import type { PhaseDataMap } from "@/data/db";
 import {
   Alliance,
   DrivePosition,
@@ -9,24 +9,26 @@ import {
 } from "@/data/match";
 import { useForm } from "@/hooks/useForm";
 import { enumToSelectItem } from "@/util";
-import { useEffect, useState } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 
-export function PreMatch({ matchId }: { matchId: string }): JSX.Element {
+type Props = {
+  matchId: string;
+  initialData?: PhaseDataMap["preMatch"];
+};
+
+export function PreMatch({ matchId, initialData }: Props): ReactNode {
   const [allianceColor, setAllianceColor] = useState<
     "red" | "blue" | undefined
   >();
-  const match = useMatch(matchId);
 
   useEffect(() => {
-    setAllianceColor(
-      match?.phases.preMatch?.alliance || preMatchDefaults.alliance,
-    );
-  }, [match]);
+    setAllianceColor(initialData?.alliance || preMatchDefaults.alliance);
+  }, [initialData]);
 
   const form = useForm<"preMatch">({
     matchId,
     phase: "preMatch",
-    initialValues: match?.phases.preMatch || preMatchDefaults,
+    initialValues: initialData || preMatchDefaults,
     schema: preMatchSchema,
   });
 

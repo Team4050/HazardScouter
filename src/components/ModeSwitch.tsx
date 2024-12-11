@@ -1,13 +1,14 @@
 import { cn } from "@/util";
 import { Select } from "@mantine/core";
 import { useLocation, useNavigate } from "@tanstack/react-router";
+import type { ReactNode } from "react";
 
 type Props = {
   className?: string;
   onChange?: () => void;
 };
 
-export function ModeSwitch({ className, onChange }: Props): JSX.Element {
+export function ModeSwitch({ className, onChange }: Props): ReactNode {
   const location = useLocation();
   const navigate = useNavigate();
 

@@ -2,6 +2,7 @@ import {
   type InferOutput,
   boolean,
   enum_,
+  maxLength,
   maxValue,
   minValue,
   number,
@@ -48,7 +49,7 @@ export const teamReviewSchema = object({
   unstable: boolean(),
   droppedGamePieces: boolean(),
   potentialPartner: boolean(),
-  comments: string(),
+  comments: pipe(string(), maxLength(10)),
 });
 export type TeamReview = InferOutput<typeof teamReviewSchema>;
 export const teamReviewDefaults: TeamReview = {

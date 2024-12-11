@@ -1,5 +1,5 @@
 import { cn } from "@/util";
-import type { SVGProps } from "react";
+import type { ReactNode, SVGProps } from "react";
 
 type Props = {
   className?: string;
@@ -10,11 +10,7 @@ type Props = {
   onClick?: () => void;
 };
 
-export function AppLogo({
-  className,
-  classNames,
-  onClick,
-}: Props): JSX.Element {
+export function AppLogo({ className, classNames, onClick }: Props): ReactNode {
   return (
     <div
       className={cn(
@@ -30,7 +26,7 @@ export function AppLogo({
   );
 }
 
-function Logo(props: SVGProps<SVGSVGElement>): JSX.Element {
+function Logo(props: SVGProps<SVGSVGElement>): ReactNode {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" {...props}>
       <g style={{ fill: "#4b5563" }}>
@@ -54,7 +50,7 @@ function Logo(props: SVGProps<SVGSVGElement>): JSX.Element {
   );
 }
 
-function HazardScouter(props: SVGProps<SVGSVGElement>): JSX.Element {
+function HazardScouter(props: SVGProps<SVGSVGElement>): ReactNode {
   return (
     <svg viewBox="0 0 1250 600" xmlns="http://www.w3.org/2000/svg" {...props}>
       <g clipPath="url(#clip_0)" fontFamily="'Jersey 20'">

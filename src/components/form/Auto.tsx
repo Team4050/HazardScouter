@@ -1,14 +1,19 @@
 import { Counter, Switch } from "@/components/inputs";
-import { matchCollection } from "@/data/db";
+import type { PhaseDataMap } from "@/data/db";
 import { autoDefaults, autoSchema } from "@/data/match";
 import { useForm } from "@/hooks/useForm";
+import type { ReactNode } from "react";
 
-export function Auto({ matchId }: { matchId: string }): JSX.Element {
+type Props = {
+  matchId: string;
+  initialData?: PhaseDataMap["auto"];
+};
+
+export function Auto({ matchId, initialData }: Props): ReactNode {
   const form = useForm<"auto">({
     matchId,
     phase: "auto",
-    initialValues:
-      matchCollection.findOne({ id: matchId })?.phases.auto || autoDefaults,
+    initialValues: initialData || autoDefaults,
     schema: autoSchema,
   });
 

@@ -1,7 +1,8 @@
 import { resetCollections } from "@/data/db";
 import { useAppState } from "@/data/state";
+import type { ReactNode } from "react";
 
-export function DevTools() {
+export function DevTools(): ReactNode {
   if (process.env.NODE_ENV === "production") return null;
 
   return (

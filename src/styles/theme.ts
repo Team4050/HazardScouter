@@ -8,11 +8,11 @@ export const theme = createTheme({
   white: "#fafafa",
   fontFamily: "'Jersey 10'",
   fontSizes: {
-    xs: "24px",
-    sm: "28px",
-    md: "32px",
-    lg: "36px",
-    xl: "40px",
+    xs: "22px",
+    sm: "26px",
+    md: "30px",
+    lg: "34px",
+    xl: "38px",
   },
   lineHeights: {
     xs: "1",

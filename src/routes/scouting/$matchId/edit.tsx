@@ -3,31 +3,40 @@ import { Endgame } from "@/components/form/Endgame";
 import { PostMatch } from "@/components/form/PostMatch";
 import { PreMatch } from "@/components/form/PreMatch";
 import { Teleop } from "@/components/form/Teleop";
+import { useMatch } from "@/data/db";
 import { type ScoutingPhase, phaseDetails, phaseOrder } from "@/data/match";
 import { useAppState } from "@/data/state";
 import { cn } from "@/util";
 import { Loader, Paper } from "@mantine/core";
 import { createFileRoute } from "@tanstack/react-router";
+import type { ReactNode } from "react";
 
 export const Route = createFileRoute("/scouting/$matchId/edit")({
-  component: RouteComponent,
+  component: Page,
 });
 
-function RouteComponent() {
+function Page(): ReactNode {
   const { matchId } = Route.useParams();
+  const match = useMatch(matchId);
 
   const getPhaseForm = (phase: ScoutingPhase) => {
     switch (phase) {
       case "preMatch":
-        return <PreMatch matchId={matchId} />;
+        return (
+          <PreMatch matchId={matchId} initialData={match?.phases.preMatch} />
+        );
       case "auto":
-        return <Auto matchId={matchId} />;
+        return <Auto matchId={matchId} initialData={match?.phases.auto} />;
       case "teleop":
-        return <Teleop matchId={matchId} />;
+        return <Teleop matchId={matchId} initialData={match?.phases.teleop} />;
       case "endgame":
-        return <Endgame matchId={matchId} />;
+        return (
+          <Endgame matchId={matchId} initialData={match?.phases.endgame} />
+        );
       case "postMatch":
-        return <PostMatch matchId={matchId} />;
+        return (
+          <PostMatch matchId={matchId} initialData={match?.phases.postMatch} />
+        );
     }
   };
 
@@ -49,7 +58,7 @@ type SectionProps = {
   phase: ScoutingPhase;
 };
 
-function Section({ children, phase }: SectionProps): JSX.Element {
+function Section({ children, phase }: SectionProps): ReactNode {
   const { icon: Icon, title } = phaseDetails[phase];
   const { isPhaseValid, isPhaseSaving } = useAppState();
 

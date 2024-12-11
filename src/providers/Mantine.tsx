@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 
 export default function Provider({
   children,
-}: { children: ReactNode }): JSX.Element {
+}: { children: ReactNode }): ReactNode {
   return (
     <MantineProvider theme={theme} defaultColorScheme="dark">
       <ModalsProvider>{children}</ModalsProvider>

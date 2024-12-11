@@ -1,6 +1,7 @@
 import { routeTree } from "@/routeTree.gen";
 import { Title } from "@mantine/core";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
+import type { ReactNode } from "react";
 
 const router = createRouter({
   routeTree,
@@ -13,11 +14,11 @@ declare module "@tanstack/react-router" {
   }
 }
 
-export default function Provider(): JSX.Element {
+export default function Provider(): ReactNode {
   return <RouterProvider router={router} />;
 }
 
-function NotFound(): JSX.Element {
+function NotFound(): ReactNode {
   return (
     <div className="h-[250px] aspect-video flex flex-col items-center justify-center mx-auto">
       <img src="/boom.gif" className="absolute size-full z-10" />

@@ -23,7 +23,7 @@ export const Route = createFileRoute("/map-builder")({
 //   name?: string;
 // };
 
-// export function ImageMapGenerator(): JSX.Element {
+// export function ImageMapGenerator(): ReactNode {
 //   const [image, setImage] = useState<HTMLImageElement | null>(null);
 //   const [areas, setAreas] = useState<Area[]>([]);
 //   const [drawing, setDrawing] = useState(false);
@@ -272,7 +272,7 @@ export const Route = createFileRoute("/map-builder")({
 // function Controls({
 //   onClearImage,
 //   onGenerateHtml,
-// }: ControlsProps): JSX.Element {
+// }: ControlsProps): ReactNode {
 //   return (
 //     <div className="flex justify-between">
 //       <Button onClick={onClearImage}>Clear Image</Button>

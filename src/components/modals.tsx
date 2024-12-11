@@ -10,7 +10,7 @@ import {
 import { isNotEmpty, useForm } from "@mantine/form";
 import { modals } from "@mantine/modals";
 import { useNavigate } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { type ReactNode, useMemo, useState } from "react";
 
 export function NewMatchModal({
   opened,
@@ -18,7 +18,7 @@ export function NewMatchModal({
 }: {
   opened: boolean;
   onClose: () => void;
-}): JSX.Element {
+}): ReactNode {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const matches = useReactivity(() => matchCollection.find().fetch(), []);
@@ -62,7 +62,7 @@ export function NewMatchModal({
 
     onClose();
     navigate({
-      to: "/scouting/$matchId/collect/pre-match",
+      to: "/scouting/$matchId/collect",
       params: { matchId: id },
     });
   };

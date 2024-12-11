@@ -5,12 +5,13 @@ import { cn } from "@/util";
 import { CodeHighlight } from "@mantine/code-highlight";
 import { Button, Timeline } from "@mantine/core";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
+import type { ReactNode } from "react";
 
 export const Route = createFileRoute("/scouting/$matchId/review")({
   component: Page,
 });
 
-function Page(): JSX.Element | null {
+function Page(): ReactNode {
   const { matchId } = Route.useParams();
   const match = useMatch(matchId);
   const { history } = useRouter();
@@ -77,7 +78,7 @@ function Page(): JSX.Element | null {
 }
 
 // biome-ignore lint/suspicious/noExplicitAny: We don't really care about the type here
-function RenderObject({ obj }: { obj?: any }): JSX.Element {
+function RenderObject({ obj }: { obj?: any }): ReactNode {
   return (
     <CodeHighlight
       code={obj ? JSON.stringify(obj, null, 2) : "// No data"}

@@ -1,6 +1,7 @@
 import { matchCollection } from "@/data/db";
 import { Button } from "@mantine/core";
 import { createFileRoute, notFound, useRouter } from "@tanstack/react-router";
+import type { ReactNode } from "react";
 
 export const Route = createFileRoute("/scouting/$matchId")({
   loader: async ({ params: { matchId } }) => {
@@ -11,7 +12,7 @@ export const Route = createFileRoute("/scouting/$matchId")({
   notFoundComponent: NotFound,
 });
 
-function NotFound(): JSX.Element {
+function NotFound(): ReactNode {
   const { matchId } = Route.useParams();
   const { history } = useRouter();
 

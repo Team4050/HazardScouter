@@ -1,16 +1,20 @@
 import { Select, Switch } from "@/components/inputs";
-import { matchCollection } from "@/data/db";
+import type { PhaseDataMap } from "@/data/db";
 import { EndStatus, endGameDefaults, endGameSchema } from "@/data/match";
 import { useForm } from "@/hooks/useForm";
 import { enumToSelectItem } from "@/util";
+import type { ReactNode } from "react";
 
-export function Endgame({ matchId }: { matchId: string }): JSX.Element {
+type Props = {
+  matchId: string;
+  initialData?: PhaseDataMap["endgame"];
+};
+
+export function Endgame({ matchId, initialData }: Props): ReactNode {
   const form = useForm<"endgame">({
     matchId,
     phase: "endgame",
-    initialValues:
-      matchCollection.findOne({ id: matchId })?.phases.endgame ||
-      endGameDefaults,
+    initialValues: initialData || endGameDefaults,
     schema: endGameSchema,
   });
 

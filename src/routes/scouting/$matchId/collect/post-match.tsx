@@ -1,6 +1,8 @@
 import { PostMatch } from "@/components/form/PostMatch";
+import { useMatch } from "@/data/db";
 import { useAppState } from "@/data/state";
 import { createFileRoute } from "@tanstack/react-router";
+import type { ReactNode } from "react";
 
 export const Route = createFileRoute("/scouting/$matchId/collect/post-match")({
   beforeLoad: async () => {
@@ -9,7 +11,8 @@ export const Route = createFileRoute("/scouting/$matchId/collect/post-match")({
   component: Page,
 });
 
-function Page(): JSX.Element {
+function Page(): ReactNode {
   const { matchId } = Route.useParams();
-  return <PostMatch matchId={matchId} />;
+  const match = useMatch(matchId);
+  return <PostMatch matchId={matchId} initialData={match?.phases.postMatch} />;
 }

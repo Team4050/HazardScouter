@@ -1,15 +1,20 @@
 import { Counter, Select } from "@/components/inputs";
-import { matchCollection } from "@/data/db";
+import type { PhaseDataMap } from "@/data/db";
 import { PickupType, teleopDefaults, teleopSchema } from "@/data/match";
 import { useForm } from "@/hooks/useForm";
 import { enumToSelectItem } from "@/util";
+import type { ReactNode } from "react";
 
-export function Teleop({ matchId }: { matchId: string }): JSX.Element {
+type Props = {
+  matchId: string;
+  initialData?: PhaseDataMap["teleop"];
+};
+
+export function Teleop({ matchId, initialData }: Props): ReactNode {
   const form = useForm<"teleop">({
     matchId,
     phase: "teleop",
-    initialValues:
-      matchCollection.findOne({ id: matchId })?.phases.teleop || teleopDefaults,
+    initialValues: initialData || teleopDefaults,
     schema: teleopSchema,
   });
 
