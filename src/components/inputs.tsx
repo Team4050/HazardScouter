@@ -15,8 +15,7 @@ import {
   type NumberInputHandlers,
   type NumberInputProps,
 } from "@mantine/core";
-import { IconCheck, IconX } from "@tabler/icons-react";
-import { type ReactNode, useEffect, useRef, useState } from "react";
+import { type ReactNode, useRef, useState } from "react";
 
 type InputProps = {
   value?: boolean;
@@ -87,47 +86,21 @@ type SwitchProps = MSwitchProps &
 export function Switch({
   label,
   className,
-  value,
-  defaultValue,
-  onChange,
   classNames,
   ...switchProps
 }: SwitchProps): ReactNode {
-  const [checked, setChecked] = useState<boolean>(defaultValue ?? false);
-
-  useEffect(() => {
-    if (value !== undefined) {
-      setChecked(value);
-    }
-  }, [value]);
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked(event.target.checked);
-    if (onChange) {
-      onChange(event);
-    }
-  };
-
+  const { label: labelClassNames, ...switchClassNames } = classNames ?? {};
   return (
     <div className={cn("flex flex-col items-center h-full", className)}>
       {label ? (
-        <label className={cn("mb-1 text-mtn-sm", classNames?.label)}>
+        <label className={cn("mb-1 text-mtn-sm", labelClassNames)}>
           {label}
         </label>
       ) : null}
       <MSwitch
         radius="xs"
         size="xl"
-        thumbIcon={
-          checked ? (
-            <IconCheck className="text-primary" stroke={3} />
-          ) : (
-            <IconX stroke={3} />
-          )
-        }
-        checked={checked}
-        onChange={handleChange}
-        value={value}
+        classNames={switchClassNames}
         {...switchProps}
       />
     </div>
@@ -195,14 +168,8 @@ export function Counter({
 }: CounterProps): ReactNode {
   const handlerRef = useRef<NumberInputHandlers>(null);
   const [internalValue, setInternalValue] = useState<number>(
-    defaultValue ?? min,
+    value ?? defaultValue ?? min,
   );
-
-  useEffect(() => {
-    if (value !== undefined) {
-      setInternalValue(value);
-    }
-  }, [value]);
 
   const handleChange = (value: string | number) => {
     if (typeof value === "string") return;
