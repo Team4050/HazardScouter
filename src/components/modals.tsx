@@ -109,6 +109,36 @@ export function NewMatchModal({
   );
 }
 
+export function ExportModal({
+  opened,
+  onClose,
+}: {
+  opened: boolean;
+  onClose: () => void;
+}): ReactNode {
+  const matches = useReactivity(() => matchCollection.find().fetch(), []);
+  const [loading, setLoading] = useState(false);
+
+  return (
+    <Modal
+      opened={opened}
+      onClose={onClose}
+      title="Export"
+      centered
+      overlayProps={{
+        backgroundOpacity: 0.55,
+        blur: 3,
+      }}
+    >
+      <LoadingOverlay visible={loading} />
+
+      <form className="flex flex-col gap-y-2">
+        <pre>// TODO</pre>
+      </form>
+    </Modal>
+  );
+}
+
 type modalPayload = Parameters<typeof modals.openConfirmModal>[0];
 
 export function openDeleteModal(payload: modalPayload) {

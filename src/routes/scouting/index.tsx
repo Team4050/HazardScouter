@@ -1,7 +1,7 @@
 import {
+  ExportModal,
   NewMatchModal,
   openDeleteModal,
-  openExportModal,
 } from "@/components/modals";
 import { matchCollection, useReactivity } from "@/data/db";
 import { phaseOrder } from "@/data/match";
@@ -9,11 +9,13 @@ import { ActionIcon, Button, Paper, Table } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
 import { createFileRoute } from "@tanstack/react-router";
-import { useCallback } from "react";
+import { type ReactNode, useCallback } from "react";
 
 export const Route = createFileRoute("/scouting/")({
   component: Page,
 });
+
+const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 function Page(): ReactNode {
   const navigate = Route.useNavigate();
@@ -21,6 +23,10 @@ function Page(): ReactNode {
 
   const [newModalOpened, { open: openNewModal, close: closeNewModal }] =
     useDisclosure();
+  const [
+    exportModalOpened,
+    { open: openExportModal, close: closeExportModal },
+  ] = useDisclosure();
 
   const handleEdit = useCallback(
     (matchId: string) => {
@@ -61,13 +67,10 @@ function Page(): ReactNode {
     [navigate],
   );
 
-  const handleFinish = useCallback(() => {
-    openExportModal({ onConfirm: () => navigate({ to: "/scouting/export" }) });
-  }, [navigate]);
-
   return (
     <>
       <NewMatchModal opened={newModalOpened} onClose={closeNewModal} />
+      <ExportModal opened={exportModalOpened} onClose={closeExportModal} />
 
       <div className="flex mb-6 gap-x-2">
         <div className="text-4xl flex-grow">Match List</div>
@@ -78,7 +81,7 @@ function Page(): ReactNode {
           className="text-3xl"
           disabled={!matches}
           variant="subtle"
-          onClick={handleFinish}
+          onClick={openExportModal}
         >
           Finish Scouting
         </Button>
@@ -99,6 +102,8 @@ function Page(): ReactNode {
           <Table.Tbody>
             {matches.map(
               ({ id, matchNumber, teamNumber, scouter, started, finished }) => {
+                const startedDate = new Date(started);
+                const finishedDate = finished ? new Date(finished) : null;
                 return (
                   <Table.Tr
                     key={id}
@@ -109,11 +114,11 @@ function Page(): ReactNode {
                     <Table.Td>{teamNumber}</Table.Td>
                     <Table.Td>{scouter}</Table.Td>
                     <Table.Td>
-                      {new Date(started).toLocaleTimeString("en-US")}
+                      {`${days[startedDate.getDay()]} ${startedDate.toLocaleTimeString("en-US")}`}
                     </Table.Td>
                     <Table.Td>
-                      {finished
-                        ? new Date(finished).toLocaleTimeString()
+                      {finishedDate
+                        ? `${days[finishedDate.getDay()]} ${finishedDate.toLocaleTimeString("en-us")}`
                         : "In Progress"}
                     </Table.Td>
                     <Table.Td className="w-fit">
@@ -149,12 +154,14 @@ function ActionGroup({
 
   return (
     <div className="w-fit flex space-x-2">
-      <ActionIcon onClick={handleEdit} variant="subtle">
-        <IconPencil />
-      </ActionIcon>
-      <ActionIcon onClick={handleDelete} variant="subtle" color="red">
-        <IconTrash />
-      </ActionIcon>
+      <ActionIcon.Group>
+        <ActionIcon onClick={handleEdit} variant="subtle">
+          <IconPencil />
+        </ActionIcon>
+        <ActionIcon onClick={handleDelete} variant="subtle" color="red">
+          <IconTrash />
+        </ActionIcon>
+      </ActionIcon.Group>
     </div>
   );
 }
