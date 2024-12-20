@@ -109,39 +109,9 @@ export function NewMatchModal({
   );
 }
 
-export function ExportModal({
-  opened,
-  onClose,
-}: {
-  opened: boolean;
-  onClose: () => void;
-}): ReactNode {
-  const matches = useReactivity(() => matchCollection.find().fetch(), []);
-  const [loading, setLoading] = useState(false);
-
-  return (
-    <Modal
-      opened={opened}
-      onClose={onClose}
-      title="Export"
-      centered
-      overlayProps={{
-        backgroundOpacity: 0.55,
-        blur: 3,
-      }}
-    >
-      <LoadingOverlay visible={loading} />
-
-      <form className="flex flex-col gap-y-2">
-        <pre>// TODO</pre>
-      </form>
-    </Modal>
-  );
-}
-
 type modalPayload = Parameters<typeof modals.openConfirmModal>[0];
 
-export function openDeleteModal(payload: modalPayload) {
+export function openDeleteModal(payload?: modalPayload) {
   modals.openConfirmModal({
     title: "Delete Match",
     children: "Are you sure you want to delete this match?",
@@ -156,12 +126,12 @@ export function openDeleteModal(payload: modalPayload) {
   });
 }
 
-export function openExportModal(payload: modalPayload) {
+export function openExportModal(payload?: modalPayload) {
   modals.openConfirmModal({
-    title: "Export Matches",
-    children: "Are you sure you are ready to export?",
+    title: "Download Matches",
+    children: "Are you sure you are ready to download?",
     labels: {
-      confirm: "Export",
+      confirm: "Download",
       cancel: "Cancel",
     },
     ...payload,

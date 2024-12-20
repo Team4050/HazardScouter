@@ -1,10 +1,11 @@
 import {
-  ExportModal,
   NewMatchModal,
   openDeleteModal,
+  openExportModal,
 } from "@/components/modals";
-import { matchCollection, useReactivity } from "@/data/db";
+import { downloadMatches, matchCollection, useReactivity } from "@/data/db";
 import { phaseOrder } from "@/data/match";
+import { shortDayName } from "@/util";
 import { ActionIcon, Button, Paper, Table } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
@@ -15,18 +16,12 @@ export const Route = createFileRoute("/scouting/")({
   component: Page,
 });
 
-const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
 function Page(): ReactNode {
   const navigate = Route.useNavigate();
   const matches = useReactivity(() => matchCollection.find().fetch(), []);
 
   const [newModalOpened, { open: openNewModal, close: closeNewModal }] =
     useDisclosure();
-  const [
-    exportModalOpened,
-    { open: openExportModal, close: closeExportModal },
-  ] = useDisclosure();
 
   const handleEdit = useCallback(
     (matchId: string) => {
@@ -70,7 +65,6 @@ function Page(): ReactNode {
   return (
     <>
       <NewMatchModal opened={newModalOpened} onClose={closeNewModal} />
-      <ExportModal opened={exportModalOpened} onClose={closeExportModal} />
 
       <div className="flex mb-6 gap-x-2">
         <div className="text-4xl flex-grow">Match List</div>
@@ -81,7 +75,7 @@ function Page(): ReactNode {
           className="text-3xl"
           disabled={!matches}
           variant="subtle"
-          onClick={openExportModal}
+          onClick={() => openExportModal({ onConfirm: downloadMatches })}
         >
           Finish Scouting
         </Button>
@@ -114,11 +108,11 @@ function Page(): ReactNode {
                     <Table.Td>{teamNumber}</Table.Td>
                     <Table.Td>{scouter}</Table.Td>
                     <Table.Td>
-                      {`${days[startedDate.getDay()]} ${startedDate.toLocaleTimeString("en-US")}`}
+                      {`${shortDayName(startedDate)} ${startedDate.toLocaleTimeString()}`}
                     </Table.Td>
                     <Table.Td>
                       {finishedDate
-                        ? `${days[finishedDate.getDay()]} ${finishedDate.toLocaleTimeString("en-us")}`
+                        ? `${shortDayName(finishedDate)} ${finishedDate.toLocaleTimeString()}`
                         : "In Progress"}
                     </Table.Td>
                     <Table.Td className="w-fit">

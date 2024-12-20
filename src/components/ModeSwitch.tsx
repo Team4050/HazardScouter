@@ -8,6 +8,11 @@ type Props = {
   onChange?: () => void;
 };
 
+const options = [
+  { label: "Scouting", value: "scouting" },
+  { label: "Collecting", value: "collecting" },
+];
+
 export function ModeSwitch({ className, onChange }: Props): ReactNode {
   const location = useLocation();
   const navigate = useNavigate();
@@ -21,26 +26,22 @@ export function ModeSwitch({ className, onChange }: Props): ReactNode {
   if (scanningRoute) mode = "scanning";
 
   const handleChange = (v: string | null) => {
-    if (!v) return;
+    const values = options.map((o) => o.value);
+    if (!v || !values.find((val) => val === v)) return;
 
-    if (v === "scouting") {
-      navigate({ to: "/scouting" });
-    } else if (v === "scanning") {
-      navigate({ to: "/scanning" });
-    }
+    navigate({ to: `/${v}` });
 
     onChange?.();
   };
 
   return (
     <Select
-      data={[
-        { label: "Scouting", value: "scouting" },
-        { label: "Scanning", value: "scanning" },
-      ]}
+      data={options}
       value={mode}
       onChange={handleChange}
-      className={cn(otherLocation ? "hidden" : "", className)}
+      className={cn("text-mtn-sm", otherLocation ? "hidden" : "", className)}
+      allowDeselect={false}
+      withCheckIcon={false}
     />
   );
 }

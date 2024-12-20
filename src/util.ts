@@ -30,3 +30,7 @@ export function enumToSelectItem<T extends string>(
     value,
   }));
 }
+
+export function shortDayName(date: Date): string {
+  return new Date(date).toLocaleDateString(undefined, { weekday: "short" });
+}

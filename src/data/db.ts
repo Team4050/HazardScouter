@@ -7,7 +7,9 @@ import {
   type Teleop,
   phaseOrder,
 } from "@/data/match";
+import { shortDayName } from "@/util";
 import { effect } from "@maverick-js/signals";
+import download from "downloadjs";
 import { Collection, createLocalStorageAdapter } from "signaldb";
 import maverickReactivityAdapter from "signaldb-plugin-maverickjs";
 import { createUseReactivityHook } from "signaldb-react";
@@ -80,5 +82,24 @@ export function newId(): string {
   return (
     Date.now().toString(36) +
     Math.random().toString(36).substring(2, 12).padStart(12, "0")
+  );
+}
+
+export function downloadMatches() {
+  const matches = matchCollection
+    .find({ finished: { $ne: undefined } })
+    .fetch()
+    .sort(
+      (a, b) =>
+        new Date(a.finished!).getTime() - new Date(b.finished!).getTime(),
+    );
+
+  const firstDay = shortDayName(matches[0].finished!);
+  const lastDay = shortDayName(matches[matches.length - 1].finished!);
+
+  download(
+    JSON.stringify(matches, null, 2),
+    `matches_${firstDay}-${lastDay}_${Date.now()}.json`.toLowerCase(),
+    "application/json",
   );
 }

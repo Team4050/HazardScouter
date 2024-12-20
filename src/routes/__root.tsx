@@ -65,7 +65,9 @@ function Layout({ content }: LayoutProps): ReactNode {
           <div className="flex-1 flex">{rightSection}</div>
         </AppShell.Header>
 
-        <AppShell.Main>{content}</AppShell.Main>
+        <AppShell.Main className="max-w-screen-lg mx-auto m-5">
+          {content}
+        </AppShell.Main>
       </AppShell>
 
       <Drawer
