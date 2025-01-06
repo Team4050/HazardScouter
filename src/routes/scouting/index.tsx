@@ -75,7 +75,13 @@ function Page(): ReactNode {
           className="text-3xl"
           disabled={!matches}
           variant="subtle"
-          onClick={() => openExportModal({ onConfirm: downloadMatches })}
+          onClick={() =>
+            openExportModal({
+              onConfirm: () => {
+                downloadMatches(true);
+              },
+            })
+          }
         >
           Finish Scouting
         </Button>

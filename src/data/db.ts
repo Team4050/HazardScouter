@@ -85,7 +85,7 @@ export function newId(): string {
   );
 }
 
-export function downloadMatches() {
+export function downloadMatches(del = false) {
   const matches = matchCollection
     .find({ finished: { $ne: undefined } })
     .fetch()
@@ -102,4 +102,24 @@ export function downloadMatches() {
     `matches_${firstDay}-${lastDay}_${Date.now()}.json`.toLowerCase(),
     "application/json",
   );
+
+  if (del) {
+    matchCollection.removeMany({ finished: { $ne: undefined } });
+  }
+}
+
+export async function parseMatchesFile(file: File): Promise<Match[]> {
+  const reader = new FileReader();
+  reader.readAsText(file);
+
+  return new Promise((resolve, reject) => {
+    reader.onload = () => {
+      try {
+        const matches = JSON.parse(reader.result as string);
+        resolve(matches);
+      } catch (error) {
+        reject(error);
+      }
+    };
+  });
 }
