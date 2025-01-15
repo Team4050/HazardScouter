@@ -56,7 +56,9 @@ export const phaseDetails: { [key in ScoutingPhase]: PhaseDetail } = {
   },
 };
 
-export const phaseRoutes = phaseOrder.map((phase) => phaseDetails[phase].slug);
+export const phaseRoutes = phaseOrder.map(
+  (phase) => phaseDetails[phase].slug,
+) as ["pre-match", "auto", "teleop", "endgame", "post-match"];
 
 // Pretty sure this is generally considered bad practice,
 // but allows us to swap out years easily
