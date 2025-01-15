@@ -1,13 +1,6 @@
+import { saneScoreSchema } from "@/data/match/shared";
 import type { InferOutput } from "valibot";
-import {
-  boolean,
-  enum_,
-  maxValue,
-  minValue,
-  number,
-  object,
-  pipe,
-} from "valibot";
+import { boolean, enum_, object } from "valibot";
 
 export enum PickupType {
   Source = "source",
@@ -27,8 +20,8 @@ export enum EndStatus {
 
 export const autoSchema = object({
   leaveStartingZone: boolean(),
-  ampScores: pipe(number(), minValue(0), maxValue(99)),
-  speakerScores: pipe(number(), minValue(0), maxValue(99)),
+  ampScores: saneScoreSchema,
+  speakerScores: saneScoreSchema,
 });
 export type Auto = InferOutput<typeof autoSchema>;
 export const autoDefaults: Auto = {
@@ -38,9 +31,9 @@ export const autoDefaults: Auto = {
 };
 
 export const teleopSchema = object({
-  ampScores: pipe(number(), minValue(0), maxValue(99)),
-  speakerScores: pipe(number(), minValue(0), maxValue(99)),
-  timesAmplified: pipe(number(), minValue(0), maxValue(99)),
+  ampScores: saneScoreSchema,
+  speakerScores: saneScoreSchema,
+  timesAmplified: saneScoreSchema,
   pickupType: enum_(PickupType),
 });
 export type Teleop = InferOutput<typeof teleopSchema>;
