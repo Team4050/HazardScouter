@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "npm run generate-routes && tsc -b && vite build",
     "format": "biome format --write .",
     "lint": "biome lint --write .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generate-routes": "tsr generate"
   },
   "dependencies": {
     "@devoss/tailwind-plugin-mantine": "^2.1.0",
@@ -39,6 +40,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
+    "@tanstack/router-cli": "^1.97.0",
     "@tanstack/router-plugin": "^1.95.6",
     "@types/node": "^22.10.6",
     "@types/react": "^19.0.7",
