@@ -1,10 +1,6 @@
-import pluginMantine from "@devoss/tailwind-plugin-mantine";
 import type { Config } from "tailwindcss";
 import pluginAnimate from "tailwindcss-animate";
 import plugin from "tailwindcss/plugin";
-import { theme } from "./src/styles/theme";
-
-const mantineConfig = pluginMantine(theme)?.config;
 
 const config: Config = {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx,mdx}"],
@@ -26,7 +22,6 @@ const config: Config = {
         "mtn-xl": "var(--mantine-font-size-xl)",
       },
       colors: {
-        ...mantineConfig?.theme?.colors,
         primary: "var(--mantine-primary-color-filled)",
       },
     },
