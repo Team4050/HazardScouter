@@ -91,7 +91,7 @@ export function Switch({
 }: SwitchProps): ReactNode {
   const { label: labelClassNames, ...switchClassNames } = classNames ?? {};
   return (
-    <div className={cn("flex flex-col items-center h-full", className)}>
+    <div className={cn("flex flex-col items-center", className)}>
       {label ? (
         <label className={cn("mb-1 text-mtn-sm", labelClassNames)}>
           {label}

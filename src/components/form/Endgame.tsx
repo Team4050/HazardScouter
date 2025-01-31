@@ -1,4 +1,4 @@
-import { Select, Switch } from "@/components/inputs";
+import { Select } from "@/components/inputs";
 import type { PhaseDataMap } from "@/data/db";
 import { EndStatus, endGameDefaults, endGameSchema } from "@/data/match";
 import { useForm } from "@/hooks/useForm";
@@ -25,10 +25,6 @@ export function Endgame({ matchId, initialData }: Props): ReactNode {
         label="End Status"
         data={enumToSelectItem(EndStatus)}
         {...form.getInputProps("endStatus")}
-      />
-      <Switch
-        label="Trap"
-        {...form.getInputProps("trap", { type: "checkbox" })}
       />
     </div>
   );

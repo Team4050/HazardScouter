@@ -62,5 +62,5 @@ export const phaseRoutes = phaseOrder.map(
 
 // Pretty sure this is generally considered bad practice,
 // but allows us to swap out years easily
-export * from "@/data/match/2024";
+export * from "@/data/match/2025";
 export * from "@/data/match/shared";

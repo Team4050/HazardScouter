@@ -18,15 +18,53 @@ export function Auto({ matchId, initialData }: Props): ReactNode {
   });
 
   return (
-    <div className="grid gap-x-4 gap-y-2">
-      <Switch
-        label="Left starting zone"
-        {...form.getInputProps("leaveStartingZone", { type: "checkbox" })}
-      />
-      <Counter label="Amp Scores" {...form.getInputProps("ampScores")} />
+    <div className="grid grid-cols-3 grid-rows-4">
+      <div className="row-span-full flex flex-col gap-y-2 my-auto">
+        <Switch
+          label="Left starting line"
+          {...form.getInputProps("leaveStartingLine", { type: "checkbox" })}
+        />
+        <Counter
+          label="Processor Scores"
+          {...form.getInputProps("processor")}
+        />
+        <Counter label="Net Scores" {...form.getInputProps("net")} />
+      </div>
+
+      <svg
+        width="100%"
+        height="100%"
+        viewBox="0 0 44 225"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="row-span-full max-h-[500px] max-w-[250px]"
+      >
+        <path
+          d="M3 221.5V182M41 3V29C41 33.4066 38.9253 37.556 35.4 40.2L8.6 60.3C5.07472 62.944 3 67.0934 3 71.5V182M3 182L41 156M3 122L41 96"
+          stroke="#D115EB"
+          stroke-width="6"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+
       <Counter
-        label="Speaker Scores"
-        {...form.getInputProps("speakerScores")}
+        label="Coral Level 4"
+        className="mt-0 mb-auto"
+        {...form.getInputProps("reef.coralLevel4")}
+      />
+      <Counter
+        label="Coral Level 3"
+        {...form.getInputProps("reef.coralLevel3")}
+      />
+      <Counter
+        label="Coral Level 2"
+        {...form.getInputProps("reef.coralLevel2")}
+      />
+      <Counter
+        label="Coral Level 1"
+        className="mb-0 mt-auto"
+        {...form.getInputProps("reef.coralLevel1")}
       />
     </div>
   );
