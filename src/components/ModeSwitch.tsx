@@ -17,13 +17,12 @@ export function ModeSwitch({ className, onChange }: Props): ReactNode {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const scanningRoute = location.pathname.includes("scanning");
-  const collectionRoute = location.pathname.includes("scouting");
-  const otherLocation = !(scanningRoute || collectionRoute);
+  const collectionRoute = location.pathname.includes("collecting");
+  const scoutingRoute = location.pathname.includes("scouting");
 
   let mode: string | undefined;
-  if (collectionRoute) mode = "scouting";
-  if (scanningRoute) mode = "scanning";
+  if (collectionRoute) mode = "collecting";
+  if (scoutingRoute) mode = "scouting";
 
   const handleChange = (v: string | null) => {
     const values = options.map((o) => o.value);
@@ -39,7 +38,11 @@ export function ModeSwitch({ className, onChange }: Props): ReactNode {
       data={options}
       value={mode}
       onChange={handleChange}
-      className={cn("text-mtn-sm", otherLocation ? "hidden" : "", className)}
+      className={cn(
+        "text-mtn-sm",
+        !collectionRoute && !scoutingRoute ? "hidden" : "",
+        className,
+      )}
       allowDeselect={false}
       withCheckIcon={false}
     />

@@ -19,6 +19,7 @@ export const Route = createFileRoute("/scouting/")({
 function Page(): ReactNode {
   const navigate = Route.useNavigate();
   const matches = useReactivity(() => matchCollection.find().fetch(), []);
+  const canFinish = !!matches.filter((m) => m.finished !== undefined).length;
 
   const [newModalOpened, { open: openNewModal, close: closeNewModal }] =
     useDisclosure();
@@ -73,7 +74,7 @@ function Page(): ReactNode {
         </Button>
         <Button
           className="text-3xl"
-          disabled={!matches}
+          disabled={!matches || !canFinish}
           variant="subtle"
           onClick={() =>
             openExportModal({
