@@ -1,5 +1,4 @@
 import type { Config } from "tailwindcss";
-import pluginAnimate from "tailwindcss-animate";
 import plugin from "tailwindcss/plugin";
 
 const config: Config = {
@@ -32,7 +31,6 @@ const config: Config = {
       addVariant("first-child", "&>:first-child");
       addVariant("last-child", "&>:last-child");
     }),
-    pluginAnimate,
   ],
 };
 
