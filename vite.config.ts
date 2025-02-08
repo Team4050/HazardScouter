@@ -1,4 +1,5 @@
 import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
+import legacy from "@vitejs/plugin-legacy";
 import react from "@vitejs/plugin-react";
 import path from "node:path";
 import { defineConfig } from "vite";
@@ -6,6 +7,15 @@ import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
   plugins: [
+    legacy({
+      // Target Chrome 108 explicitly
+      targets: ["chrome >= 108"],
+      // Override modern browser thresholds to exclude Chrome 108
+      modernTargets: ["chrome >= 109"],
+      // Include polyfills for unsupported features in Chrome 108
+      polyfills: ["es.object.has-own", "es.array.at"],
+      modernPolyfills: true,
+    }),
     TanStackRouterVite({
       quoteStyle: "double",
       semicolons: true,
@@ -54,6 +64,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      "@tabler/icons-react": "@tabler/icons-react/dist/esm/icons/index.mjs",
     },
   },
 });
