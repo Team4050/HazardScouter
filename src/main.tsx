@@ -1,3 +1,4 @@
+import { PWAUpdatePrompt } from "@/components/PWAUpdatePrompt";
 import MantineProvider from "@/providers/Mantine";
 import Router from "@/providers/Router";
 import { Notifications } from "@mantine/notifications";
@@ -17,6 +18,7 @@ createRoot(document.getElementById("root")!).render(
     <MantineProvider>
       <Notifications />
       <Router />
+      <PWAUpdatePrompt />
     </MantineProvider>
   </StrictMode>,
 );

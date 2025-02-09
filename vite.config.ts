@@ -8,11 +8,8 @@ import { VitePWA } from "vite-plugin-pwa";
 export default defineConfig({
   plugins: [
     legacy({
-      // Target Chrome 108 explicitly
       targets: ["chrome >= 108"],
-      // Override modern browser thresholds to exclude Chrome 108
       modernTargets: ["chrome >= 109"],
-      // Include polyfills for unsupported features in Chrome 108
       polyfills: ["es.object.has-own", "es.array.at"],
       modernPolyfills: true,
     }),
@@ -22,10 +19,25 @@ export default defineConfig({
     }),
     react(),
     VitePWA({
-      workbox: {
-        globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+      registerType: "prompt",
+      devOptions: {
+        enabled: true,
+        type: "module",
       },
-      includeAssets: ["**/*"],
+      workbox: {
+        // Files to cache for offline functionality
+        globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2,ttf}"],
+        // Remove old service worker caches
+        cleanupOutdatedCaches: true,
+        // Take control of all pages immediately
+        clientsClaim: true,
+        // Activate new service worker immediately
+        skipWaiting: true,
+        // Don't fallback on document root index.html
+        navigateFallback: null,
+      },
+      // Files that should be cached
+      includeAssets: ["./public/*"],
       manifest: {
         theme_color: "#16A34A",
         background_color: "#4B5563",
