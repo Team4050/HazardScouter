@@ -59,7 +59,7 @@ function Layout({ content }: LayoutProps): ReactNode {
           />
           <div className="flex-1 flex">
             <Title className="text-2xl lg:text-4xl leading-none text-center">
-              Hello! {matchPhase ? phaseDetails[matchPhase].title : "Scouting"}
+              {matchPhase ? phaseDetails[matchPhase].title : "Scouting"}
             </Title>
           </div>
           <div className="flex-1 flex">{rightSection}</div>
