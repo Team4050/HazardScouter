@@ -22,7 +22,6 @@ export default defineConfig({
       registerType: "prompt",
       devOptions: {
         enabled: true,
-        type: "module",
       },
       workbox: {
         // Files to cache for offline functionality
@@ -36,8 +35,7 @@ export default defineConfig({
         // Don't fallback on document root index.html
         navigateFallback: null,
       },
-      // Files that should be cached
-      includeAssets: ["./public/*"],
+      includeAssets: ["**/*"],
       manifest: {
         theme_color: "#16A34A",
         background_color: "#4B5563",

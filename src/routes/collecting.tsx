@@ -130,7 +130,7 @@ function Page(): ReactNode {
           justify="center"
           gap="xl"
           mih={220}
-          style={{ pointerEvents: "none" }}
+          style={{ pointerEvents: "auto" }}
         >
           <Dropzone.Accept>
             <IconUpload

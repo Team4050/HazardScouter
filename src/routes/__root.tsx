@@ -9,8 +9,6 @@ import { useDisclosure } from "@mantine/hooks";
 import { Outlet, createRootRoute } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 
-import "@/sw";
-
 export const Route = createRootRoute({
   component: Page,
 });

@@ -15,7 +15,7 @@ import {
   type NumberInputHandlers,
   type NumberInputProps,
 } from "@mantine/core";
-import { type ReactNode, useRef, useState } from "react";
+import { type ReactNode, memo, useCallback, useRef, useState } from "react";
 
 type InputProps = {
   value?: boolean;
@@ -156,7 +156,7 @@ type CounterProps = NumberInputProps &
     label?: string;
   };
 
-export function Counter({
+export const Counter = memo(function Counter({
   min = 0,
   max = 999,
   onChange,
@@ -177,7 +177,7 @@ export function Counter({
     onChange?.(value);
   };
 
-  const handleIncrement = () => {
+  const handleIncrement = useCallback(() => {
     if (handlerRef.current) {
       const newValue = internalValue + 1;
       if (newValue <= max) {
@@ -185,9 +185,9 @@ export function Counter({
         onChange?.(newValue);
       }
     }
-  };
+  }, [internalValue, max, onChange]);
 
-  const handleDecrement = () => {
+  const handleDecrement = useCallback(() => {
     if (handlerRef.current) {
       const newValue = internalValue - 1;
       if (newValue >= min) {
@@ -195,7 +195,7 @@ export function Counter({
         onChange?.(newValue);
       }
     }
-  };
+  }, [internalValue, min, onChange]);
 
   return (
     <div
@@ -241,4 +241,4 @@ export function Counter({
       </div>
     </div>
   );
-}
+});

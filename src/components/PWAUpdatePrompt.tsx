@@ -9,11 +9,16 @@ export function PWAUpdatePrompt() {
   const [updating, setUpdating] = useState(false);
 
   useEffect(() => {
-    if (offlineReady) {
+    let mounted = true;
+    if (offlineReady && mounted) {
       setShowOfflineReady(true);
-      // Auto-hide offline ready message after 4.5 seconds
-      const timer = setTimeout(() => setShowOfflineReady(false), 4500);
-      return () => clearTimeout(timer);
+      const timer = setTimeout(() => {
+        if (mounted) setShowOfflineReady(false);
+      }, 4500);
+      return () => {
+        mounted = false;
+        clearTimeout(timer);
+      };
     }
   }, [offlineReady]);
 
