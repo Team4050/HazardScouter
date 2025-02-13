@@ -21,7 +21,7 @@ export default defineConfig({
     VitePWA({
       registerType: "prompt",
       devOptions: {
-        enabled: true,
+        enabled: false,
       },
       workbox: {
         // Files to cache for offline functionality
