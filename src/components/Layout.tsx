@@ -1,10 +1,9 @@
 import { AppLogo } from "@/components/Logo";
-import { ModeSwitch } from "@/components/ModeSwitch";
 import { phaseDetails } from "@/data/match";
 import { useAppState } from "@/data/state";
+import { useSecretTap } from "@/hooks/useSecretTap";
 import { navbarHeight } from "@/styles/theme";
-import { AppShell, Burger, Drawer, Title } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { AppShell, Button, Title } from "@mantine/core";
 import { useNavigate } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 
@@ -13,23 +12,17 @@ type LayoutProps = {
 };
 
 export function Layout({ content }: LayoutProps): ReactNode {
-  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
-    useDisclosure(false);
+  // const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
+  //   useDisclosure(false);
   const matchPhase = useAppState((state) => state.matchPhase);
   const navigate = useNavigate();
-
-  const rightSection: ReactNode = (
-    <>
-      <div className="hidden lg:flex items-center space-x-2">
-        <ModeSwitch className="w-40" />
-      </div>
-      <Burger
-        opened={drawerOpened}
-        onClick={toggleDrawer}
-        hiddenFrom="sm"
-        className="inline-block lg:hidden"
-      />
-    </>
+  const handleSecretTap = useSecretTap(
+    () => {
+      navigate({ to: "/admin" });
+    },
+    () => {
+      navigate({ to: "/" });
+    },
   );
 
   return (
@@ -39,14 +32,18 @@ export function Layout({ content }: LayoutProps): ReactNode {
           <AppLogo
             className="py-0.5 flex-1 flex"
             classNames={{ text: "md:block hidden" }}
-            onClick={() => navigate({ to: "/" })}
+            onClick={handleSecretTap}
           />
           <div className="flex-1 flex">
             <Title className="text-2xl lg:text-4xl leading-none text-center">
               {matchPhase ? phaseDetails[matchPhase].title : "Scouting"}
             </Title>
           </div>
-          <div className="flex-1 flex">{rightSection}</div>
+          <div className="flex-1 flex">
+            <Button variant="subtle" onClick={() => navigate({ to: "/admin" })}>
+              Scouting Admin
+            </Button>
+          </div>
         </AppShell.Header>
 
         <AppShell.Main className="max-w-screen-lg mx-auto m-5">
@@ -54,7 +51,7 @@ export function Layout({ content }: LayoutProps): ReactNode {
         </AppShell.Main>
       </AppShell>
 
-      <Drawer
+      {/* <Drawer
         opened={drawerOpened}
         onClose={closeDrawer}
         title={<AppLogo className="w-full" />}
@@ -64,19 +61,19 @@ export function Layout({ content }: LayoutProps): ReactNode {
         }}
       >
         <Sidebar closeDrawer={closeDrawer} />
-      </Drawer>
+      </Drawer> */}
     </>
   );
 }
 
-type SidebarProps = {
-  closeDrawer: () => void;
-};
+// type SidebarProps = {
+//   closeDrawer: () => void;
+// };
 
-function Sidebar({ closeDrawer }: SidebarProps): ReactNode {
-  return (
-    <>
-      <ModeSwitch className="w-full" onChange={() => closeDrawer()} />
-    </>
-  );
-}
+// function Sidebar({ closeDrawer }: SidebarProps): ReactNode {
+//   return (
+//     <>
+//       <ModeSwitch className="w-full" onChange={() => closeDrawer()} />
+//     </>
+//   );
+// }

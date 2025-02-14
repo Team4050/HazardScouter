@@ -3,7 +3,7 @@ import { useAppState } from "@/data/state";
 import { useMediaQuery } from "@mantine/hooks";
 import type { ReactNode } from "react";
 
-export function DevTools(): ReactNode {
+export default function DevTools(): ReactNode {
   const isTablet = useMediaQuery("(max-width: 768px)");
   if (process.env.NODE_ENV === "production") return null;
 

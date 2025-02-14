@@ -11,11 +11,11 @@ import {
   IconUpload,
   IconX,
 } from "@tabler/icons-react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createLazyFileRoute } from "@tanstack/react-router";
 import download from "downloadjs";
 import { type ReactNode, useEffect, useState } from "react";
 
-export const Route = createFileRoute("/collecting")({
+export const Route = createLazyFileRoute("/admin")({
   component: Page,
 });
 

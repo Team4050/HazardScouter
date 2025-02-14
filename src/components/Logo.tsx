@@ -18,7 +18,11 @@ export function AppLogo({ className, classNames, onClick }: Props): ReactNode {
         onClick !== undefined ? "cursor-pointer" : null,
         className,
       )}
-      onClick={onClick}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        onClick?.();
+      }}
     >
       <Logo className={cn("h-full", classNames?.logo)} />
       <HazardScouter className={cn("h-full py-1", classNames?.text)} />
