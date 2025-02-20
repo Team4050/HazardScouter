@@ -73,10 +73,14 @@ export function NewMatchModal({
         opened={opened}
         onClose={onClose}
         title="New Match"
-        centered
         overlayProps={{
           backgroundOpacity: 0.55,
           blur: 3,
+        }}
+        transitionProps={{
+          onEntered: () => {
+            form.getInputNode("scouter")?.focus();
+          },
         }}
       >
         <LoadingOverlay visible={loading} />
@@ -99,7 +103,16 @@ export function NewMatchModal({
             inputMode="numeric"
             {...form.getInputProps("teamNumber")}
           />
-          <NumberInput label="Match" {...form.getInputProps("matchNumber")} />
+          <NumberInput
+            label="Match"
+            {...form.getInputProps("matchNumber")}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                event.preventDefault();
+                form.onSubmit(handleSubmit)();
+              }
+            }}
+          />
           <Button type="submit" className="ml-auto mt-2">
             Go
           </Button>
