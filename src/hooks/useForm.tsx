@@ -1,51 +1,59 @@
-import { valibotResolver } from "@hookform/resolvers/valibot";
+import { type PhaseDataMap, setScoutingPhaseData } from "@/data/db";
+import type { ScoutingPhase } from "@/data/match";
+import { useAppState } from "@/data/state";
+import { type UseFormReturnType, useForm as useFormM } from "@mantine/form";
+import { useDebouncedCallback } from "@mantine/hooks";
+import { valibotResolver } from "mantine-form-valibot-resolver";
 import { useEffect } from "react";
-import type {
-  DefaultValues,
-  FieldValues,
-  UseFormReturn,
-} from "react-hook-form";
-import { useForm as useRhfForm } from "react-hook-form";
 import type { BaseSchema } from "valibot";
 
-export default function useForm<
-  T extends FieldValues,
-  TSchema extends BaseSchema,
->({
-  setData,
-  onChanged,
-  defaultValues,
+type Props<T extends ScoutingPhase> = {
+  matchId: string;
+  phase: T;
+  initialValues: PhaseDataMap[T];
+  schema: BaseSchema<PhaseDataMap[T], PhaseDataMap[T], any>;
+};
+
+export function useForm<T extends ScoutingPhase>({
+  initialValues,
   schema,
-}: {
-  setData: (data: T) => void;
-  onChanged?: (valid: boolean) => void;
-  defaultValues: DefaultValues<T>;
-  schema: TSchema;
-}): UseFormReturn<T> {
-  const form = useRhfForm<T>({
-    mode: "onChange",
-    resolver: valibotResolver(schema),
-    defaultValues: defaultValues || {},
+  matchId,
+  phase,
+}: Props<T>): UseFormReturnType<typeof initialValues> {
+  type TV = typeof initialValues;
+
+  const { setPhaseSaving, setPhaseValid } = useAppState();
+
+  const debouncedSetValid = useDebouncedCallback(
+    (isValid: boolean) => setPhaseValid(phase, isValid),
+    300,
+  );
+
+  const debouncedSave = useDebouncedCallback((values: TV) => {
+    setScoutingPhaseData(matchId, phase, values);
+    setPhaseSaving(phase, false);
+  }, 300);
+
+  const form = useFormM<TV>({
+    mode: "uncontrolled",
+    initialValues,
+    validateInputOnChange: true,
+    validate: (values) => {
+      const errors = valibotResolver(schema)(values);
+      const isValid = Object.keys(errors).length === 0;
+      debouncedSetValid(isValid);
+      if (isValid) {
+        setPhaseSaving(phase, true);
+        debouncedSave(values);
+      }
+      return errors;
+    },
   });
 
-  const {
-    formState: { isValid },
-    watch,
-  } = form;
-
+  // biome-ignore lint: We only want this effect to run when the hook mounts
   useEffect(() => {
-    onChanged?.(isValid);
-  }, [onChanged, isValid]);
-
-  useEffect(() => {
-    const watcher = watch((values) => {
-      // TODO: Need to debounce?
-      if (values && Object.values(values).every((v) => v !== undefined)) {
-        setData(values as T);
-      }
-    });
-    return () => watcher.unsubscribe();
-  }, [watch, setData]);
+    form.validate();
+  }, []);
 
   return form;
 }

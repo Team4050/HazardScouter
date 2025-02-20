@@ -1,3 +1,2 @@
 /// <reference types="vite/client" />
-
-declare const __COMMIT_HASH__: string;
+/// <reference types="vite-plugin-pwa/client" />

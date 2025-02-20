@@ -1,0 +1,10 @@
+@layer base, mantine, tailwind;
+
+@layer base {
+  @tailwind base;
+}
+
+@layer tailwind {
+  @tailwind components;
+  @tailwind utilities;
+}

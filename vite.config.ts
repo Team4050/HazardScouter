@@ -1,28 +1,39 @@
-import { TanStackRouterVite } from "@tanstack/router-vite-plugin";
+import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
+import legacy from "@vitejs/plugin-legacy";
 import react from "@vitejs/plugin-react";
-import { execSync } from "child_process";
+import path from "node:path";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 
-const commitHash = execSync("git rev-parse --short HEAD").toString();
-
 export default defineConfig({
-  server: {
-    port: 4050,
-  },
-  define: {
-    __COMMIT_HASH__: JSON.stringify(commitHash),
-  },
   plugins: [
-    TanStackRouterVite({ routesDirectory: "src/pages", quoteStyle: "double" }),
-    // basicSsl(),
+    legacy({
+      targets: ["chrome >= 108"],
+      modernTargets: ["chrome >= 109"],
+      polyfills: ["es.object.has-own", "es.array.at"],
+      modernPolyfills: true,
+    }),
+    TanStackRouterVite({
+      quoteStyle: "double",
+      semicolons: true,
+    }),
     react(),
     VitePWA({
+      registerType: "prompt",
       devOptions: {
-        enabled: true,
+        enabled: false,
       },
       workbox: {
-        globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+        // Files to cache for offline functionality
+        globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2,ttf}"],
+        // Remove old service worker caches
+        cleanupOutdatedCaches: true,
+        // Take control of all pages immediately
+        clientsClaim: true,
+        // Activate new service worker immediately
+        skipWaiting: true,
+        // Don't fallback on document root index.html
+        navigateFallback: null,
       },
       includeAssets: ["**/*"],
       manifest: {
@@ -60,4 +71,10 @@ export default defineConfig({
       },
     }),
   ],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+      "@tabler/icons-react": "@tabler/icons-react/dist/esm/icons/index.mjs",
+    },
+  },
 });

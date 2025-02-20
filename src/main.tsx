@@ -1,21 +1,27 @@
-import { RouterProvider, createRouter } from "@tanstack/react-router";
-import { StrictMode } from "react";
-import ReactDOM from "react-dom/client";
+import { PWAUpdatePrompt } from "@/components/PWAUpdatePrompt";
+import MantineProvider from "@/providers/Mantine";
+import Router from "@/providers/Router";
+import { StrictMode, lazy } from "react";
+import { createRoot } from "react-dom/client";
 
-import { routeTree } from "./routeTree.gen";
-import "./styles/fonts.css";
-import "./styles/tailwind.css";
+import "@/styles/fonts.css";
+import "@/styles/globals.css";
 
-const router = createRouter({ routeTree });
+import "@mantine/code-highlight/styles.layer.css";
+import "@mantine/core/styles.layer.css";
+import "@mantine/dropzone/styles.layer.css";
 
-declare module "@tanstack/react-router" {
-  interface Register {
-    router: typeof router;
-  }
-}
+const DevTools =
+  process.env.NODE_ENV === "production"
+    ? null
+    : lazy(() => import("@/components/DevTools"));
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <MantineProvider>
+      <Router />
+      <PWAUpdatePrompt />
+      {DevTools ? <DevTools /> : null}
+    </MantineProvider>
   </StrictMode>,
 );
