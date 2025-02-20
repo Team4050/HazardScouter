@@ -1,6 +1,11 @@
 import { Counter, Select, Switch } from "@/components/inputs";
 import type { PhaseDataMap } from "@/data/db";
-import { PickupType, teleopDefaults, teleopSchema } from "@/data/match";
+import {
+  PickupType,
+  Strategy,
+  teleopDefaults,
+  teleopSchema,
+} from "@/data/match";
 import { useForm } from "@/hooks/useForm";
 import { enumToSelectItem } from "@/util";
 import type { ReactNode } from "react";
@@ -20,10 +25,14 @@ export function Teleop({ matchId, initialData }: Props): ReactNode {
 
   return (
     <div className="grid grid-cols-3 grid-rows-4">
-      <div className="row-span-full flex flex-col gap-y-2 my-auto">
+      <div className="row-span-full flex flex-col gap-y-2 w-[180px] m-auto">
+        <Select
+          label="Strategy"
+          data={enumToSelectItem(Strategy)}
+          {...form.getInputProps("strategy")}
+        />
         <Select
           label="Pickup Type"
-          className="w-fit mx-auto"
           data={enumToSelectItem(PickupType)}
           {...form.getInputProps("pickupType")}
         />
@@ -32,11 +41,7 @@ export function Teleop({ matchId, initialData }: Props): ReactNode {
           {...form.getInputProps("processor")}
         />
         <Counter label="Net Scores" {...form.getInputProps("net")} />
-        <Switch
-          label="Scored for opp."
-          color="red"
-          {...form.getInputProps("scoredForOpponent")}
-        />
+        <Switch label="Removed Algae" {...form.getInputProps("removedAlgae")} />
       </div>
 
       <svg

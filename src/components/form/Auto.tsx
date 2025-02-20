@@ -24,6 +24,14 @@ export function Auto({ matchId, initialData }: Props): ReactNode {
           label="Left starting line"
           {...form.getInputProps("leaveStartingLine", { type: "checkbox" })}
         />
+        <Switch
+          label="Coral preloaded"
+          {...form.getInputProps("coralPreloaded", { type: "checkbox" })}
+        />
+        <Switch
+          label="Removed algae"
+          {...form.getInputProps("removedAlgae", { type: "checkbox" })}
+        />
         <Counter
           label="Processor Scores"
           {...form.getInputProps("processor")}

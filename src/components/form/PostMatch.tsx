@@ -56,6 +56,16 @@ export function PostMatch({ matchId, initialData }: Props): ReactNode {
             classNames={{ label: "flex-grow text-mtn-xs md:text-mtn-md" }}
             {...form.getInputProps("goodAlliancePartner")}
           />
+          <Switch
+            label="E-Stopped?"
+            classNames={{ label: "flex-grow text-mtn-xs md:text-mtn-md" }}
+            {...form.getInputProps("eStopped")}
+          />
+          <Switch
+            label="A-Stopped?"
+            classNames={{ label: "flex-grow text-mtn-xs md:text-mtn-md" }}
+            {...form.getInputProps("aStopped")}
+          />
         </div>
       </Paper>
 

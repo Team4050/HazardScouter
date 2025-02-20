@@ -204,7 +204,11 @@ export const Counter = memo(function Counter({
         className,
       )}
     >
-      {label ? <label className="mb-1 text-mtn-sm">{label}</label> : null}
+      {label ? (
+        <label className="mb-1 text-mtn-sm self-start w-full text-center">
+          {label}
+        </label>
+      ) : null}
       <div className="flex w-full gap-x-1.5">
         <Button
           onClick={handleDecrement}

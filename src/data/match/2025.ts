@@ -17,6 +17,12 @@ export enum PickupType {
   None = "none",
 }
 
+export enum Strategy {
+  Defense = "defense",
+  Offense = "offense",
+  Both = "both",
+}
+
 export enum EndStatus {
   Parked = "parked",
   ParkedFailedClimb = "parked-failed-climb",
@@ -39,6 +45,8 @@ export const autoSchema = object({
   reef: reefSchema,
   processor: saneScoreSchema,
   net: saneScoreSchema,
+  coralPreloaded: boolean(),
+  removedAlgae: boolean(),
 });
 export type Auto = InferOutput<typeof autoSchema>;
 export const autoDefaults: Auto = {
@@ -51,6 +59,8 @@ export const autoDefaults: Auto = {
   },
   processor: 0,
   net: 0,
+  coralPreloaded: false,
+  removedAlgae: false,
 };
 
 export const teleopSchema = object({
@@ -58,7 +68,8 @@ export const teleopSchema = object({
   processor: saneScoreSchema,
   net: saneScoreSchema,
   pickupType: enum_(PickupType),
-  scoredForOpponent: boolean(),
+  strategy: enum_(Strategy),
+  removedAlgae: boolean(),
 });
 export type Teleop = InferOutput<typeof teleopSchema>;
 export const teleopDefaults: Teleop = {
@@ -71,7 +82,8 @@ export const teleopDefaults: Teleop = {
   processor: 0,
   net: 0,
   pickupType: PickupType.None,
-  scoredForOpponent: false,
+  strategy: Strategy.Both,
+  removedAlgae: false,
 };
 
 export const endGameSchema = object({

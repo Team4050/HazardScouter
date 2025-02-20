@@ -52,6 +52,8 @@ export const teamReviewSchema = object({
   droppedGamePieces: boolean(),
   potentialPartner: boolean(),
   comments: pipe(string(), maxLength(10)),
+  eStopped: boolean(),
+  aStopped: boolean(),
 });
 export type TeamReview = InferOutput<typeof teamReviewSchema>;
 export const teamReviewDefaults: TeamReview = {
@@ -63,4 +65,6 @@ export const teamReviewDefaults: TeamReview = {
   droppedGamePieces: false,
   potentialPartner: false,
   comments: "",
+  eStopped: false,
+  aStopped: false,
 };

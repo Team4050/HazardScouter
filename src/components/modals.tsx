@@ -142,7 +142,8 @@ export function openDeleteModal(payload?: modalPayload) {
 export function openExportModal(payload?: modalPayload) {
   modals.openConfirmModal({
     title: "Download Matches",
-    children: "Are you sure you are ready to download?",
+    children:
+      "Are you sure you are ready to download? This will reset your data and clear all finished matches.",
     labels: {
       confirm: "Download",
       cancel: "Cancel",

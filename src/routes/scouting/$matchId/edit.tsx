@@ -19,7 +19,7 @@ export const Route = createFileRoute("/scouting/$matchId/edit")({
 function Page(): ReactNode {
   const { matchId } = Route.useParams();
   const match = useMatch(matchId);
-
+  const navigate = Route.useNavigate();
   const getPhaseForm = (phase: ScoutingPhase) => {
     switch (phase) {
       case "preMatch":
@@ -45,11 +45,36 @@ function Page(): ReactNode {
     <div className="grid grid-flow-row gap-y-6">
       {phaseOrder.map((phase) => {
         return (
-          <Section key={phase} phase={phase} matchId={matchId}>
+          <Section key={phase} phase={phase}>
             {getPhaseForm(phase)}
           </Section>
         );
       })}
+      <div className="flex">
+        <Button
+          onClick={() => history.go(-1)}
+          size="compact-lg"
+          className="w-40 font-normal"
+        >
+          {"< Back"}
+        </Button>
+        <Button
+          color="red"
+          size="compact-lg"
+          variant="subtle"
+          className="w-40 font-normal ml-auto"
+          onClick={() => {
+            openDeleteModal({
+              onConfirm: () => {
+                matchCollection.removeOne({ id: matchId });
+                navigate({ to: "/scouting" });
+              },
+            });
+          }}
+        >
+          Delete
+        </Button>
+      </div>
     </div>
   );
 }
@@ -57,13 +82,11 @@ function Page(): ReactNode {
 type SectionProps = {
   children: React.ReactNode;
   phase: ScoutingPhase;
-  matchId: string;
 };
 
-function Section({ children, phase, matchId }: SectionProps): ReactNode {
+function Section({ children, phase }: SectionProps): ReactNode {
   const { icon: Icon, title } = phaseDetails[phase];
   const { isPhaseValid, isPhaseSaving } = useAppState();
-  const navigate = Route.useNavigate();
 
   return (
     <>
@@ -93,31 +116,6 @@ function Section({ children, phase, matchId }: SectionProps): ReactNode {
         </div>
         <div>{children}</div>
       </Paper>
-      <div className="flex">
-        <Button
-          onClick={() => history.go(-1)}
-          size="compact-lg"
-          className="w-40 font-normal"
-        >
-          {"< Back"}
-        </Button>
-        <Button
-          color="red"
-          size="compact-lg"
-          variant="subtle"
-          className="w-40 font-normal ml-auto"
-          onClick={() => {
-            openDeleteModal({
-              onConfirm: () => {
-                matchCollection.removeOne({ id: matchId });
-                navigate({ to: "/scouting" });
-              },
-            });
-          }}
-        >
-          Delete
-        </Button>
-      </div>
     </>
   );
 }
