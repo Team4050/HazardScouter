@@ -24,5 +24,8 @@
     "**/*.sass",
     "**/*.less",
     "node_modules/@mantine/core/styles.css"
-  ]
+  ],
+  "files.exclude": {
+    "**/routeTree.gen.ts": true
+  }
 }

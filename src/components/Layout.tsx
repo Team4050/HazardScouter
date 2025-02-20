@@ -40,13 +40,17 @@ export function Layout({ content }: LayoutProps): ReactNode {
             </Title>
           </div>
           <div className="flex-1 flex">
-            <Button variant="subtle" onClick={() => navigate({ to: "/admin" })}>
+            <Button
+              className="hidden lg:block"
+              variant="subtle"
+              onClick={() => navigate({ to: "/admin" })}
+            >
               Scouting Admin
             </Button>
           </div>
         </AppShell.Header>
 
-        <AppShell.Main className="max-w-screen-lg mx-auto m-5">
+        <AppShell.Main className="max-w-screen-lg mx-auto md:m-5 h-[calc(100dvh-var(--app-shell-header-height,0px)-var(--app-shell-footer-height,0px)-var(--app-shell-padding)*2)]">
           {content}
         </AppShell.Main>
       </AppShell>

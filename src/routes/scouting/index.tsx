@@ -70,10 +70,10 @@ function Page(): ReactNode {
   );
 
   return (
-    <>
+    <div className="flex flex-col h-full">
       <NewMatchModal opened={newModalOpened} onClose={closeNewModal} />
 
-      <div className="flex mb-6 gap-x-2">
+      <div className="flex mb-6 gap-x-2 flex-none">
         <div className="text-4xl flex-grow">Match List</div>
 
         {matches.length > 0 ? (
@@ -97,68 +97,70 @@ function Page(): ReactNode {
         ) : null}
       </div>
 
-      {matches.length > 0 ? (
-        <Paper withBorder shadow="xl" className="py-2">
-          <Table highlightOnHover>
-            <Table.Thead>
-              <Table.Tr>
-                {["Match", "Team", "Scouter", "Started", "Finished"].map(
-                  (head) => (
-                    <Table.Th key={head}>{head}</Table.Th>
-                  ),
+      <div className="flex-1">
+        {matches.length > 0 ? (
+          <Paper withBorder shadow="xl" className="py-2">
+            <Table highlightOnHover>
+              <Table.Thead>
+                <Table.Tr>
+                  {["Match", "Team", "Scouter", "Started", "Finished"].map(
+                    (head) => (
+                      <Table.Th key={head}>{head}</Table.Th>
+                    ),
+                  )}
+                  <Table.Th className="w-0" />
+                </Table.Tr>
+              </Table.Thead>
+              <Table.Tbody>
+                {matches.map(
+                  ({
+                    id,
+                    matchNumber,
+                    teamNumber,
+                    scouter,
+                    started,
+                    finished,
+                  }) => {
+                    const startedDate = new Date(started);
+                    const finishedDate = finished ? new Date(finished) : null;
+                    return (
+                      <Table.Tr
+                        key={id}
+                        onClick={() => handleOpen(id)}
+                        className="cursor-pointer"
+                      >
+                        <Table.Td>{matchNumber}</Table.Td>
+                        <Table.Td>{teamNumber}</Table.Td>
+                        <Table.Td>{scouter}</Table.Td>
+                        <Table.Td>
+                          {`${shortDayName(startedDate)} ${startedDate.toLocaleTimeString()}`}
+                        </Table.Td>
+                        <Table.Td>
+                          {finishedDate
+                            ? `${shortDayName(finishedDate)} ${finishedDate.toLocaleTimeString()}`
+                            : "In Progress"}
+                        </Table.Td>
+                        <Table.Td className="w-fit">
+                          <ActionGroup
+                            onClickEdit={() => handleEdit(id)}
+                            onClickDelete={() => handleDelete(id)}
+                          />
+                        </Table.Td>
+                      </Table.Tr>
+                    );
+                  },
                 )}
-                <Table.Th className="w-0" />
-              </Table.Tr>
-            </Table.Thead>
-            <Table.Tbody>
-              {matches.map(
-                ({
-                  id,
-                  matchNumber,
-                  teamNumber,
-                  scouter,
-                  started,
-                  finished,
-                }) => {
-                  const startedDate = new Date(started);
-                  const finishedDate = finished ? new Date(finished) : null;
-                  return (
-                    <Table.Tr
-                      key={id}
-                      onClick={() => handleOpen(id)}
-                      className="cursor-pointer"
-                    >
-                      <Table.Td>{matchNumber}</Table.Td>
-                      <Table.Td>{teamNumber}</Table.Td>
-                      <Table.Td>{scouter}</Table.Td>
-                      <Table.Td>
-                        {`${shortDayName(startedDate)} ${startedDate.toLocaleTimeString()}`}
-                      </Table.Td>
-                      <Table.Td>
-                        {finishedDate
-                          ? `${shortDayName(finishedDate)} ${finishedDate.toLocaleTimeString()}`
-                          : "In Progress"}
-                      </Table.Td>
-                      <Table.Td className="w-fit">
-                        <ActionGroup
-                          onClickEdit={() => handleEdit(id)}
-                          onClickDelete={() => handleDelete(id)}
-                        />
-                      </Table.Td>
-                    </Table.Tr>
-                  );
-                },
-              )}
-            </Table.Tbody>
-          </Table>
-        </Paper>
-      ) : (
-        <div className="flex flex-col justify-center items-center h-full gap-y-4">
-          <div className="text-4xl">No matches found</div>
-          <NewMatchButton />
-        </div>
-      )}
-    </>
+              </Table.Tbody>
+            </Table>
+          </Paper>
+        ) : (
+          <div className="flex flex-col justify-center items-center gap-y-4 h-full -mt-28">
+            <div className="text-4xl">No matches found</div>
+            <NewMatchButton />
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
 
