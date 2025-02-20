@@ -4,7 +4,7 @@ import {
   openExportModal,
 } from "@/components/modals";
 import { downloadMatches, matchCollection, useReactivity } from "@/data/db";
-import { phaseOrder } from "@/data/match";
+import { phaseDetails, phaseOrder } from "@/data/match";
 import { shortDayName } from "@/util";
 import { ActionIcon, Button, Paper, Table } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
@@ -33,7 +33,7 @@ function Page(): ReactNode {
         for (const phase of phaseOrder) {
           if (!match.phases[phase]) {
             navigate({
-              to: `/scouting/$matchId/collect/${phase}`,
+              to: `/scouting/$matchId/collect/${phaseDetails[phase].slug}`,
               params: { matchId },
             });
             return;
@@ -154,7 +154,7 @@ function Page(): ReactNode {
             </Table>
           </Paper>
         ) : (
-          <div className="flex flex-col justify-center items-center gap-y-4 h-full -mt-28">
+          <div className="flex flex-col justify-center items-center gap-y-4 h-full">
             <div className="text-4xl">No matches found</div>
             <NewMatchButton />
           </div>

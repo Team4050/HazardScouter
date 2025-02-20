@@ -3,11 +3,12 @@ import { Endgame } from "@/components/form/Endgame";
 import { PostMatch } from "@/components/form/PostMatch";
 import { PreMatch } from "@/components/form/PreMatch";
 import { Teleop } from "@/components/form/Teleop";
-import { useMatch } from "@/data/db";
+import { openDeleteModal } from "@/components/modals";
+import { matchCollection, useMatch } from "@/data/db";
 import { type ScoutingPhase, phaseDetails, phaseOrder } from "@/data/match";
 import { useAppState } from "@/data/state";
 import { cn } from "@/util";
-import { Loader, Paper } from "@mantine/core";
+import { Button, Loader, Paper } from "@mantine/core";
 import { createFileRoute } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 
@@ -44,7 +45,7 @@ function Page(): ReactNode {
     <div className="grid grid-flow-row gap-y-6">
       {phaseOrder.map((phase) => {
         return (
-          <Section key={phase} phase={phase}>
+          <Section key={phase} phase={phase} matchId={matchId}>
             {getPhaseForm(phase)}
           </Section>
         );
@@ -56,37 +57,67 @@ function Page(): ReactNode {
 type SectionProps = {
   children: React.ReactNode;
   phase: ScoutingPhase;
+  matchId: string;
 };
 
-function Section({ children, phase }: SectionProps): ReactNode {
+function Section({ children, phase, matchId }: SectionProps): ReactNode {
   const { icon: Icon, title } = phaseDetails[phase];
   const { isPhaseValid, isPhaseSaving } = useAppState();
+  const navigate = Route.useNavigate();
 
   return (
-    <Paper
-      className={cn(
-        "space-y-4 p-6",
-        isPhaseValid(phase) ? "border-green-500" : "border-red-500",
-      )}
-      shadow="xl"
-      withBorder
-    >
-      <div
+    <>
+      <Paper
         className={cn(
-          "flex items-center space-x-2 text-green-500",
-          isPhaseValid(phase) ? "text-green-500" : "text-red-500",
+          "space-y-4 p-6",
+          isPhaseValid(phase) ? "border-green-500" : "border-red-500",
         )}
+        shadow="xl"
+        withBorder
       >
-        <Icon className="size-8" />
-        <div className="text-3xl font-normal">{title}</div>
-        <Loader
+        <div
           className={cn(
-            "ml-auto",
-            isPhaseSaving(phase) ? "visible" : "invisible",
+            "flex items-center space-x-2 text-green-500",
+            isPhaseValid(phase) ? "text-green-500" : "text-red-500",
           )}
-        />
+        >
+          <Icon className="size-8" />
+          <div className="text-3xl font-normal">{title}</div>
+          <Loader
+            size="sm"
+            className={cn(
+              "ml-auto",
+              isPhaseSaving(phase) ? "visible" : "invisible",
+            )}
+          />
+        </div>
+        <div>{children}</div>
+      </Paper>
+      <div className="flex">
+        <Button
+          onClick={() => history.go(-1)}
+          size="compact-lg"
+          className="w-40 font-normal"
+        >
+          {"< Back"}
+        </Button>
+        <Button
+          color="red"
+          size="compact-lg"
+          variant="subtle"
+          className="w-40 font-normal ml-auto"
+          onClick={() => {
+            openDeleteModal({
+              onConfirm: () => {
+                matchCollection.removeOne({ id: matchId });
+                navigate({ to: "/scouting" });
+              },
+            });
+          }}
+        >
+          Delete
+        </Button>
       </div>
-      <div>{children}</div>
-    </Paper>
+    </>
   );
 }

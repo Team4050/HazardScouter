@@ -50,7 +50,7 @@ export function Layout({ content }: LayoutProps): ReactNode {
           </div>
         </AppShell.Header>
 
-        <AppShell.Main className="max-w-screen-lg mx-auto md:my-5 h-[calc(100dvh-var(--app-shell-header-height,0px)-var(--app-shell-footer-height,0px)-var(--app-shell-padding)*2)]">
+        <AppShell.Main className="max-w-screen-lg mx-auto my-5 min-h-[calc(100dvh-var(--app-shell-header-height,0px)-var(--app-shell-footer-height,0px)-var(--app-shell-padding)*2)]">
           {content}
         </AppShell.Main>
       </AppShell>
