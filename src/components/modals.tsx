@@ -40,7 +40,7 @@ export function NewMatchModal({
           ? "Invalid match number"
           : null,
       teamNumber: (value) =>
-        value <= 0 || value > 9999 || !isNumberLike(value)
+        value <= 0 || value > 99999 || !isNumberLike(value)
           ? "Invalid team number"
           : null,
     },
