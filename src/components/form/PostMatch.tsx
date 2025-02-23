@@ -47,9 +47,9 @@ export function PostMatch({ matchId, initialData }: Props): ReactNode {
             {...form.getInputProps("unstable")}
           />
           <Switch
-            label="Dropped notes?"
+            label="Dropped game pieces?"
             classNames={{ label: "flex-grow text-mtn-xs md:text-mtn-md" }}
-            {...form.getInputProps("droppedNotes")}
+            {...form.getInputProps("droppedGamePieces")}
           />
           <Switch
             label="Alliance potential?"

@@ -1,4 +1,5 @@
 import { PWAUpdatePrompt } from "@/components/PWAUpdatePrompt";
+import { AppProvider } from "@/providers/AppState";
 import MantineProvider from "@/providers/Mantine";
 import Router from "@/providers/Router";
 import { StrictMode, lazy } from "react";
@@ -19,9 +20,11 @@ const DevTools =
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <MantineProvider>
-      <Router />
-      <PWAUpdatePrompt />
-      {DevTools ? <DevTools /> : null}
+      <AppProvider>
+        <Router />
+        <PWAUpdatePrompt />
+        {DevTools ? <DevTools /> : null}
+      </AppProvider>
     </MantineProvider>
   </StrictMode>,
 );

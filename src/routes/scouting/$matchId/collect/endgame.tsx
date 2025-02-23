@@ -1,13 +1,9 @@
 import { Endgame } from "@/components/form/Endgame";
 import { useMatch } from "@/data/db";
-import { useAppState } from "@/data/state";
 import { createFileRoute } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 
 export const Route = createFileRoute("/scouting/$matchId/collect/endgame")({
-  beforeLoad: async () => {
-    useAppState.getState().setMatchPhase("endgame");
-  },
   component: Page,
 });
 

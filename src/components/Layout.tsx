@@ -1,21 +1,19 @@
 import { AppLogo } from "@/components/Logo";
-import { phaseDetails } from "@/data/match";
-import { useAppState } from "@/data/state";
+import { phaseSlugToTitle } from "@/data/match";
 import { useSecretTap } from "@/hooks/useSecretTap";
 import { navbarHeight } from "@/styles/theme";
 import { AppShell, Button, Title } from "@mantine/core";
-import { useNavigate } from "@tanstack/react-router";
-import type { ReactNode } from "react";
+import { useLocation, useNavigate } from "@tanstack/react-router";
+import { type ReactNode, useMemo } from "react";
 
 type LayoutProps = {
   content: ReactNode;
 };
 
 export function Layout({ content }: LayoutProps): ReactNode {
-  // const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
-  //   useDisclosure(false);
-  const matchPhase = useAppState((state) => state.matchPhase);
   const navigate = useNavigate();
+  const path = useLocation({ select: (state) => state.pathname });
+
   const handleSecretTap = useSecretTap(
     () => {
       navigate({ to: "/admin" });
@@ -24,6 +22,17 @@ export function Layout({ content }: LayoutProps): ReactNode {
       navigate({ to: "/" });
     },
   );
+
+  const matchPhaseTitle = useMemo(() => {
+    const matchedPath = path.match(/\/scouting\/[^\/]*\/collect\/(.*)/);
+
+    let title = "Scouting";
+    if (matchedPath && matchedPath.length === 2) {
+      title = phaseSlugToTitle(matchedPath[1]);
+    }
+
+    return title;
+  }, [path]);
 
   return (
     <>
@@ -36,7 +45,7 @@ export function Layout({ content }: LayoutProps): ReactNode {
           />
           <div className="flex-1 flex">
             <Title className="text-2xl lg:text-4xl leading-none text-center">
-              {matchPhase ? phaseDetails[matchPhase].title : "Scouting"}
+              {matchPhaseTitle}
             </Title>
           </div>
           <div className="flex-1 flex">

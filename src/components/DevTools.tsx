@@ -1,5 +1,4 @@
 import { resetCollections } from "@/data/db";
-import { useAppState } from "@/data/state";
 import { useMediaQuery } from "@mantine/hooks";
 import type { ReactNode } from "react";
 
@@ -22,14 +21,6 @@ export default function DevTools(): ReactNode {
         <div>
           <button className="cursor-pointer" onClick={() => resetCollections()}>
             Reset Collections
-          </button>
-        </div>
-        <div>
-          <button
-            className="cursor-pointer"
-            onClick={() => useAppState.setState(useAppState.getInitialState())}
-          >
-            Reset App State
           </button>
         </div>
       </div>

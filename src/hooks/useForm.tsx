@@ -1,6 +1,6 @@
 import { type PhaseDataMap, setScoutingPhaseData } from "@/data/db";
 import type { ScoutingPhase } from "@/data/match";
-import { useAppState } from "@/data/state";
+import { useAppState } from "@/hooks/useAppState";
 import { type UseFormReturnType, useForm as useFormM } from "@mantine/form";
 import { useDebouncedCallback } from "@mantine/hooks";
 import { valibotResolver } from "mantine-form-valibot-resolver";

@@ -6,7 +6,7 @@ import { Teleop } from "@/components/form/Teleop";
 import { openDeleteModal } from "@/components/modals";
 import { matchCollection, useMatch } from "@/data/db";
 import { type ScoutingPhase, phaseDetails, phaseOrder } from "@/data/match";
-import { useAppState } from "@/data/state";
+import { useAppState } from "@/hooks/useAppState";
 import { cn } from "@/util";
 import { Button, Loader, Paper } from "@mantine/core";
 import { createFileRoute } from "@tanstack/react-router";

@@ -30,7 +30,7 @@ type PhaseDetail = {
 
 export const phaseDetails: { [key in ScoutingPhase]: PhaseDetail } = {
   preMatch: {
-    title: "Pre-Match",
+    title: "Pre Match",
     slug: "pre-match",
     icon: IconListCheck,
   },
@@ -50,7 +50,7 @@ export const phaseDetails: { [key in ScoutingPhase]: PhaseDetail } = {
     icon: IconStopwatch,
   },
   postMatch: {
-    title: "Post-Match",
+    title: "Post Match",
     slug: "post-match",
     icon: IconListCheck,
   },
@@ -59,6 +59,12 @@ export const phaseDetails: { [key in ScoutingPhase]: PhaseDetail } = {
 export const phaseRoutes = phaseOrder.map(
   (phase) => phaseDetails[phase].slug,
 ) as ["pre-match", "auto", "teleop", "endgame", "post-match"];
+
+export function phaseSlugToTitle(slug: string): string {
+  return phaseDetails[
+    phaseOrder.find((phase) => phaseDetails[phase].slug === slug)!
+  ].title;
+}
 
 // Pretty sure this is generally considered bad practice,
 // but allows us to swap out years easily
