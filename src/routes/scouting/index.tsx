@@ -77,7 +77,7 @@ function Page(): ReactNode {
 
       <div className="flex md:flex-row flex-col mb-2 md:mb-6 gap-2 flex-none">
         <div
-          className="text-4xl flex-grow data-[mobile=true]:hidden"
+          className="text-4xl flex-grow hidden md:block"
           data-mobile={isMobile}
         >
           Match List
@@ -85,6 +85,7 @@ function Page(): ReactNode {
 
         {matches.length > 0 ? (
           <>
+            {/* TODO: These buttons should match the prev/next buttons */}
             <NewMatchButton />
             <Button
               className="text-3xl"

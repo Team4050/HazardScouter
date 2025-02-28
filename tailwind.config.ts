@@ -23,6 +23,10 @@ const config: Config = {
       colors: {
         primary: "var(--mantine-primary-color-filled)",
       },
+      screens: {
+        sm: "600px",
+        md: "1000px",
+      },
     },
   },
   plugins: [

@@ -35,7 +35,7 @@ export function Layout({ content }: LayoutProps): ReactNode {
         <AppShell.Header className="flex items-center px-2 first-child:mr-auto first-child:justify-start last-child:justify-end last-child:ml-auto middle-child:justify-center">
           <AppLogo
             className="py-0.5 flex-1 flex"
-            classNames={{ text: "md:block hidden" }}
+            classNames={{ text: "sm:block hidden" }}
             onClick={() => navigate({ to: "/" })}
           />
           <div className="flex-1 flex">

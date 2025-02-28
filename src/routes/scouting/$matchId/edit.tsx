@@ -94,7 +94,7 @@ function Section({ children, phase }: SectionProps): ReactNode {
     <>
       <Paper
         className={cn(
-          "gap-y-4 px-2 py-4 md:p-6",
+          "gap-y-4 px-2 py-4 sm:p-6",
           isPhaseValid(phase) ? "border-green-500" : "border-red-500",
         )}
         shadow="xl"

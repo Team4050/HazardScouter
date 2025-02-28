@@ -32,7 +32,7 @@ function Page(): ReactNode {
           radius="xs"
           classNames={{
             root: isMobile ? "pl-2 ml-1" : undefined,
-            item: isMobile ? "pl-2" : undefined,
+            item: cn(isMobile ? "pl-2" : undefined, "mr-4"),
           }}
         >
           <Timeline.Item title="Metadata">

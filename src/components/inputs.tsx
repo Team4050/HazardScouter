@@ -202,7 +202,7 @@ export const Counter = memo(function Counter({
   return (
     <div
       className={cn(
-        "flex flex-col items-center justify-center mx-auto w-[150px] md:w-[180px]",
+        "flex flex-col items-center justify-center mx-auto w-[150px] sm:w-[180px]",
         className,
       )}
     >

@@ -30,40 +30,40 @@ export function PostMatch({ matchId, initialData }: Props): ReactNode {
       </div>
 
       <Paper
-        className="flex flex-col px-1 py-2 md:p-4 mt-4 items-center w-fit mx-auto"
+        className="flex flex-col px-1 py-2 sm:p-4 mt-4 items-center w-fit mx-auto"
         shadow="md"
         radius="sm"
         bg="dark"
       >
-        <div className="grid grid-cols-3 md:flex items-end gap-y-4 md:items-center *:flex-1 text-center">
+        <div className="grid grid-cols-3 md:flex items-end gap-y-4 *:flex-1 text-center">
           <Switch
             label="Died?"
-            classNames={{ label: "flex-grow text-mtn-xs md:text-mtn-md" }}
+            classNames={{ label: "flex-grow text-mtn-xs sm:text-mtn-md" }}
             {...form.getInputProps("died")}
           />
           <Switch
             label="Unstable?"
-            classNames={{ label: "flex-grow text-mtn-xs md:text-mtn-md" }}
+            classNames={{ label: "flex-grow text-mtn-xs sm:text-mtn-md" }}
             {...form.getInputProps("unstable")}
           />
           <Switch
             label="Dropped game pieces?"
-            classNames={{ label: "flex-grow text-mtn-xs md:text-mtn-md" }}
+            classNames={{ label: "flex-grow text-mtn-xs sm:text-mtn-md" }}
             {...form.getInputProps("droppedGamePieces")}
           />
           <Switch
             label="Alliance potential?"
-            classNames={{ label: "flex-grow text-mtn-xs md:text-mtn-md" }}
+            classNames={{ label: "flex-grow text-mtn-xs sm:text-mtn-md" }}
             {...form.getInputProps("goodAlliancePartner")}
           />
           <Switch
             label="E-Stopped?"
-            classNames={{ label: "flex-grow text-mtn-xs md:text-mtn-md" }}
+            classNames={{ label: "flex-grow text-mtn-xs sm:text-mtn-md" }}
             {...form.getInputProps("eStopped")}
           />
           <Switch
             label="A-Stopped?"
-            classNames={{ label: "flex-grow text-mtn-xs md:text-mtn-md" }}
+            classNames={{ label: "flex-grow text-mtn-xs sm:text-mtn-md" }}
             {...form.getInputProps("aStopped")}
           />
         </div>

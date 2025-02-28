@@ -20,7 +20,7 @@ export function Auto({ matchId, initialData }: Props): ReactNode {
   });
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 grid-rows-4">
+    <div className="grid grid-cols-2 sm:grid-cols-3 grid-rows-4">
       <div className="row-span-full flex flex-col gap-y-5 my-auto md:gap-y-2">
         <Switch
           label="Left starting line"
@@ -61,7 +61,7 @@ export function Auto({ matchId, initialData }: Props): ReactNode {
 
       <Counter
         label="Coral Level 4"
-        className="mt-0 mb-0 md:mb-auto"
+        className="mt-0 mb-0 sm:mb-auto"
         {...form.getInputProps("reef.coralLevel4")}
       />
       <Counter
@@ -74,7 +74,7 @@ export function Auto({ matchId, initialData }: Props): ReactNode {
       />
       <Counter
         label="Coral Level 1"
-        className="mb-0 mt-0 md:mt-auto"
+        className="mb-0 mt-0 sm:mt-auto"
         {...form.getInputProps("reef.coralLevel1")}
       />
     </div>
