@@ -30,12 +30,12 @@ export function PostMatch({ matchId, initialData }: Props): ReactNode {
       </div>
 
       <Paper
-        className="flex flex-col p-1 md:p-4 mt-4 items-center w-fit mx-auto"
+        className="flex flex-col px-1 py-2 md:p-4 mt-4 items-center w-fit mx-auto"
         shadow="md"
         radius="sm"
         bg="dark"
       >
-        <div className="flex items-center justify-around *:flex-1 text-center">
+        <div className="grid grid-cols-3 md:flex items-end gap-y-4 md:items-center *:flex-1 text-center">
           <Switch
             label="Died?"
             classNames={{ label: "flex-grow text-mtn-xs md:text-mtn-md" }}
@@ -74,7 +74,7 @@ export function PostMatch({ matchId, initialData }: Props): ReactNode {
         autosize
         minRows={4}
         classNames={{
-          input: "text-mtn-xs",
+          input: "text-mtn-xs mt-2",
         }}
         {...form.getInputProps("comments")}
       />

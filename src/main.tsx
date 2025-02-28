@@ -1,4 +1,3 @@
-import { PWAUpdatePrompt } from "@/components/PWAUpdatePrompt";
 import { AppProvider } from "@/providers/AppState";
 import MantineProvider from "@/providers/Mantine";
 import Router from "@/providers/Router";
@@ -22,7 +21,6 @@ createRoot(document.getElementById("root")!).render(
     <MantineProvider>
       <AppProvider>
         <Router />
-        <PWAUpdatePrompt />
         {DevTools ? <DevTools /> : null}
       </AppProvider>
     </MantineProvider>

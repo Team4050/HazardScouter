@@ -42,19 +42,21 @@ function Page(): ReactNode {
   };
 
   return (
-    <div className="grid grid-flow-row gap-y-6">
-      {phaseOrder.map((phase) => {
-        return (
-          <Section key={phase} phase={phase}>
-            {getPhaseForm(phase)}
-          </Section>
-        );
-      })}
-      <div className="flex">
+    <div className="flex md:flex-col flex-col-reverse gap-y-6">
+      <div className="flex flex-col gap-y-6">
+        {phaseOrder.map((phase) => {
+          return (
+            <Section key={phase} phase={phase}>
+              {getPhaseForm(phase)}
+            </Section>
+          );
+        })}
+      </div>
+      <div className="flex h-14 md:h-auto justify-between">
         <Button
           onClick={() => history.go(-1)}
           size="compact-lg"
-          className="w-40 font-normal"
+          className="w-40 h-full font-normal"
         >
           {"< Back"}
         </Button>
@@ -62,7 +64,7 @@ function Page(): ReactNode {
           color="red"
           size="compact-lg"
           variant="subtle"
-          className="w-40 font-normal ml-auto"
+          className="w-40 font-normal h-full"
           onClick={() => {
             openDeleteModal({
               onConfirm: () => {
@@ -92,7 +94,7 @@ function Section({ children, phase }: SectionProps): ReactNode {
     <>
       <Paper
         className={cn(
-          "space-y-4 p-6",
+          "gap-y-4 px-2 py-4 md:p-6",
           isPhaseValid(phase) ? "border-green-500" : "border-red-500",
         )}
         shadow="xl"

@@ -1,3 +1,4 @@
+import { useIsMobile } from "@/hooks/useIsMobile";
 import { cn } from "@/util";
 import {
   Button,
@@ -90,6 +91,7 @@ export function Switch({
   ...switchProps
 }: SwitchProps): ReactNode {
   const { label: labelClassNames, ...switchClassNames } = classNames ?? {};
+  const isMobile = useIsMobile();
   return (
     <div className={cn("flex flex-col items-center", className)}>
       {label ? (
@@ -99,7 +101,7 @@ export function Switch({
       ) : null}
       <MSwitch
         radius="xs"
-        size="xl"
+        size={isMobile ? "lg" : "xl"}
         classNames={switchClassNames}
         {...switchProps}
       />
@@ -200,7 +202,7 @@ export const Counter = memo(function Counter({
   return (
     <div
       className={cn(
-        "flex flex-col items-center justify-center mx-auto w-[180px]",
+        "flex flex-col items-center justify-center mx-auto w-[150px] md:w-[180px]",
         className,
       )}
     >
@@ -214,7 +216,7 @@ export const Counter = memo(function Counter({
           onClick={handleDecrement}
           disabled={internalValue === min}
           classNames={{
-            root: "px-0 w-full font-normal text-4xl",
+            root: "px-0 w-full font-normal text-5xl",
             inner: "pl-0.5",
           }}
         >
@@ -223,7 +225,7 @@ export const Counter = memo(function Counter({
         <NumberInput
           hideControls
           classNames={{
-            input: "text-center text-3xl",
+            input: "text-center text-4xl px-0",
           }}
           min={min}
           max={max}
@@ -236,7 +238,7 @@ export const Counter = memo(function Counter({
           onClick={handleIncrement}
           disabled={internalValue === max}
           classNames={{
-            root: "px-0 w-full font-normal text-4xl",
+            root: "px-0 w-full font-normal text-5xl",
             inner: "pl-0.5",
           }}
         >

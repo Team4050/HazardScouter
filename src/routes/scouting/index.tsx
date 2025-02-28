@@ -5,7 +5,8 @@ import {
 } from "@/components/modals";
 import { downloadMatches, matchCollection, useReactivity } from "@/data/db";
 import { phaseDetails, phaseOrder } from "@/data/match";
-import { shortDayName } from "@/util";
+import { useIsMobile } from "@/hooks/useIsMobile";
+import { cn, shortDayName } from "@/util";
 import { ActionIcon, Button, Paper, Table } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
@@ -20,6 +21,7 @@ function Page(): ReactNode {
   const navigate = Route.useNavigate();
   const matches = useReactivity(() => matchCollection.find().fetch(), []);
   const canFinish = !!matches.filter((m) => m.finished !== undefined).length;
+  const isMobile = useIsMobile();
 
   const [newModalOpened, { open: openNewModal, close: closeNewModal }] =
     useDisclosure();
@@ -73,8 +75,13 @@ function Page(): ReactNode {
     <div className="flex flex-col h-full">
       <NewMatchModal opened={newModalOpened} onClose={closeNewModal} />
 
-      <div className="flex mb-6 gap-x-2 flex-none">
-        <div className="text-4xl flex-grow">Match List</div>
+      <div className="flex md:flex-row flex-col mb-2 md:mb-6 gap-2 flex-none">
+        <div
+          className="text-4xl flex-grow data-[mobile=true]:hidden"
+          data-mobile={isMobile}
+        >
+          Match List
+        </div>
 
         {matches.length > 0 ? (
           <>
@@ -105,7 +112,18 @@ function Page(): ReactNode {
                 <Table.Tr>
                   {["Match", "Team", "Scouter", "Started", "Finished"].map(
                     (head) => (
-                      <Table.Th key={head}>{head}</Table.Th>
+                      <Table.Th
+                        key={head}
+                        // The below code is not how this is supposed to be done
+                        className={cn(
+                          (head === "Started" || head === "Finished") &&
+                            isMobile
+                            ? "hidden"
+                            : null,
+                        )}
+                      >
+                        {head}
+                      </Table.Th>
                     ),
                   )}
                   <Table.Th className="w-0" />
@@ -132,10 +150,16 @@ function Page(): ReactNode {
                         <Table.Td>{matchNumber}</Table.Td>
                         <Table.Td>{teamNumber}</Table.Td>
                         <Table.Td>{scouter}</Table.Td>
-                        <Table.Td>
+                        <Table.Td
+                          className="data-[mobile=true]:hidden"
+                          data-mobile={isMobile}
+                        >
                           {`${shortDayName(startedDate)} ${startedDate.toLocaleTimeString()}`}
                         </Table.Td>
-                        <Table.Td>
+                        <Table.Td
+                          className="data-[mobile=true]:hidden"
+                          data-mobile={isMobile}
+                        >
                           {finishedDate
                             ? `${shortDayName(finishedDate)} ${finishedDate.toLocaleTimeString()}`
                             : "In Progress"}

@@ -1,8 +1,10 @@
 import { AppLogo } from "@/components/Logo";
 import { phaseSlugToTitle } from "@/data/match";
-import { useSecretTap } from "@/hooks/useSecretTap";
+import { useIsScoutingTablet } from "@/hooks/useIsMobile";
+import { usePWAUpdater } from "@/hooks/usePWAUpdater";
 import { navbarHeight } from "@/styles/theme";
-import { AppShell, Button, Title } from "@mantine/core";
+import { ActionIcon, AppShell, Button, Title } from "@mantine/core";
+import { IconRefreshAlert } from "@tabler/icons-react";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { type ReactNode, useMemo } from "react";
 
@@ -11,17 +13,10 @@ type LayoutProps = {
 };
 
 export function Layout({ content }: LayoutProps): ReactNode {
+  const isTablet = useIsScoutingTablet();
   const navigate = useNavigate();
   const path = useLocation({ select: (state) => state.pathname });
-
-  const handleSecretTap = useSecretTap(
-    () => {
-      navigate({ to: "/admin" });
-    },
-    () => {
-      navigate({ to: "/" });
-    },
-  );
+  const { needRefresh, forceUpdate } = usePWAUpdater();
 
   const matchPhaseTitle = useMemo(() => {
     const matchedPath = path.match(/\/scouting\/[^\/]*\/collect\/(.*)/);
@@ -41,7 +36,7 @@ export function Layout({ content }: LayoutProps): ReactNode {
           <AppLogo
             className="py-0.5 flex-1 flex"
             classNames={{ text: "md:block hidden" }}
-            onClick={handleSecretTap}
+            onClick={() => navigate({ to: "/" })}
           />
           <div className="flex-1 flex">
             <Title className="text-2xl lg:text-4xl leading-none text-center">
@@ -49,17 +44,28 @@ export function Layout({ content }: LayoutProps): ReactNode {
             </Title>
           </div>
           <div className="flex-1 flex">
-            <Button
-              className="hidden lg:block"
-              variant="subtle"
-              onClick={() => navigate({ to: "/admin" })}
-            >
-              Scouting Admin
-            </Button>
+            {!isTablet ? (
+              <Button
+                className="hidden lg:block"
+                variant="subtle"
+                onClick={() => navigate({ to: "/admin" })}
+              >
+                Scouting Admin
+              </Button>
+            ) : null}
+            {needRefresh ? (
+              <ActionIcon
+                variant="transparent"
+                className="my-auto"
+                onClick={forceUpdate}
+              >
+                <IconRefreshAlert />
+              </ActionIcon>
+            ) : null}
           </div>
         </AppShell.Header>
 
-        <AppShell.Main className="max-w-screen-lg mx-auto my-5 min-h-[calc(100dvh-var(--app-shell-header-height,0px)-var(--app-shell-footer-height,0px)-var(--app-shell-padding)*2)]">
+        <AppShell.Main className="max-w-screen-lg mx-auto my-2 md:my-5 min-h-[calc(100dvh-var(--app-shell-header-height,0px)-var(--app-shell-footer-height,0px)-var(--app-shell-padding)*2)]">
           {content}
         </AppShell.Main>
       </AppShell>

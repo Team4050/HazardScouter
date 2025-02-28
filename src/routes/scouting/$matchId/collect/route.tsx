@@ -9,9 +9,9 @@ export const Route = createFileRoute("/scouting/$matchId/collect")({
 function Page(): ReactNode {
   const { matchId } = Route.useParams();
   return (
-    <>
+    <div className="flex md:flex-col flex-col-reverse gap-y-4">
       <Outlet />
       <FormNavigation matchId={matchId} />
-    </>
+    </div>
   );
 }
