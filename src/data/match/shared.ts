@@ -51,7 +51,7 @@ export const teamReviewSchema = object({
   unstable: boolean(),
   droppedGamePieces: boolean(),
   potentialPartner: boolean(),
-  comments: pipe(string(), maxLength(10)),
+  comments: pipe(string(), maxLength(500)),
   eStopped: boolean(),
   aStopped: boolean(),
 });
