@@ -7,8 +7,8 @@ import path from "node:path";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 
-const commitHash = execSync("git rev-parse --short HEAD").toString();
-const commitCount = execSync("git rev-list --count HEAD").toString();
+const commitHash = execSync("git rev-parse --short HEAD").toString().trim();
+const commitCount = execSync("git rev-list --count HEAD").toString().trim();
 
 export default defineConfig({
   define: {
