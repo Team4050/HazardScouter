@@ -22,7 +22,7 @@ Sentry.init({
   integrations: [
     Sentry.captureConsoleIntegration({ levels: ["error", "warn"] }),
   ],
-  release: __COMMIT_COUNT__,
+  release: __COMMIT_HASH__,
   denyUrls: ["localhost"],
 });
 

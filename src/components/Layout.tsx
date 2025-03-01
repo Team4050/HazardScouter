@@ -45,7 +45,7 @@ export function Layout({ content }: LayoutProps): ReactNode {
           </div>
           <div className="flex-1 flex">
             {isTablet ? (
-              <span className="opacity-50">{__COMMIT_COUNT__}</span>
+              <span className="opacity-50">{__COMMIT_HASH__}</span>
             ) : (
               <Button
                 className="hidden lg:block"

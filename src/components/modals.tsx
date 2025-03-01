@@ -7,7 +7,7 @@ import {
   NumberInput,
   isNumberLike,
 } from "@mantine/core";
-import { isNotEmpty, useForm } from "@mantine/form";
+import { useForm } from "@mantine/form";
 import { modals } from "@mantine/modals";
 import { useNavigate } from "@tanstack/react-router";
 import { type ReactNode, useMemo, useState } from "react";
@@ -34,7 +34,10 @@ export function NewMatchModal({
   const form = useForm<Omit<Match, "started" | "finished" | "phases">>({
     mode: "uncontrolled",
     validate: {
-      scouter: isNotEmpty("Scouter name is required"),
+      scouter: (value) =>
+        value.length <= 0 || value.length >= 50 || isNumberLike(value)
+          ? "Invalid scouter name"
+          : null,
       matchNumber: (value) =>
         value <= 0 || value > 999 || !isNumberLike(value)
           ? "Invalid match number"
