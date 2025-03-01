@@ -19,6 +19,7 @@ const DevTools =
 
 Sentry.init({
   dsn: "https://055ca8caf4488f3cc1647425883ed0ad@o4508903100186624.ingest.us.sentry.io/4508903134789637",
+  integrations: [Sentry.captureConsoleIntegration()],
 });
 
 createRoot(document.getElementById("root")!).render(

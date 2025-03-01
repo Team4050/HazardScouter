@@ -166,7 +166,6 @@ function Page(): ReactNode {
           <div>Drag all tablet files here or click to select files</div>
         </Group>
       </Dropzone>
-
       <Paper withBorder shadow="xl" className="py-2">
         {rowData.length ? (
           <Table highlightOnHover>
@@ -201,7 +200,6 @@ function Page(): ReactNode {
           <div className="text-center">No files uploaded</div>
         )}
       </Paper>
-
       <div className="mx-auto flex gap-x-4">
         <Button leftSection={<IconDownload />} onClick={onDownload}>
           Compile and Download
@@ -210,6 +208,13 @@ function Page(): ReactNode {
           Clear files
         </Button>
       </div>
+      <button
+        onClick={() => {
+          throw new Error("This is your first error!");
+        }}
+      >
+        Boom
+      </button>
     </div>
   );
 }
