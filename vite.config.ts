@@ -39,7 +39,7 @@ export default defineConfig({
       manifest: {
         theme_color: "#16A34A",
         background_color: "#4B5563",
-        display: "fullscreen",
+        display: "standalone",
         scope: "/",
         start_url: "/",
         short_name: "HazardScouter",
