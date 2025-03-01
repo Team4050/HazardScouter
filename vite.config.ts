@@ -1,3 +1,4 @@
+import { sentryVitePlugin } from "@sentry/vite-plugin";
 import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 import legacy from "@vitejs/plugin-legacy";
 import react from "@vitejs/plugin-react";
@@ -70,11 +71,20 @@ export default defineConfig({
         ],
       },
     }),
+    sentryVitePlugin({
+      org: "seesexyz",
+      project: "hazard-scouter",
+    }),
   ],
+
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
       "@tabler/icons-react": "@tabler/icons-react/dist/esm/icons/index.mjs",
     },
+  },
+
+  build: {
+    sourcemap: true,
   },
 });

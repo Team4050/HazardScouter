@@ -21,6 +21,8 @@
     "@mantine/modals": "^7.17.1",
     "@mantine/notifications": "^7.17.1",
     "@maverick-js/signals": "^6.0.0",
+    "@sentry/react": "^9.3.0",
+    "@sentry/vite-plugin": "^3.2.1",
     "@tabler/icons-react": "^3.30.0",
     "@tanstack/react-router": "^1.112.0",
     "@types/downloadjs": "^1.4.6",
