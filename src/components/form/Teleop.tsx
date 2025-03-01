@@ -42,8 +42,12 @@ export function Teleop({ matchId, initialData }: Props): ReactNode {
           label="Processor Scores"
           {...form.getInputProps("processor")}
         />
-        <Counter label="Net Scores" {...form.getInputProps("net")} />
-        <Switch label="Removed Algae" {...form.getInputProps("removedAlgae")} />
+        <Counter label="Net Scores" max={99} {...form.getInputProps("net")} />
+        <Switch
+          label="Removed Algae"
+          max={99}
+          {...form.getInputProps("removedAlgae")}
+        />
       </div>
 
       <svg
@@ -67,19 +71,23 @@ export function Teleop({ matchId, initialData }: Props): ReactNode {
       <Counter
         label="Coral Level 4"
         className="mt-0 mb-0 sm:mb-auto"
+        max={12}
         {...form.getInputProps("reef.coralLevel4")}
       />
       <Counter
         label="Coral Level 3"
+        max={12}
         {...form.getInputProps("reef.coralLevel3")}
       />
       <Counter
         label="Coral Level 2"
+        max={12}
         {...form.getInputProps("reef.coralLevel2")}
       />
       <Counter
         label="Coral Level 1"
         className="mb-0 mt-0 sm:mt-auto"
+        max={12}
         {...form.getInputProps("reef.coralLevel1")}
       />
     </div>
