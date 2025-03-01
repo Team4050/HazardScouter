@@ -44,7 +44,9 @@ export function Layout({ content }: LayoutProps): ReactNode {
             </Title>
           </div>
           <div className="flex-1 flex">
-            {!isTablet ? (
+            {isTablet ? (
+              <span className="opacity-50">{__COMMIT_COUNT__}</span>
+            ) : (
               <Button
                 className="hidden lg:block"
                 variant="subtle"
@@ -52,7 +54,7 @@ export function Layout({ content }: LayoutProps): ReactNode {
               >
                 Scouting Admin
               </Button>
-            ) : null}
+            )}
             {needRefresh ? (
               <ActionIcon
                 variant="transparent"

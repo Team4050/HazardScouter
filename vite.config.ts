@@ -2,11 +2,19 @@ import { sentryVitePlugin } from "@sentry/vite-plugin";
 import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 import legacy from "@vitejs/plugin-legacy";
 import react from "@vitejs/plugin-react";
+import { execSync } from "node:child_process";
 import path from "node:path";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 
+const commitHash = execSync("git rev-parse --short HEAD").toString();
+const commitCount = execSync("git rev-list --count HEAD").toString();
+
 export default defineConfig({
+  define: {
+    __COMMIT_HASH__: JSON.stringify(commitHash),
+    __COMMIT_COUNT__: JSON.stringify(commitCount),
+  },
   plugins: [
     legacy({
       targets: ["chrome >= 108"],
@@ -74,6 +82,9 @@ export default defineConfig({
     sentryVitePlugin({
       org: "seesexyz",
       project: "hazard-scouter",
+      release: {
+        name: commitCount,
+      },
     }),
   ],
 
