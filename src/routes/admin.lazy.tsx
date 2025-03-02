@@ -208,13 +208,6 @@ function Page(): ReactNode {
           Clear files
         </Button>
       </div>
-      <button
-        onClick={() => {
-          throw new Error("This is your first error!");
-        }}
-      >
-        Boom
-      </button>
     </div>
   );
 }

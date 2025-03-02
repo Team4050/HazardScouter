@@ -62,9 +62,9 @@ export function Teleop({ matchId, initialData }: Props): ReactNode {
         <path
           d="M3 221.5V182M41 3V29C41 33.4066 38.9253 37.556 35.4 40.2L8.6 60.3C5.07472 62.944 3 67.0934 3 71.5V182M3 182L41 156M3 122L41 96"
           stroke="#D115EB"
-          stroke-width="6"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </svg>
 
