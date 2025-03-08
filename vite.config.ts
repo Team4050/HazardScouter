@@ -41,8 +41,15 @@ export default defineConfig({
         clientsClaim: true,
         // Activate new service worker immediately
         skipWaiting: true,
-        // Don't fallback on document root index.html
-        navigateFallback: null,
+        runtimeCaching: [
+          {
+            urlPattern: /\/$/, // Matches root path
+            handler: "NetworkFirst",
+            options: {
+              networkTimeoutSeconds: 5,
+            },
+          },
+        ],
       },
       includeAssets: ["**/*"],
       manifest: {

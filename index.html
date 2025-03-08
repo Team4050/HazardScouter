@@ -17,5 +17,16 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      window.addEventListener('offline', () => {
+        // Disable pull-to-refresh when offline
+        document.body.style.overscrollBehavior = 'none';
+      });
+
+      window.addEventListener('online', () => {
+        // Re-enable pull-to-refresh when online
+        document.body.style.overscrollBehavior = 'auto';
+      });
+    </script>
   </body>
 </html>
