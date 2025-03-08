@@ -1,6 +1,5 @@
 import { sentryVitePlugin } from "@sentry/vite-plugin";
 import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
-import legacy from "@vitejs/plugin-legacy";
 import react from "@vitejs/plugin-react";
 import { execSync } from "node:child_process";
 import path from "node:path";
@@ -16,19 +15,19 @@ export default defineConfig({
     // __COMMIT_COUNT__: JSON.stringify(commitCount),
   },
   plugins: [
-    legacy({
-      targets: ["chrome >= 108"],
-      modernTargets: ["chrome >= 109"],
-      polyfills: ["es.object.has-own", "es.array.at"],
-      modernPolyfills: true,
-    }),
+    // legacy({
+    //   targets: ["chrome >= 108"],
+    //   modernTargets: ["chrome >= 109"],
+    //   polyfills: ["es.object.has-own", "es.array.at"],
+    //   modernPolyfills: true,
+    // }),
     TanStackRouterVite({
       quoteStyle: "double",
       semicolons: true,
     }),
     react(),
     VitePWA({
-      registerType: "prompt",
+      registerType: "autoUpdate",
       devOptions: {
         enabled: false,
       },
