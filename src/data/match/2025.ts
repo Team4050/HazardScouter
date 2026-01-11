@@ -1,4 +1,3 @@
-import { saneScoreSchema } from "@/data/match/shared";
 import type { InferOutput } from "valibot";
 import {
   boolean,
@@ -9,6 +8,7 @@ import {
   object,
   pipe,
 } from "valibot";
+import { saneScoreSchema } from "@/data/match/shared";
 
 export enum PickupType {
   CoralStation = "coral-station",

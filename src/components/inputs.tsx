@@ -1,5 +1,3 @@
-import { useIsMobile } from "@/hooks/useIsMobile";
-import { cn } from "@/util";
 import {
   Button,
   Autocomplete as MAutocomplete,
@@ -16,7 +14,9 @@ import {
   type NumberInputHandlers,
   type NumberInputProps,
 } from "@mantine/core";
-import { type ReactNode, memo, useCallback, useRef, useState } from "react";
+import { memo, type ReactNode, useCallback, useRef, useState } from "react";
+import { useIsMobile } from "@/hooks/useIsMobile";
+import { cn } from "@/util";
 
 type InputProps = {
   value?: boolean;

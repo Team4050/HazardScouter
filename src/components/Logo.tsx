@@ -1,5 +1,5 @@
-import { cn } from "@/util";
 import type { ReactNode, SVGProps } from "react";
+import { cn } from "@/util";
 
 type Props = {
   className?: string;

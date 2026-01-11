@@ -1,9 +1,9 @@
+import type { ReactNode } from "react";
 import { Counter, Switch } from "@/components/inputs";
 import type { PhaseDataMap } from "@/data/db";
 import { autoDefaults, autoSchema } from "@/data/match";
 import { useForm } from "@/hooks/useForm";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import type { ReactNode } from "react";
 
 type Props = {
   matchId: string;

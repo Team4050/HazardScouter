@@ -1,12 +1,12 @@
+import { ActionIcon, AppShell, Button, Title } from "@mantine/core";
+import { IconRefreshAlert } from "@tabler/icons-react";
+import { useLocation, useNavigate } from "@tanstack/react-router";
+import { type ReactNode, useMemo } from "react";
 import { AppLogo } from "@/components/Logo";
 import { phaseSlugToTitle } from "@/data/match";
 import { useIsScoutingTablet } from "@/hooks/useIsMobile";
 import { usePWAUpdater } from "@/hooks/usePWAUpdater";
 import { navbarHeight } from "@/styles/theme";
-import { ActionIcon, AppShell, Button, Title } from "@mantine/core";
-import { IconRefreshAlert } from "@tabler/icons-react";
-import { useLocation, useNavigate } from "@tanstack/react-router";
-import { type ReactNode, useMemo } from "react";
 
 type LayoutProps = {
   content: ReactNode;
@@ -19,7 +19,7 @@ export function Layout({ content }: LayoutProps): ReactNode {
   const { needRefresh, forceUpdate } = usePWAUpdater();
 
   const matchPhaseTitle = useMemo(() => {
-    const matchedPath = path.match(/\/scouting\/[^\/]*\/collect\/(.*)/);
+    const matchedPath = path.match(/\/scouting\/[^/]*\/collect\/(.*)/);
 
     let title = "Scouting";
     if (matchedPath && matchedPath.length === 2) {

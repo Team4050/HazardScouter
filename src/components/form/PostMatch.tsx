@@ -1,9 +1,9 @@
+import { Paper } from "@mantine/core";
+import type { ReactNode } from "react";
 import { Slider, Switch, Textarea } from "@/components/inputs";
 import type { PhaseDataMap } from "@/data/db";
 import { teamReviewDefaults, teamReviewSchema } from "@/data/match";
 import { useForm } from "@/hooks/useForm";
-import { Paper } from "@mantine/core";
-import type { ReactNode } from "react";
 
 type Props = {
   matchId: string;

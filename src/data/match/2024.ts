@@ -1,6 +1,6 @@
-import { saneScoreSchema } from "@/data/match/shared";
 import type { InferOutput } from "valibot";
 import { boolean, enum_, object } from "valibot";
+import { saneScoreSchema } from "@/data/match/shared";
 
 export enum PickupType {
   Source = "source",

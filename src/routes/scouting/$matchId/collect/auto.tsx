@@ -1,7 +1,7 @@
-import { Auto } from "@/components/form/Auto";
-import { useMatch } from "@/data/db";
 import { createFileRoute } from "@tanstack/react-router";
 import type { ReactNode } from "react";
+import { Auto } from "@/components/form/Auto";
+import { useMatch } from "@/data/db";
 
 export const Route = createFileRoute("/scouting/$matchId/collect/auto")({
   component: Page,

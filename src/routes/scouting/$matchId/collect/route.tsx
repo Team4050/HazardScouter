@@ -1,6 +1,6 @@
-import { FormNavigation } from "@/components/form/Navigation";
-import { Outlet, createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
 import type { ReactNode } from "react";
+import { FormNavigation } from "@/components/form/Navigation";
 
 export const Route = createFileRoute("/scouting/$matchId/collect")({
   component: Page,

@@ -1,10 +1,10 @@
-import type { Icon } from "@/util";
 import {
   IconDeviceGamepad2,
   IconListCheck,
   IconRoute2,
   IconStopwatch,
 } from "@tabler/icons-react";
+import type { Icon } from "@/util";
 
 export type ScoutingPhase =
   | "preMatch"
@@ -62,6 +62,7 @@ export const phaseRoutes = phaseOrder.map(
 
 export function phaseSlugToTitle(slug: string): string {
   return phaseDetails[
+    // biome-ignore lint/style/noNonNullAssertion: We expect only valid slugs to be here
     phaseOrder.find((phase) => phaseDetails[phase].slug === slug)!
   ].title;
 }

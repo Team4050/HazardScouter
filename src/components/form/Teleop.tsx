@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Counter, Select, Switch } from "@/components/inputs";
 import type { PhaseDataMap } from "@/data/db";
 import {
@@ -9,7 +10,6 @@ import {
 import { useForm } from "@/hooks/useForm";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { enumToSelectItem } from "@/util";
-import type { ReactNode } from "react";
 
 type Props = {
   matchId: string;

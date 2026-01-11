@@ -1,8 +1,8 @@
+import { execSync } from "node:child_process";
+import path from "node:path";
 import { sentryVitePlugin } from "@sentry/vite-plugin";
 import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
-import { execSync } from "node:child_process";
-import path from "node:path";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 

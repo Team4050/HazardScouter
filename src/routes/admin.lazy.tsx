@@ -1,5 +1,4 @@
-import { parseMatchesFile } from "@/data/db";
-import { ActionIcon, Button, Group, Paper, Table, rem } from "@mantine/core";
+import { ActionIcon, Button, Group, Paper, rem, Table } from "@mantine/core";
 import { Dropzone, type FileRejection } from "@mantine/dropzone";
 import { useForceUpdate } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
@@ -14,6 +13,7 @@ import {
 import { createLazyFileRoute } from "@tanstack/react-router";
 import download from "downloadjs";
 import { type ReactNode, useEffect, useState } from "react";
+import { parseMatchesFile } from "@/data/db";
 
 export const Route = createLazyFileRoute("/admin")({
   component: Page,

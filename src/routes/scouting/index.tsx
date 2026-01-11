@@ -1,3 +1,8 @@
+import { ActionIcon, Button, Paper, Table } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import { IconPencil, IconTrash } from "@tabler/icons-react";
+import { createFileRoute } from "@tanstack/react-router";
+import { type ReactNode, useCallback } from "react";
 import {
   NewMatchModal,
   openDeleteModal,
@@ -7,11 +12,6 @@ import { downloadMatches, matchCollection, useReactivity } from "@/data/db";
 import { phaseDetails, phaseOrder } from "@/data/match";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { cn, shortDayName } from "@/util";
-import { ActionIcon, Button, Paper, Table } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import { IconPencil, IconTrash } from "@tabler/icons-react";
-import { createFileRoute } from "@tanstack/react-router";
-import { type ReactNode, useCallback } from "react";
 
 export const Route = createFileRoute("/scouting/")({
   component: Page,
@@ -192,7 +192,10 @@ function Page(): ReactNode {
 function ActionGroup({
   onClickEdit,
   onClickDelete,
-}: { onClickEdit: () => void; onClickDelete: () => void }): ReactNode {
+}: {
+  onClickEdit: () => void;
+  onClickDelete: () => void;
+}): ReactNode {
   const handleEdit = (e: React.MouseEvent) => {
     e.stopPropagation();
     onClickEdit();

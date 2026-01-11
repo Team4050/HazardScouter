@@ -1,3 +1,6 @@
+import { Button, Loader, Paper } from "@mantine/core";
+import { createFileRoute } from "@tanstack/react-router";
+import type { ReactNode } from "react";
 import { Auto } from "@/components/form/Auto";
 import { Endgame } from "@/components/form/Endgame";
 import { PostMatch } from "@/components/form/PostMatch";
@@ -5,12 +8,9 @@ import { PreMatch } from "@/components/form/PreMatch";
 import { Teleop } from "@/components/form/Teleop";
 import { openDeleteModal } from "@/components/modals";
 import { matchCollection, useMatch } from "@/data/db";
-import { type ScoutingPhase, phaseDetails, phaseOrder } from "@/data/match";
+import { phaseDetails, phaseOrder, type ScoutingPhase } from "@/data/match";
 import { useAppState } from "@/hooks/useAppState";
 import { cn } from "@/util";
-import { Button, Loader, Paper } from "@mantine/core";
-import { createFileRoute } from "@tanstack/react-router";
-import type { ReactNode } from "react";
 
 export const Route = createFileRoute("/scouting/$matchId/edit")({
   component: Page,
@@ -91,33 +91,31 @@ function Section({ children, phase }: SectionProps): ReactNode {
   const { isPhaseValid, isPhaseSaving } = useAppState();
 
   return (
-    <>
-      <Paper
+    <Paper
+      className={cn(
+        "gap-y-4 px-2 py-4 sm:p-6",
+        isPhaseValid(phase) ? "border-green-500" : "border-red-500",
+      )}
+      shadow="xl"
+      withBorder
+    >
+      <div
         className={cn(
-          "gap-y-4 px-2 py-4 sm:p-6",
-          isPhaseValid(phase) ? "border-green-500" : "border-red-500",
+          "flex items-center space-x-2 text-green-500",
+          isPhaseValid(phase) ? "text-green-500" : "text-red-500",
         )}
-        shadow="xl"
-        withBorder
       >
-        <div
+        <Icon className="size-8" />
+        <div className="text-3xl font-normal">{title}</div>
+        <Loader
+          size="sm"
           className={cn(
-            "flex items-center space-x-2 text-green-500",
-            isPhaseValid(phase) ? "text-green-500" : "text-red-500",
+            "ml-auto",
+            isPhaseSaving(phase) ? "visible" : "invisible",
           )}
-        >
-          <Icon className="size-8" />
-          <div className="text-3xl font-normal">{title}</div>
-          <Loader
-            size="sm"
-            className={cn(
-              "ml-auto",
-              isPhaseSaving(phase) ? "visible" : "invisible",
-            )}
-          />
-        </div>
-        <div>{children}</div>
-      </Paper>
-    </>
+        />
+      </div>
+      <div>{children}</div>
+    </Paper>
   );
 }

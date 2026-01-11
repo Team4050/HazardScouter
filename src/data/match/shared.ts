@@ -1,7 +1,7 @@
 import {
-  type InferOutput,
   boolean,
   enum_,
+  type InferOutput,
   maxLength,
   maxValue,
   minValue,

@@ -1,16 +1,17 @@
-import { type PhaseDataMap, setScoutingPhaseData } from "@/data/db";
-import type { ScoutingPhase } from "@/data/match";
-import { useAppState } from "@/hooks/useAppState";
 import { type UseFormReturnType, useForm as useFormM } from "@mantine/form";
 import { useDebouncedCallback } from "@mantine/hooks";
 import { valibotResolver } from "mantine-form-valibot-resolver";
 import { useEffect } from "react";
 import type { BaseSchema } from "valibot";
+import { type PhaseDataMap, setScoutingPhaseData } from "@/data/db";
+import type { ScoutingPhase } from "@/data/match";
+import { useAppState } from "@/hooks/useAppState";
 
 type Props<T extends ScoutingPhase> = {
   matchId: string;
   phase: T;
   initialValues: PhaseDataMap[T];
+  // biome-ignore lint/suspicious/noExplicitAny: We don't know what the schema will be, so 'any' will have to be good enough for now
   schema: BaseSchema<PhaseDataMap[T], PhaseDataMap[T], any>;
 };
 

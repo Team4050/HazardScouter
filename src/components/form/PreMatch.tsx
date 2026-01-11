@@ -1,3 +1,4 @@
+import { type ReactNode, useEffect, useState } from "react";
 import { SegmentedControl } from "@/components/inputs";
 import type { PhaseDataMap } from "@/data/db";
 import {
@@ -9,7 +10,6 @@ import {
 } from "@/data/match";
 import { useForm } from "@/hooks/useForm";
 import { enumToSelectItem } from "@/util";
-import { type ReactNode, useEffect, useState } from "react";
 
 type Props = {
   matchId: string;

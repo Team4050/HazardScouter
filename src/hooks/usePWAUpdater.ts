@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
 import { useRegisterSW } from "virtual:pwa-register/react";
+import { useCallback, useEffect, useState } from "react";
 
 interface PWAUpdateStatus {
   needRefresh: boolean; // Indicates if a new version is available

@@ -1,7 +1,7 @@
-import { PreMatch } from "@/components/form/PreMatch";
-import { useMatch } from "@/data/db";
 import { createFileRoute } from "@tanstack/react-router";
 import type { ReactNode } from "react";
+import { PreMatch } from "@/components/form/PreMatch";
+import { useMatch } from "@/data/db";
 
 export const Route = createFileRoute("/scouting/$matchId/collect/pre-match")({
   component: Page,

@@ -1,6 +1,6 @@
-import type { ScoutingPhase } from "@/data/match";
 import type React from "react";
 import { createContext, useState } from "react";
+import type { ScoutingPhase } from "@/data/match";
 
 type Phases = {
   [phase in ScoutingPhase]: boolean;

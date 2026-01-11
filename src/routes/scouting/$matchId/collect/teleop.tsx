@@ -1,7 +1,7 @@
-import { Teleop } from "@/components/form/Teleop";
-import { useMatch } from "@/data/db";
 import { createFileRoute } from "@tanstack/react-router";
 import type { ReactNode } from "react";
+import { Teleop } from "@/components/form/Teleop";
+import { useMatch } from "@/data/db";
 
 export const Route = createFileRoute("/scouting/$matchId/collect/teleop")({
   component: Page,

@@ -1,7 +1,7 @@
-import { PostMatch } from "@/components/form/PostMatch";
-import { useMatch } from "@/data/db";
 import { createFileRoute } from "@tanstack/react-router";
 import type { ReactNode } from "react";
+import { PostMatch } from "@/components/form/PostMatch";
+import { useMatch } from "@/data/db";
 
 export const Route = createFileRoute("/scouting/$matchId/collect/post-match")({
   component: Page,

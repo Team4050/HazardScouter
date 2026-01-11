@@ -1,7 +1,7 @@
-import { matchCollection } from "@/data/db";
 import { Button } from "@mantine/core";
 import { createFileRoute, notFound, useRouter } from "@tanstack/react-router";
 import type { ReactNode } from "react";
+import { matchCollection } from "@/data/db";
 
 export const Route = createFileRoute("/scouting/$matchId")({
   loader: async ({ params: { matchId } }) => {

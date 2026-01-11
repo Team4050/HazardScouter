@@ -1,16 +1,16 @@
-import { type Match, matchCollection, newId, useReactivity } from "@/data/db";
 import {
   Autocomplete,
   Button,
+  isNumberLike,
   LoadingOverlay,
   Modal,
   NumberInput,
-  isNumberLike,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { modals } from "@mantine/modals";
 import { useNavigate } from "@tanstack/react-router";
 import { type ReactNode, useMemo, useState } from "react";
+import { type Match, matchCollection, newId, useReactivity } from "@/data/db";
 
 export function NewMatchModal({
   opened,
@@ -71,57 +71,57 @@ export function NewMatchModal({
   };
 
   return (
-    <>
-      <Modal
-        opened={opened}
-        onClose={onClose}
-        title="New Match"
-        overlayProps={{
-          backgroundOpacity: 0.55,
-          blur: 3,
-        }}
-        transitionProps={{
-          onEntered: () => {
-            form.getInputNode("scouter")?.focus();
-          },
-        }}
-      >
-        <LoadingOverlay visible={loading} />
+    <Modal
+      opened={opened}
+      // onClose={onClose}
+      title="New Match"
+      overlayProps={{
+        backgroundOpacity: 0.55,
+        blur: 3,
+      }}
+      transitionProps={{
+        onEntered: () => {
+          form.getInputNode("scouter")?.focus();
+        },
+      }}
+      // No-op (Investigate if this should be a no-op or if we need to do something else)
+      onClose={() => {}}
+    >
+      <LoadingOverlay visible={loading} />
 
-        <form
-          className="flex flex-col gap-y-2"
-          onSubmit={form.onSubmit(handleSubmit, (errors) => {
-            const firstErrorPath = Object.keys(errors)[0];
-            form.getInputNode(firstErrorPath)?.focus();
-          })}
-        >
-          <Autocomplete
-            label="Scouter"
-            data={scouters}
-            {...form.getInputProps("scouter")}
-          />
-          <Autocomplete
-            label="Team"
-            data={teams.map((t) => t.toString())}
-            inputMode="numeric"
-            {...form.getInputProps("teamNumber")}
-          />
-          <NumberInput
-            label="Match"
-            {...form.getInputProps("matchNumber")}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") {
-                event.preventDefault();
-                form.onSubmit(handleSubmit)();
-              }
-            }}
-          />
-          <Button type="submit" className="ml-auto mt-2">
-            Go
-          </Button>
-        </form>
-      </Modal>
-    </>
+      <form
+        className="flex flex-col gap-y-2"
+        onSubmit={form.onSubmit(handleSubmit, (errors) => {
+          const firstErrorPath = Object.keys(errors)[0];
+          form.getInputNode(firstErrorPath)?.focus();
+        })}
+      >
+        <Autocomplete
+          label="Scouter"
+          data={scouters}
+          {...form.getInputProps("scouter")}
+        />
+        <Autocomplete
+          label="Team"
+          data={teams.map((t) => t.toString())}
+          inputMode="numeric"
+          {...form.getInputProps("teamNumber")}
+        />
+        <NumberInput
+          label="Match"
+          {...form.getInputProps("matchNumber")}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              event.preventDefault();
+              form.onSubmit(handleSubmit)();
+            }
+          }}
+        />
+        <Button type="submit" className="ml-auto mt-2">
+          Go
+        </Button>
+      </form>
+    </Modal>
   );
 }
 

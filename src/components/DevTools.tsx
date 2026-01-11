@@ -1,7 +1,7 @@
-import { resetCollections } from "@/data/db";
-import { useIsMobile } from "@/hooks/useIsMobile";
 import { IconArrowsDiagonal, IconDeviceMobile } from "@tabler/icons-react";
 import type { ReactNode } from "react";
+import { resetCollections } from "@/data/db";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 export default function DevTools(): ReactNode {
   const isMobile = useIsMobile();
@@ -21,7 +21,11 @@ export default function DevTools(): ReactNode {
           <IconDeviceMobile className="mr-1" /> {isMobile ? "Probably" : "No"}
         </div>
         <div>
-          <button className="cursor-pointer" onClick={() => resetCollections()}>
+          <button
+            type="button"
+            className="cursor-pointer"
+            onClick={() => resetCollections()}
+          >
             Reset Collections
           </button>
         </div>

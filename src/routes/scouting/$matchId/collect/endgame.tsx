@@ -1,7 +1,7 @@
-import { Endgame } from "@/components/form/Endgame";
-import { useMatch } from "@/data/db";
 import { createFileRoute } from "@tanstack/react-router";
 import type { ReactNode } from "react";
+import { Endgame } from "@/components/form/Endgame";
+import { useMatch } from "@/data/db";
 
 export const Route = createFileRoute("/scouting/$matchId/collect/endgame")({
   component: Page,

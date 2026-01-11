@@ -1,18 +1,18 @@
-import {
-  type Auto,
-  type EndGame,
-  type PreMatch,
-  type ScoutingPhase,
-  type TeamReview,
-  type Teleop,
-  phaseOrder,
-} from "@/data/match";
-import { shortDayName } from "@/util";
 import { effect } from "@maverick-js/signals";
 import download from "downloadjs";
 import { Collection, createLocalStorageAdapter } from "signaldb";
 import maverickReactivityAdapter from "signaldb-plugin-maverickjs";
 import { createUseReactivityHook } from "signaldb-react";
+import {
+  type Auto,
+  type EndGame,
+  type PreMatch,
+  phaseOrder,
+  type ScoutingPhase,
+  type TeamReview,
+  type Teleop,
+} from "@/data/match";
+import { shortDayName } from "@/util";
 
 type ID = { id: string };
 
@@ -55,7 +55,7 @@ export function setScoutingPhaseData(
 ) {
   const phases = matchCollection.findOne({ id })?.phases || undefined;
 
-  let finished = undefined;
+  let finished: Date | undefined;
   if (phase === phaseOrder[phaseOrder.length - 1]) {
     finished = new Date();
   }
@@ -84,7 +84,7 @@ export function newId(): string {
     Math.random().toString(36).substring(2, 12).padStart(12, "0")
   );
 }
-
+// biome-ignore-start lint/style/noNonNullAssertion: We're finding all cases where finished != undefined, so safe to assume non-null
 export function downloadMatches(del = false) {
   const matches = matchCollection
     .find({ finished: { $ne: undefined } })
@@ -107,6 +107,7 @@ export function downloadMatches(del = false) {
     matchCollection.removeMany({ finished: { $ne: undefined } });
   }
 }
+// biome-ignore-end lint/style/noNonNullAssertion: We're finding all cases where finished != undefined, so safe to assume non-null
 
 export async function parseMatchesFile(file: File): Promise<Match[]> {
   const reader = new FileReader();

@@ -1,5 +1,5 @@
-import { phaseRoutes } from "@/data/match";
 import { createFileRoute, redirect } from "@tanstack/react-router";
+import { phaseRoutes } from "@/data/match";
 
 export const Route = createFileRoute("/scouting/$matchId/collect/")({
   loader: ({ params }) =>

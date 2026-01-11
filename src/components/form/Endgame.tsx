@@ -1,9 +1,9 @@
+import type { ReactNode } from "react";
 import { Select } from "@/components/inputs";
 import type { PhaseDataMap } from "@/data/db";
 import { EndStatus, endGameDefaults, endGameSchema } from "@/data/match";
 import { useForm } from "@/hooks/useForm";
 import { enumToSelectItem } from "@/util";
-import type { ReactNode } from "react";
 
 type Props = {
   matchId: string;
