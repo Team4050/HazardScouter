@@ -1,12 +1,13 @@
-import { ActionIcon, AppShell, Button, Title } from "@mantine/core";
 import { IconRefreshAlert } from "@tabler/icons-react";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { type ReactNode, useMemo } from "react";
 import { AppLogo } from "@/components/Logo";
+import { Button } from "@/components/ui/button";
 import { phaseSlugToTitle } from "@/data/match";
 import { useIsScoutingTablet } from "@/hooks/useIsMobile";
 import { usePWAUpdater } from "@/hooks/usePWAUpdater";
-import { navbarHeight } from "@/styles/theme";
+
+const NAVBAR_HEIGHT = 60;
 
 type LayoutProps = {
   content: ReactNode;
@@ -30,71 +31,54 @@ export function Layout({ content }: LayoutProps): ReactNode {
   }, [path]);
 
   return (
-    <>
-      <AppShell header={{ height: navbarHeight }} padding="sm">
-        <AppShell.Header className="flex items-center px-2 first-child:mr-auto first-child:justify-start last-child:justify-end last-child:ml-auto middle-child:justify-center">
+    <div className="min-h-screen flex flex-col">
+      <header
+        className="flex items-center px-2 border-b bg-background"
+        style={{ height: NAVBAR_HEIGHT }}
+      >
+        <div className="flex-1 flex justify-start h-full">
           <AppLogo
-            className="py-0.5 flex-1 flex"
+            className="py-0.5 flex"
             classNames={{ text: "sm:block hidden" }}
             onClick={() => navigate({ to: "/" })}
           />
-          <div className="flex-1 flex">
-            <Title className="text-2xl lg:text-4xl leading-none text-center">
-              {matchPhaseTitle}
-            </Title>
-          </div>
-          <div className="flex-1 flex">
-            {isTablet ? (
-              <span className="opacity-50">{__COMMIT_HASH__}</span>
-            ) : (
-              <Button
-                className="hidden lg:block"
-                variant="subtle"
-                onClick={() => navigate({ to: "/admin" })}
-              >
-                Scouting Admin
-              </Button>
-            )}
-            {needRefresh ? (
-              <ActionIcon
-                variant="transparent"
-                className="my-auto"
-                onClick={forceUpdate}
-              >
-                <IconRefreshAlert />
-              </ActionIcon>
-            ) : null}
-          </div>
-        </AppShell.Header>
+        </div>
+        <div className="flex-1 flex justify-center">
+          <h1 className="text-2xl lg:text-4xl leading-none text-center font-heading">
+            {matchPhaseTitle}
+          </h1>
+        </div>
+        <div className="flex-1 flex justify-end items-center gap-2">
+          {isTablet ? (
+            <span className="opacity-50">{__COMMIT_HASH__}</span>
+          ) : (
+            <Button
+              className="hidden lg:block text-primary"
+              variant="ghost"
+              onClick={() => navigate({ to: "/admin" })}
+              size="lg"
+            >
+              Scouting Admin
+            </Button>
+          )}
+          {needRefresh ? (
+            <button
+              type="button"
+              className="p-2 hover:bg-accent rounded-md transition-colors"
+              onClick={forceUpdate}
+            >
+              <IconRefreshAlert className="h-5 w-5" />
+            </button>
+          ) : null}
+        </div>
+      </header>
 
-        <AppShell.Main className="max-w-screen-lg mx-auto my-2 md:my-5 min-h-[calc(100dvh-var(--app-shell-header-height,0px)-var(--app-shell-footer-height,0px)-var(--app-shell-padding)*2)]">
-          {content}
-        </AppShell.Main>
-      </AppShell>
-
-      {/* <Drawer
-        opened={drawerOpened}
-        onClose={closeDrawer}
-        title={<AppLogo className="w-full" />}
-        classNames={{
-          header: "px-2 py-1 mb-2 h-[60px]",
-          title: "h-full",
-        }}
+      <main
+        className="flex-1 max-w-5xl mx-auto w-full p-2 md:p-4"
+        style={{ minHeight: `calc(100dvh - ${NAVBAR_HEIGHT}px)` }}
       >
-        <Sidebar closeDrawer={closeDrawer} />
-      </Drawer> */}
-    </>
+        {content}
+      </main>
+    </div>
   );
 }
-
-// type SidebarProps = {
-//   closeDrawer: () => void;
-// };
-
-// function Sidebar({ closeDrawer }: SidebarProps): ReactNode {
-//   return (
-//     <>
-//       <ModeSwitch className="w-full" onChange={() => closeDrawer()} />
-//     </>
-//   );
-// }

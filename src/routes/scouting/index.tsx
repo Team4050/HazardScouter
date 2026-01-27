@@ -1,13 +1,20 @@
-import { ActionIcon, Button, Paper, Table } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
 import { createFileRoute } from "@tanstack/react-router";
-import { type ReactNode, useCallback } from "react";
+import { type ReactNode, useCallback, useState } from "react";
 import {
+  ConfirmDialog,
   NewMatchModal,
-  openDeleteModal,
-  openExportModal,
+  useConfirmDialog,
 } from "@/components/modals";
+import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { downloadMatches, matchCollection, useReactivity } from "@/data/db";
 import { phaseDetails, phaseOrder } from "@/data/match";
 import { useIsMobile } from "@/hooks/useIsMobile";
@@ -23,8 +30,11 @@ function Page(): ReactNode {
   const canFinish = !!matches.filter((m) => m.finished !== undefined).length;
   const isMobile = useIsMobile();
 
-  const [newModalOpened, { open: openNewModal, close: closeNewModal }] =
-    useDisclosure();
+  const [newModalOpened, setNewModalOpened] = useState(false);
+  const openNewModal = useCallback(() => setNewModalOpened(true), []);
+  const closeNewModal = useCallback(() => setNewModalOpened(false), []);
+
+  const { confirmDialogProps, openConfirmDialog } = useConfirmDialog();
 
   const handleEdit = useCallback(
     (matchId: string) => {
@@ -52,11 +62,30 @@ function Page(): ReactNode {
     [navigate],
   );
 
-  const handleDelete = useCallback((matchId: string) => {
-    openDeleteModal({
-      onConfirm: () => matchCollection.removeOne({ id: matchId }),
+  const handleDelete = useCallback(
+    (matchId: string) => {
+      openConfirmDialog({
+        title: "Delete Match",
+        description: "Are you sure you want to delete this match?",
+        confirmLabel: "Delete Match",
+        cancelLabel: "Cancel",
+        confirmVariant: "destructive",
+        onConfirm: () => matchCollection.removeOne({ id: matchId }),
+      });
+    },
+    [openConfirmDialog],
+  );
+
+  const handleExport = useCallback(() => {
+    openConfirmDialog({
+      title: "Download Matches",
+      description:
+        "Are you sure you are ready to download? This will reset your data and clear all finished matches.",
+      confirmLabel: "Download",
+      cancelLabel: "Cancel",
+      onConfirm: () => downloadMatches(true),
     });
-  }, []);
+  }, [openConfirmDialog]);
 
   const handleOpen = useCallback(
     (matchId: string) => {
@@ -74,30 +103,21 @@ function Page(): ReactNode {
   return (
     <div className="flex flex-col h-full">
       <NewMatchModal opened={newModalOpened} onClose={closeNewModal} />
+      <ConfirmDialog {...confirmDialogProps} />
 
       <div className="flex md:flex-row flex-col mb-2 md:mb-6 gap-2 flex-none">
-        <div
-          className="text-4xl flex-grow hidden md:block"
-          data-mobile={isMobile}
-        >
+        <div className="text-4xl grow hidden md:block" data-mobile={isMobile}>
           Match List
         </div>
 
         {matches.length > 0 ? (
           <>
-            {/* TODO: These buttons should match the prev/next buttons */}
             <NewMatchButton />
             <Button
               className="text-3xl"
               disabled={!matches || !canFinish}
-              variant="subtle"
-              onClick={() =>
-                openExportModal({
-                  onConfirm: () => {
-                    downloadMatches(true);
-                  },
-                })
-              }
+              variant="ghost"
+              onClick={handleExport}
             >
               Finish Scouting
             </Button>
@@ -107,15 +127,14 @@ function Page(): ReactNode {
 
       <div className="flex-1">
         {matches.length > 0 ? (
-          <Paper withBorder shadow="xl" className="py-2">
-            <Table highlightOnHover>
-              <Table.Thead>
-                <Table.Tr>
+          <div className="border rounded-lg shadow-lg py-2">
+            <Table>
+              <TableHeader>
+                <TableRow>
                   {["Match", "Team", "Scouter", "Started", "Finished"].map(
                     (head) => (
-                      <Table.Th
+                      <TableHead
                         key={head}
-                        // The below code is not how this is supposed to be done
                         className={cn(
                           (head === "Started" || head === "Finished") &&
                             isMobile
@@ -124,13 +143,13 @@ function Page(): ReactNode {
                         )}
                       >
                         {head}
-                      </Table.Th>
+                      </TableHead>
                     ),
                   )}
-                  <Table.Th className="w-0" />
-                </Table.Tr>
-              </Table.Thead>
-              <Table.Tbody>
+                  <TableHead className="w-0" />
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 {matches.map(
                   ({
                     id,
@@ -143,41 +162,41 @@ function Page(): ReactNode {
                     const startedDate = new Date(started);
                     const finishedDate = finished ? new Date(finished) : null;
                     return (
-                      <Table.Tr
+                      <TableRow
                         key={id}
                         onClick={() => handleOpen(id)}
                         className="cursor-pointer"
                       >
-                        <Table.Td>{matchNumber}</Table.Td>
-                        <Table.Td>{teamNumber}</Table.Td>
-                        <Table.Td>{scouter}</Table.Td>
-                        <Table.Td
+                        <TableCell>{matchNumber}</TableCell>
+                        <TableCell>{teamNumber}</TableCell>
+                        <TableCell>{scouter}</TableCell>
+                        <TableCell
                           className="data-[mobile=true]:hidden"
                           data-mobile={isMobile}
                         >
                           {`${shortDayName(startedDate)} ${startedDate.toLocaleTimeString()}`}
-                        </Table.Td>
-                        <Table.Td
+                        </TableCell>
+                        <TableCell
                           className="data-[mobile=true]:hidden"
                           data-mobile={isMobile}
                         >
                           {finishedDate
                             ? `${shortDayName(finishedDate)} ${finishedDate.toLocaleTimeString()}`
                             : "In Progress"}
-                        </Table.Td>
-                        <Table.Td className="w-fit">
+                        </TableCell>
+                        <TableCell className="w-fit">
                           <ActionGroup
                             onClickEdit={() => handleEdit(id)}
                             onClickDelete={() => handleDelete(id)}
                           />
-                        </Table.Td>
-                      </Table.Tr>
+                        </TableCell>
+                      </TableRow>
                     );
                   },
                 )}
-              </Table.Tbody>
+              </TableBody>
             </Table>
-          </Paper>
+          </div>
         ) : (
           <div className="flex flex-col justify-center items-center gap-y-4 h-full">
             <div className="text-4xl">No matches found</div>
@@ -207,15 +226,21 @@ function ActionGroup({
   };
 
   return (
-    <div className="w-fit flex space-x-2">
-      <ActionIcon.Group>
-        <ActionIcon onClick={handleEdit} variant="subtle">
-          <IconPencil />
-        </ActionIcon>
-        <ActionIcon onClick={handleDelete} variant="subtle" color="red">
-          <IconTrash />
-        </ActionIcon>
-      </ActionIcon.Group>
+    <div className="w-fit flex space-x-1">
+      <button
+        type="button"
+        onClick={handleEdit}
+        className="p-2 hover:bg-accent rounded-md transition-colors"
+      >
+        <IconPencil className="h-5 w-5" />
+      </button>
+      <button
+        type="button"
+        onClick={handleDelete}
+        className="p-2 hover:bg-red-500/20 rounded-md transition-colors text-red-500"
+      >
+        <IconTrash className="h-5 w-5" />
+      </button>
     </div>
   );
 }

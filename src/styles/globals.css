@@ -1,10 +1,60 @@
-@layer base, mantine, tailwind;
+@import "tailwindcss";
 
-@layer base {
-  @tailwind base;
+@theme {
+  /* Fonts */
+  --font-heading: "Jersey 20", system-ui;
+  --font-sans: "Jersey 10", system-ui;
+  --font-mono: "Inter", monospace;
+
+  /* Breakpoints */
+  --breakpoint-sm: 600px;
+  --breakpoint-md: 1000px;
+
+  /* Border Radius */
+  --radius-lg: 0.25rem;
+  --radius-md: calc(0.25rem - 2px);
+  --radius-sm: calc(0.25rem - 4px);
+
+  /* Colors (Dark Theme) */
+  --color-background: #171717;
+  --color-foreground: #fafafa;
+  --color-card: #171717;
+  --color-card-foreground: #fafafa;
+  --color-popover: #171717;
+  --color-popover-foreground: #fafafa;
+  --color-primary: #16a34a;
+  --color-primary-foreground: #171717;
+  --color-secondary: #262626;
+  --color-secondary-foreground: #fafafa;
+  --color-muted: #262626;
+  --color-muted-foreground: #a3a3a3;
+  --color-accent: #262626;
+  --color-accent-foreground: #fafafa;
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #fafafa;
+  --color-border: #262626;
+  --color-input: #262626;
+  --color-ring: #16a34a;
+
+  /* Alliance Colors (FRC-specific) */
+  --color-alliance-red: #ef4444;
+  --color-alliance-blue: #3b82f6;
+
+  /* Overlay */
+  --color-overlay: rgb(0 0 0 / 0.8);
 }
 
-@layer tailwind {
-  @tailwind components;
-  @tailwind utilities;
+/* Custom Variants */
+@custom-variant first-child (& > :first-child);
+@custom-variant middle-child (& > :not(:first-child):not(:last-child));
+@custom-variant last-child (& > :last-child);
+
+/* Base Styles */
+* {
+  border-color: var(--color-border);
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
 }

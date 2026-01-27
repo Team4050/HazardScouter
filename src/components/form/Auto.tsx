@@ -22,24 +22,53 @@ export function Auto({ matchId, initialData }: Props): ReactNode {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 grid-rows-4">
       <div className="row-span-full flex flex-col gap-y-5 my-auto md:gap-y-2">
-        <Switch
-          label="Left starting line"
-          {...form.getInputProps("leaveStartingLine", { type: "checkbox" })}
-        />
-        <Switch
-          label="Coral preloaded"
-          {...form.getInputProps("coralPreloaded", { type: "checkbox" })}
-        />
-        <Switch
-          label="Removed algae"
-          {...form.getInputProps("removedAlgae", { type: "checkbox" })}
-        />
-        <Counter
-          label="Processor Scores"
-          max={99}
-          {...form.getInputProps("processor")}
-        />
-        <Counter label="Net Scores" max={99} {...form.getInputProps("net")} />
+        <form.Field name="leaveStartingLine">
+          {(field) => (
+            <Switch
+              label="Left starting line"
+              checked={field.state.value}
+              onChange={(e) => field.handleChange(e.currentTarget.checked)}
+            />
+          )}
+        </form.Field>
+        <form.Field name="coralPreloaded">
+          {(field) => (
+            <Switch
+              label="Coral preloaded"
+              checked={field.state.value}
+              onChange={(e) => field.handleChange(e.currentTarget.checked)}
+            />
+          )}
+        </form.Field>
+        <form.Field name="removedAlgae">
+          {(field) => (
+            <Switch
+              label="Removed algae"
+              checked={field.state.value}
+              onChange={(e) => field.handleChange(e.currentTarget.checked)}
+            />
+          )}
+        </form.Field>
+        <form.Field name="processor">
+          {(field) => (
+            <Counter
+              label="Processor Scores"
+              max={99}
+              value={field.state.value}
+              onChange={(val) => field.handleChange(val)}
+            />
+          )}
+        </form.Field>
+        <form.Field name="net">
+          {(field) => (
+            <Counter
+              label="Net Scores"
+              max={99}
+              value={field.state.value}
+              onChange={(val) => field.handleChange(val)}
+            />
+          )}
+        </form.Field>
       </div>
 
       <svg
@@ -60,28 +89,48 @@ export function Auto({ matchId, initialData }: Props): ReactNode {
         />
       </svg>
 
-      <Counter
-        label="Coral Level 4"
-        className="mt-0 mb-0 sm:mb-auto"
-        max={12}
-        {...form.getInputProps("reef.coralLevel4")}
-      />
-      <Counter
-        label="Coral Level 3"
-        max={12}
-        {...form.getInputProps("reef.coralLevel3")}
-      />
-      <Counter
-        label="Coral Level 2"
-        max={12}
-        {...form.getInputProps("reef.coralLevel2")}
-      />
-      <Counter
-        label="Coral Level 1"
-        className="mb-0 mt-0 sm:mt-auto"
-        max={12}
-        {...form.getInputProps("reef.coralLevel1")}
-      />
+      <form.Field name="reef.coralLevel4">
+        {(field) => (
+          <Counter
+            label="Coral Level 4"
+            className="mt-0 mb-0 sm:mb-auto"
+            max={12}
+            value={field.state.value}
+            onChange={(val) => field.handleChange(val)}
+          />
+        )}
+      </form.Field>
+      <form.Field name="reef.coralLevel3">
+        {(field) => (
+          <Counter
+            label="Coral Level 3"
+            max={12}
+            value={field.state.value}
+            onChange={(val) => field.handleChange(val)}
+          />
+        )}
+      </form.Field>
+      <form.Field name="reef.coralLevel2">
+        {(field) => (
+          <Counter
+            label="Coral Level 2"
+            max={12}
+            value={field.state.value}
+            onChange={(val) => field.handleChange(val)}
+          />
+        )}
+      </form.Field>
+      <form.Field name="reef.coralLevel1">
+        {(field) => (
+          <Counter
+            label="Coral Level 1"
+            className="mb-0 mt-0 sm:mt-auto"
+            max={12}
+            value={field.state.value}
+            onChange={(val) => field.handleChange(val)}
+          />
+        )}
+      </form.Field>
     </div>
   );
 }

@@ -1,6 +1,6 @@
-import { Button } from "@mantine/core";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import type { ReactNode } from "react";
+import { Button } from "@/components/ui/button";
 import { phaseOrder, phaseRoutes } from "@/data/match";
 import { useAppState } from "@/hooks/useAppState";
 
@@ -43,16 +43,14 @@ export function FormNavigation({ matchId }: { matchId: string }): ReactNode {
     <div className="flex justify-between md:h-auto h-14">
       <Button
         onClick={handlePrevious}
-        size="compact-lg"
         className="w-40 h-full font-normal"
-        color={firstPage ? "red" : "green"}
+        variant={firstPage ? "destructive" : "default"}
       >
         {firstPage ? "Exit" : "< Prev"}
       </Button>
       <Button
         onClick={handleNext}
         disabled={!pageIsValid}
-        size="compact-lg"
         className="w-40 h-full font-normal"
       >
         {lastPage ? "Save" : "Next >"}

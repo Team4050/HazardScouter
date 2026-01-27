@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect, useState } from "react";
+import type { ReactNode } from "react";
 import { SegmentedControl } from "@/components/inputs";
 import type { PhaseDataMap } from "@/data/db";
 import {
@@ -17,14 +17,6 @@ type Props = {
 };
 
 export function PreMatch({ matchId, initialData }: Props): ReactNode {
-  const [allianceColor, setAllianceColor] = useState<
-    "red" | "blue" | undefined
-  >();
-
-  useEffect(() => {
-    setAllianceColor(initialData?.alliance || preMatchDefaults.alliance);
-  }, [initialData]);
-
   const form = useForm<"preMatch">({
     matchId,
     phase: "preMatch",
@@ -32,37 +24,56 @@ export function PreMatch({ matchId, initialData }: Props): ReactNode {
     schema: preMatchSchema,
   });
 
-  form.watch("alliance", ({ value }) => {
-    setAllianceColor(value);
-  });
-
   return (
     <div className="grid md:grid-cols-2 gap-x-4 gap-y-2">
-      <SegmentedControl
-        className="col-span-full"
-        label="Alliance"
-        data={enumToSelectItem(Alliance)}
-        fullWidth
-        color={allianceColor}
-        {...form.getInputProps("alliance")}
-      />
+      <form.Field name="alliance">
+        {(field) => (
+          <SegmentedControl
+            className="col-span-full"
+            label="Alliance"
+            data={enumToSelectItem(Alliance)}
+            fullWidth
+            color={field.state.value}
+            value={field.state.value}
+            onChange={(val) => field.handleChange(val as Alliance)}
+          />
+        )}
+      </form.Field>
 
-      <SegmentedControl
-        className="col-span-full"
-        label="Match Type"
-        data={enumToSelectItem(MatchType)}
-        fullWidth
-        color={allianceColor}
-        {...form.getInputProps("matchType")}
-      />
+      <form.Field name="matchType">
+        {(field) => (
+          <form.Subscribe selector={(state) => state.values.alliance}>
+            {(alliance) => (
+              <SegmentedControl
+                className="col-span-full"
+                label="Match Type"
+                data={enumToSelectItem(MatchType)}
+                fullWidth
+                color={alliance}
+                value={field.state.value}
+                onChange={(val) => field.handleChange(val as MatchType)}
+              />
+            )}
+          </form.Subscribe>
+        )}
+      </form.Field>
 
-      <SegmentedControl
-        className="col-span-full"
-        label="Drive Position"
-        data={enumToSelectItem(DrivePosition)}
-        color={allianceColor}
-        {...form.getInputProps("drivePosition")}
-      />
+      <form.Field name="drivePosition">
+        {(field) => (
+          <form.Subscribe selector={(state) => state.values.alliance}>
+            {(alliance) => (
+              <SegmentedControl
+                className="col-span-full"
+                label="Drive Position"
+                data={enumToSelectItem(DrivePosition)}
+                color={alliance}
+                value={field.state.value}
+                onChange={(val) => field.handleChange(val as DrivePosition)}
+              />
+            )}
+          </form.Subscribe>
+        )}
+      </form.Field>
     </div>
   );
 }

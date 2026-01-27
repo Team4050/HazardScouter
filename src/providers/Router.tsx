@@ -1,4 +1,3 @@
-import { Title } from "@mantine/core";
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { routeTree } from "@/routeTree.gen";
@@ -21,8 +20,8 @@ export default function Provider(): ReactNode {
 function NotFound(): ReactNode {
   return (
     <div className="h-[250px] aspect-video flex flex-col items-center justify-center mx-auto">
-      <img src="/boom.gif" className="absolute size-full z-10" />
-      <Title className="text-6xl">Not Found</Title>
+      <img src="/boom.gif" className="absolute size-full z-10" alt="" />
+      <h1 className="text-6xl font-heading">Not Found</h1>
     </div>
   );
 }

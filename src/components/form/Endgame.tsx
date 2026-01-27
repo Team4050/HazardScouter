@@ -20,12 +20,19 @@ export function Endgame({ matchId, initialData }: Props): ReactNode {
 
   return (
     <div className="grid gap-x-4 gap-y-2">
-      <Select
-        className="w-fit mx-auto"
-        label="End Status"
-        data={enumToSelectItem(EndStatus)}
-        {...form.getInputProps("endStatus")}
-      />
+      <form.Field name="endStatus">
+        {(field) => (
+          <Select
+            className="w-fit mx-auto"
+            label="End Status"
+            data={enumToSelectItem(EndStatus)}
+            value={field.state.value}
+            onChange={(val: string | null) =>
+              field.handleChange(val as EndStatus)
+            }
+          />
+        )}
+      </form.Field>
     </div>
   );
 }

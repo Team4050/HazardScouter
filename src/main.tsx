@@ -1,16 +1,12 @@
 import * as Sentry from "@sentry/react";
 import { lazy, StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { Toaster } from "sonner";
 import { AppProvider } from "@/providers/AppState";
-import MantineProvider from "@/providers/Mantine";
 import Router from "@/providers/Router";
 
 import "@/styles/fonts.css";
 import "@/styles/globals.css";
-
-import "@mantine/code-highlight/styles.layer.css";
-import "@mantine/core/styles.layer.css";
-import "@mantine/dropzone/styles.layer.css";
 
 const DevTools =
   process.env.NODE_ENV === "production"
@@ -29,11 +25,10 @@ Sentry.init({
 // biome-ignore lint/style/noNonNullAssertion: Root element must exist
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <MantineProvider>
-      <AppProvider>
-        <Router />
-        {DevTools ? <DevTools /> : null}
-      </AppProvider>
-    </MantineProvider>
+    <AppProvider>
+      <Router />
+      <Toaster theme="dark" richColors />
+      {DevTools ? <DevTools /> : null}
+    </AppProvider>
   </StrictMode>,
 );

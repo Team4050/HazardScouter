@@ -1,4 +1,3 @@
-import { Paper } from "@mantine/core";
 import type { ReactNode } from "react";
 import { Slider, Switch, Textarea } from "@/components/inputs";
 import type { PhaseDataMap } from "@/data/db";
@@ -21,63 +20,128 @@ export function PostMatch({ matchId, initialData }: Props): ReactNode {
   return (
     <div className="grid gap-y-6">
       <div>
-        <Slider label="Driver Rating" {...form.getInputProps("driverRating")} />
-        <Slider
-          label="Defense Rating"
-          {...form.getInputProps("defenseRating")}
-        />
-        <Slider label="Speed Rating" {...form.getInputProps("speedRating")} />
+        <form.Field name="driverRating">
+          {(field) => (
+            <Slider
+              label="Driver Rating"
+              value={field.state.value}
+              onChange={(val: number) => field.handleChange(val)}
+            />
+          )}
+        </form.Field>
+        <form.Field name="defenseRating">
+          {(field) => (
+            <Slider
+              label="Defense Rating"
+              value={field.state.value}
+              onChange={(val: number) => field.handleChange(val)}
+            />
+          )}
+        </form.Field>
+        <form.Field name="speedRating">
+          {(field) => (
+            <Slider
+              label="Speed Rating"
+              value={field.state.value}
+              onChange={(val: number) => field.handleChange(val)}
+            />
+          )}
+        </form.Field>
       </div>
 
-      <Paper
-        className="flex flex-col px-1 py-2 sm:p-4 mt-4 items-center w-fit mx-auto"
-        shadow="md"
-        radius="sm"
-        bg="dark"
-      >
+      <div className="flex flex-col px-1 py-2 sm:p-4 mt-4 items-center w-fit mx-auto bg-zinc-900 rounded-sm shadow-md">
         <div className="grid grid-cols-3 md:flex items-end gap-y-4 *:flex-1 text-center">
-          <Switch
-            label="Died?"
-            classNames={{ label: "flex-grow text-mtn-xs sm:text-mtn-md" }}
-            {...form.getInputProps("died")}
-          />
-          <Switch
-            label="Unstable?"
-            classNames={{ label: "flex-grow text-mtn-xs sm:text-mtn-md" }}
-            {...form.getInputProps("unstable")}
-          />
-          <Switch
-            label="Dropped game pieces?"
-            classNames={{ label: "flex-grow text-mtn-xs sm:text-mtn-md" }}
-            {...form.getInputProps("droppedGamePieces")}
-          />
-          <Switch
-            label="Alliance potential?"
-            classNames={{ label: "flex-grow text-mtn-xs sm:text-mtn-md" }}
-            {...form.getInputProps("goodAlliancePartner")}
-          />
-          <Switch
-            label="E-Stopped?"
-            classNames={{ label: "flex-grow text-mtn-xs sm:text-mtn-md" }}
-            {...form.getInputProps("eStopped")}
-          />
-          <Switch
-            label="A-Stopped?"
-            classNames={{ label: "flex-grow text-mtn-xs sm:text-mtn-md" }}
-            {...form.getInputProps("aStopped")}
-          />
+          <form.Field name="malfunctioned">
+            {(field) => (
+              <Switch
+                label="Died?"
+                classNames={{ label: "flex-grow text-mtn-xs sm:text-mtn-md" }}
+                checked={field.state.value}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  field.handleChange(e.currentTarget.checked)
+                }
+              />
+            )}
+          </form.Field>
+          <form.Field name="unstable">
+            {(field) => (
+              <Switch
+                label="Unstable?"
+                classNames={{ label: "flex-grow text-mtn-xs sm:text-mtn-md" }}
+                checked={field.state.value}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  field.handleChange(e.currentTarget.checked)
+                }
+              />
+            )}
+          </form.Field>
+          <form.Field name="droppedGamePieces">
+            {(field) => (
+              <Switch
+                label="Dropped game pieces?"
+                classNames={{ label: "flex-grow text-mtn-xs sm:text-mtn-md" }}
+                checked={field.state.value}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  field.handleChange(e.currentTarget.checked)
+                }
+              />
+            )}
+          </form.Field>
+          <form.Field name="potentialPartner">
+            {(field) => (
+              <Switch
+                label="Alliance potential?"
+                classNames={{ label: "flex-grow text-mtn-xs sm:text-mtn-md" }}
+                checked={field.state.value}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  field.handleChange(e.currentTarget.checked)
+                }
+              />
+            )}
+          </form.Field>
+          <form.Field name="eStopped">
+            {(field) => (
+              <Switch
+                label="E-Stopped?"
+                classNames={{ label: "flex-grow text-mtn-xs sm:text-mtn-md" }}
+                checked={field.state.value}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  field.handleChange(e.currentTarget.checked)
+                }
+              />
+            )}
+          </form.Field>
+          <form.Field name="aStopped">
+            {(field) => (
+              <Switch
+                label="A-Stopped?"
+                classNames={{ label: "flex-grow text-mtn-xs sm:text-mtn-md" }}
+                checked={field.state.value}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  field.handleChange(e.currentTarget.checked)
+                }
+              />
+            )}
+          </form.Field>
         </div>
-      </Paper>
+      </div>
 
-      <Textarea
-        label="Comments"
-        autosize
-        minRows={4}
-        classNames={{
-          input: "text-mtn-xs mt-2",
-        }}
-        {...form.getInputProps("comments")}
-      />
+      <form.Field name="comments">
+        {(field) => (
+          <Textarea
+            label="Comments"
+            autosize
+            minRows={4}
+            classNames={{
+              input: "text-mtn-xs mt-2",
+            }}
+            value={field.state.value}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+              field.handleChange(e.currentTarget.value)
+            }
+          />
+        )}
+      </form.Field>
     </div>
   );
 }

@@ -28,26 +28,60 @@ export function Teleop({ matchId, initialData }: Props): ReactNode {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 grid-rows-4">
       <div className="row-span-full flex flex-col md:gap-y-2 gap-y-5 my-auto">
-        <Select
-          label="Strategy"
-          data={enumToSelectItem(Strategy)}
-          {...form.getInputProps("strategy")}
-        />
-        <Select
-          label="Pickup Type"
-          data={enumToSelectItem(PickupType)}
-          {...form.getInputProps("pickupType")}
-        />
-        <Counter
-          label="Processor Scores"
-          {...form.getInputProps("processor")}
-        />
-        <Counter label="Net Scores" max={99} {...form.getInputProps("net")} />
-        <Switch
-          label="Removed Algae"
-          max={99}
-          {...form.getInputProps("removedAlgae")}
-        />
+        <form.Field name="strategy">
+          {(field) => (
+            <Select
+              label="Strategy"
+              data={enumToSelectItem(Strategy)}
+              value={field.state.value}
+              onChange={(val: string | null) =>
+                field.handleChange(val as Strategy)
+              }
+            />
+          )}
+        </form.Field>
+        <form.Field name="pickupType">
+          {(field) => (
+            <Select
+              label="Pickup Type"
+              data={enumToSelectItem(PickupType)}
+              value={field.state.value}
+              onChange={(val: string | null) =>
+                field.handleChange(val as PickupType)
+              }
+            />
+          )}
+        </form.Field>
+        <form.Field name="processor">
+          {(field) => (
+            <Counter
+              label="Processor Scores"
+              value={field.state.value}
+              onChange={(val: number) => field.handleChange(val)}
+            />
+          )}
+        </form.Field>
+        <form.Field name="net">
+          {(field) => (
+            <Counter
+              label="Net Scores"
+              max={99}
+              value={field.state.value}
+              onChange={(val: number) => field.handleChange(val)}
+            />
+          )}
+        </form.Field>
+        <form.Field name="removedAlgae">
+          {(field) => (
+            <Switch
+              label="Removed Algae"
+              checked={field.state.value}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                field.handleChange(e.currentTarget.checked)
+              }
+            />
+          )}
+        </form.Field>
       </div>
 
       <svg
@@ -68,28 +102,48 @@ export function Teleop({ matchId, initialData }: Props): ReactNode {
         />
       </svg>
 
-      <Counter
-        label="Coral Level 4"
-        className="mt-0 mb-0 sm:mb-auto"
-        max={12}
-        {...form.getInputProps("reef.coralLevel4")}
-      />
-      <Counter
-        label="Coral Level 3"
-        max={12}
-        {...form.getInputProps("reef.coralLevel3")}
-      />
-      <Counter
-        label="Coral Level 2"
-        max={12}
-        {...form.getInputProps("reef.coralLevel2")}
-      />
-      <Counter
-        label="Coral Level 1"
-        className="mb-0 mt-0 sm:mt-auto"
-        max={12}
-        {...form.getInputProps("reef.coralLevel1")}
-      />
+      <form.Field name="reef.coralLevel4">
+        {(field) => (
+          <Counter
+            label="Coral Level 4"
+            className="mt-0 mb-0 sm:mb-auto"
+            max={12}
+            value={field.state.value}
+            onChange={(val: number) => field.handleChange(val)}
+          />
+        )}
+      </form.Field>
+      <form.Field name="reef.coralLevel3">
+        {(field) => (
+          <Counter
+            label="Coral Level 3"
+            max={12}
+            value={field.state.value}
+            onChange={(val: number) => field.handleChange(val)}
+          />
+        )}
+      </form.Field>
+      <form.Field name="reef.coralLevel2">
+        {(field) => (
+          <Counter
+            label="Coral Level 2"
+            max={12}
+            value={field.state.value}
+            onChange={(val: number) => field.handleChange(val)}
+          />
+        )}
+      </form.Field>
+      <form.Field name="reef.coralLevel1">
+        {(field) => (
+          <Counter
+            label="Coral Level 1"
+            className="mb-0 mt-0 sm:mt-auto"
+            max={12}
+            value={field.state.value}
+            onChange={(val: number) => field.handleChange(val)}
+          />
+        )}
+      </form.Field>
     </div>
   );
 }
