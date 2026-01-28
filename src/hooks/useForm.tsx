@@ -1,7 +1,7 @@
 import { useForm as useTanStackForm } from "@tanstack/react-form";
 import { useCallback, useEffect, useRef } from "react";
 import { useDebounceCallback } from "usehooks-ts";
-import type { BaseSchema } from "valibot";
+import type { BaseIssue, BaseSchema } from "valibot";
 import { safeParse } from "valibot";
 import { type PhaseDataMap, setScoutingPhaseData } from "@/data/db";
 import type { ScoutingPhase } from "@/data/match";
@@ -11,8 +11,7 @@ type Props<T extends ScoutingPhase> = {
   matchId: string;
   phase: T;
   initialValues: PhaseDataMap[T];
-  // biome-ignore lint/suspicious/noExplicitAny: Schema types vary
-  schema: BaseSchema<PhaseDataMap[T], PhaseDataMap[T], any>;
+  schema: BaseSchema<PhaseDataMap[T], PhaseDataMap[T], BaseIssue<unknown>>;
 };
 
 export function useForm<T extends ScoutingPhase>({

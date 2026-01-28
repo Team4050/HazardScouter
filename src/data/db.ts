@@ -94,6 +94,10 @@ export function downloadMatches(del = false) {
         new Date(a.finished!).getTime() - new Date(b.finished!).getTime(),
     );
 
+  if (matches.length === 0) {
+    return;
+  }
+
   const firstDay = shortDayName(matches[0].finished!);
   const lastDay = shortDayName(matches[matches.length - 1].finished!);
 

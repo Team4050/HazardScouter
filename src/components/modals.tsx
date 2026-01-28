@@ -93,7 +93,7 @@ export function NewMatchModal({
   };
 
   return (
-    <Dialog open={opened} onOpenChange={() => {}}>
+    <Dialog open={opened} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>New Match</DialogTitle>

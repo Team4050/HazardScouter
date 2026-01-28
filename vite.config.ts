@@ -8,12 +8,10 @@ import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 
 const commitHash = execSync("git rev-parse --short HEAD").toString().trim();
-// const commitCount = execSync("git rev-list --count HEAD").toString().trim();
 
 export default defineConfig({
   define: {
     __COMMIT_HASH__: JSON.stringify(commitHash),
-    // __COMMIT_COUNT__: JSON.stringify(commitCount),
   },
   plugins: [
     tailwindcss(),
@@ -84,6 +82,7 @@ export default defineConfig({
       },
     }),
     sentryVitePlugin({
+      telemetry: false,
       org: "seesexyz",
       project: "hazard-scouter",
       release: {

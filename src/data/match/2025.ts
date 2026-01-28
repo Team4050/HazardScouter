@@ -87,11 +87,9 @@ export const teleopDefaults: Teleop = {
 };
 
 export const endGameSchema = object({
-  // stageSeconds: number([minValue(0), maxValue(99)]), // TODO: Need better values here
   endStatus: enum_(EndStatus),
 });
 export type EndGame = InferOutput<typeof endGameSchema>;
 export const endGameDefaults: EndGame = {
-  // stageSeconds: 0,
   endStatus: EndStatus.NotAttempted,
 };

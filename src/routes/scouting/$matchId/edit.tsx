@@ -40,6 +40,8 @@ function Page(): ReactNode {
         return (
           <PostMatch matchId={matchId} initialData={match?.phases.postMatch} />
         );
+      default:
+        return phase satisfies never;
     }
   };
 

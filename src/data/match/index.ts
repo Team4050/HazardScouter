@@ -60,11 +60,14 @@ export const phaseRoutes = phaseOrder.map(
   (phase) => phaseDetails[phase].slug,
 ) as ["pre-match", "auto", "teleop", "endgame", "post-match"];
 
+const slugToPhase = new Map(
+  phaseOrder.map((phase) => [phaseDetails[phase].slug, phase]),
+);
+
 export function phaseSlugToTitle(slug: string): string {
-  return phaseDetails[
-    // biome-ignore lint/style/noNonNullAssertion: We expect only valid slugs to be here
-    phaseOrder.find((phase) => phaseDetails[phase].slug === slug)!
-  ].title;
+  const phase = slugToPhase.get(slug);
+  if (!phase) throw new Error(`Unknown phase slug: ${slug}`);
+  return phaseDetails[phase].title;
 }
 
 // Pretty sure this is generally considered bad practice,
