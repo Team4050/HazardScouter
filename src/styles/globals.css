@@ -4,7 +4,7 @@
   /* Fonts */
   --font-heading: "Jersey 20", system-ui;
   --font-sans: "Jersey 10", system-ui;
-  --font-mono: "Inter", monospace;
+  --font-mono: "Roboto Mono", monospace;
 
   /* Breakpoints */
   --breakpoint-sm: 600px;
