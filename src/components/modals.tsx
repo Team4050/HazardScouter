@@ -154,7 +154,7 @@ export function NewMatchModal({
           >
             {(field) => (
               <div className="flex flex-col gap-1.5">
-                <label className="ml-1 text-sm font-medium">Match</label>
+                <label className="ml-1 font-medium text-base">Match</label>
                 <Input
                   type="text"
                   inputMode="numeric"

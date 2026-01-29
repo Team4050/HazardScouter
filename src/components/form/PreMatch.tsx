@@ -66,6 +66,7 @@ export function PreMatch({ matchId, initialData }: Props): ReactNode {
                 className="col-span-full"
                 label="Drive Position"
                 data={enumToSelectItem(DrivePosition)}
+                fullWidth
                 color={alliance}
                 value={field.state.value}
                 onChange={(val) => field.handleChange(val as DrivePosition)}

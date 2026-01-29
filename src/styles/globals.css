@@ -2,9 +2,14 @@
 
 @theme {
   /* Fonts */
-  --font-heading: "Jersey 20", system-ui;
-  --font-sans: "Jersey 10", system-ui;
+  --font-sans: "Jersey 10", sans-serif;
   --font-mono: "Roboto Mono", monospace;
+
+  --text-xs: 20px;
+  --text-sm: 22px;
+  --text-base: 24px;
+  --text-lg: 28px;
+  --text-xl: 30px;
 
   /* Breakpoints */
   --breakpoint-sm: 600px;

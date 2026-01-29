@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { ReefCoralSection } from "@/components/form/ReefCoralSection";
 import { Counter, Switch } from "@/components/inputs";
 import type { PhaseDataMap } from "@/data/db";
 import { autoDefaults, autoSchema } from "@/data/match";
@@ -89,48 +90,7 @@ export function Auto({ matchId, initialData }: Props): ReactNode {
         />
       </svg>
 
-      <form.Field name="reef.coralLevel4">
-        {(field) => (
-          <Counter
-            label="Coral Level 4"
-            className="mt-0 mb-0 sm:mb-auto"
-            max={12}
-            value={field.state.value}
-            onChange={(val) => field.handleChange(val)}
-          />
-        )}
-      </form.Field>
-      <form.Field name="reef.coralLevel3">
-        {(field) => (
-          <Counter
-            label="Coral Level 3"
-            max={12}
-            value={field.state.value}
-            onChange={(val) => field.handleChange(val)}
-          />
-        )}
-      </form.Field>
-      <form.Field name="reef.coralLevel2">
-        {(field) => (
-          <Counter
-            label="Coral Level 2"
-            max={12}
-            value={field.state.value}
-            onChange={(val) => field.handleChange(val)}
-          />
-        )}
-      </form.Field>
-      <form.Field name="reef.coralLevel1">
-        {(field) => (
-          <Counter
-            label="Coral Level 1"
-            className="mb-0 mt-0 sm:mt-auto"
-            max={12}
-            value={field.state.value}
-            onChange={(val) => field.handleChange(val)}
-          />
-        )}
-      </form.Field>
+      <ReefCoralSection form={form} />
     </div>
   );
 }

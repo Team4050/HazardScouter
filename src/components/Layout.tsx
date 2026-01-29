@@ -31,7 +31,7 @@ export function Layout({ content }: LayoutProps): ReactNode {
   }, [path]);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-dvh flex flex-col">
       <header
         className="flex items-center px-2 border-b bg-background"
         style={{ height: NAVBAR_HEIGHT }}
@@ -44,7 +44,7 @@ export function Layout({ content }: LayoutProps): ReactNode {
           />
         </div>
         <div className="flex-1 flex justify-center">
-          <h1 className="text-2xl lg:text-4xl leading-none text-center font-heading">
+          <h1 className="text-3xl lg:text-4xl leading-none text-center">
             {matchPhaseTitle}
           </h1>
         </div>
@@ -53,10 +53,9 @@ export function Layout({ content }: LayoutProps): ReactNode {
             <span className="opacity-50">{__COMMIT_HASH__}</span>
           ) : (
             <Button
-              className="hidden lg:block text-primary"
+              className="hidden lg:block text-primary py-0 px-2"
               variant="ghost"
               onClick={() => navigate({ to: "/admin" })}
-              size="lg"
             >
               Scouting Admin
             </Button>
@@ -74,7 +73,7 @@ export function Layout({ content }: LayoutProps): ReactNode {
       </header>
 
       <main
-        className="flex-1 max-w-5xl mx-auto w-full p-2 md:p-4"
+        className="flex-1 flex flex-col max-w-5xl mx-auto w-full py-2"
         style={{ minHeight: `calc(100dvh - ${NAVBAR_HEIGHT}px)` }}
       >
         {content}

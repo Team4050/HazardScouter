@@ -101,33 +101,32 @@ function Page(): ReactNode {
   );
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col flex-1 py-2 md:py-6">
       <NewMatchModal opened={newModalOpened} onClose={closeNewModal} />
       <ConfirmDialog {...confirmDialogProps} />
 
-      <div className="flex md:flex-row flex-col mb-2 md:mb-6 gap-2 flex-none">
-        <div className="text-4xl grow hidden md:block" data-mobile={isMobile}>
-          Match List
-        </div>
-
+      <div className="flex md:flex-row flex-col gap-2 flex-none">
         {matches.length > 0 ? (
           <>
-            <NewMatchButton />
-            <Button
-              className="text-3xl"
-              disabled={!matches || !canFinish}
-              variant="ghost"
-              onClick={handleExport}
-            >
-              Finish Scouting
-            </Button>
+            <div className="text-4xl grow hidden md:block">Match List</div>
+            <div>
+              <NewMatchButton />
+              <Button
+                className="text-3xl"
+                disabled={!matches || !canFinish}
+                variant="ghost"
+                onClick={handleExport}
+              >
+                Finish Scouting
+              </Button>
+            </div>
           </>
         ) : null}
       </div>
 
-      <div className="flex-1">
+      <div className="flex-1 flex flex-col">
         {matches.length > 0 ? (
-          <div className="border rounded-lg shadow-lg py-2">
+          <div className="border rounded-lg shadow-lg my-2">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -198,7 +197,7 @@ function Page(): ReactNode {
             </Table>
           </div>
         ) : (
-          <div className="flex flex-col justify-center items-center gap-y-4 h-full">
+          <div className="flex-1 flex flex-col justify-center items-center gap-y-4">
             <div className="text-4xl">No matches found</div>
             <NewMatchButton />
           </div>

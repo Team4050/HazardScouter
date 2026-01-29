@@ -50,7 +50,7 @@ export function TextInput({
   return (
     <div className={cn("flex flex-col gap-1.5", className)}>
       {label && (
-        <label htmlFor={inputId} className="ml-1 text-sm font-medium">
+        <label htmlFor={inputId} className="ml-1 font-medium text-base">
           {label}
         </label>
       )}
@@ -79,7 +79,7 @@ export function NumberInput({
   return (
     <div className={cn("flex flex-col gap-1.5", className)}>
       {label && (
-        <label htmlFor={inputId} className="ml-1 text-sm font-medium">
+        <label htmlFor={inputId} className="ml-1 font-medium text-base">
           {label}
         </label>
       )}
@@ -108,7 +108,7 @@ export function Autocomplete({
   return (
     <div className={cn("flex flex-col gap-1.5", className)}>
       {label && (
-        <label htmlFor={inputId} className="ml-1 text-sm font-medium">
+        <label htmlFor={inputId} className="ml-1 font-medium text-base">
           {label}
         </label>
       )}
@@ -151,7 +151,7 @@ export function Select({
   return (
     <div className={cn("flex flex-col gap-1.5", className)}>
       {label && (
-        <label htmlFor={id} className="ml-1 mb-2 text-sm font-medium">
+        <label htmlFor={id} className="ml-1 mb-2 font-medium text-base">
           {label}
         </label>
       )}
@@ -196,7 +196,7 @@ export function Textarea({
   return (
     <div className={cn("flex flex-col gap-1.5", className)}>
       {label && (
-        <label htmlFor={inputId} className="ml-1 mb-2 text-sm font-medium">
+        <label htmlFor={inputId} className="ml-1 mb-2 font-medium text-base">
           {label}
         </label>
       )}
@@ -248,7 +248,7 @@ export function SegmentedControl({
 
   return (
     <div className={cn(className)}>
-      {label && <label className="text-sm ml-1">{label}</label>}
+      {label && <label className="ml-1 text-base">{label}</label>}
       <Tabs
         value={value}
         onValueChange={onChange}
@@ -259,7 +259,11 @@ export function SegmentedControl({
             <TabsTrigger
               key={item.value}
               value={item.value}
-              className={cn(fullWidth && "flex-1", getColorClasses())}
+              className={cn(
+                fullWidth && "flex-1",
+                "transition-colors duration-300",
+                getColorClasses(),
+              )}
             >
               {item.label}
             </TabsTrigger>
@@ -304,7 +308,7 @@ export function Switch({
   return (
     <div className={cn("flex flex-col items-center", className)}>
       {label && (
-        <label htmlFor={id} className={cn("mb-1 text-sm", classNames?.label)}>
+        <label htmlFor={id} className={cn("mb-1", classNames?.label)}>
           {label}
         </label>
       )}
@@ -358,7 +362,9 @@ export function Slider({
       )}
     >
       {label && (
-        <label className="md:w-48 md:mr-4 md:mb-0 mb-1 text-sm">{label}</label>
+        <label className="md:w-48 md:mr-4 md:mb-0 mb-1 text-base">
+          {label}
+        </label>
       )}
       <div className="w-full flex flex-col">
         <ShadcnSlider
@@ -371,7 +377,7 @@ export function Slider({
         />
         <div className="flex justify-between mt-1 px-1">
           {marks.map((mark) => (
-            <span key={mark} className="text-xs text-muted-foreground">
+            <span key={mark} className="text-sm font-medium text-muted-foreground">
               {mark}
             </span>
           ))}
@@ -432,12 +438,12 @@ export const Counter = memo(function Counter({
   return (
     <div
       className={cn(
-        "flex flex-col items-center justify-center mx-auto w-[150px] sm:w-[180px]",
+        "flex flex-col items-center justify-center mx-auto w-37.5 sm:w-45",
         className,
       )}
     >
       {label && (
-        <label className="mb-1 text-sm self-start w-full text-center">
+        <label className="mb-1 self-start w-full text-center text-base">
           {label}
         </label>
       )}
