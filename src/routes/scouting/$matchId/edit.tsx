@@ -62,6 +62,7 @@ function Page(): ReactNode {
   return (
     <div className="flex md:flex-col flex-col-reverse gap-y-6">
       <ConfirmDialog {...confirmDialogProps} />
+
       <div className="flex flex-col gap-y-6">
         {phaseOrder.map((phase) => {
           return (
@@ -102,18 +103,18 @@ function Section({ children, phase }: SectionProps): ReactNode {
   return (
     <div
       className={cn(
-        "gap-y-4 px-2 py-4 sm:p-6 border rounded-lg shadow-lg",
+        "gap-y-4 p-2 sm:p-4 border-2 shadow-lg",
         isPhaseValid(phase) ? "border-green-500" : "border-red-500",
       )}
     >
       <div
         className={cn(
-          "flex items-center space-x-2 text-green-500",
+          "flex items-center space-x-2 text-green-500 mb-2",
           isPhaseValid(phase) ? "text-green-500" : "text-red-500",
         )}
       >
         <Icon className="size-8" />
-        <div className="text-3xl font-normal">{title}</div>
+        <div className="text-3xl">{title}</div>
         <div
           className={cn(
             "ml-auto h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent",

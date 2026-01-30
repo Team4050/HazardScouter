@@ -1,13 +1,6 @@
-import {
-  IconDownload,
-  IconJson,
-  IconTrash,
-  IconTrashX,
-  IconUpload,
-  IconX,
-} from "@tabler/icons-react";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import download from "downloadjs";
+import { Download, FileJson, Trash2, Upload, X } from "lucide-react";
 import {
   type ReactNode,
   useCallback,
@@ -131,12 +124,12 @@ function Page(): ReactNode {
   };
 
   return (
-    <div className="gap-y-5 flex flex-col">
+    <div className="gap-y-5 flex flex-col mt-4">
       {/* Dropzone */}
       <div
         {...getRootProps()}
         className={cn(
-          "border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors",
+          "border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors shadow-lg",
           isDragActive && !isDragReject && "border-primary bg-primary/5",
           isDragReject && "border-red-500 bg-red-500/5",
           !isDragActive && "border-border hover:border-primary/50",
@@ -145,13 +138,13 @@ function Page(): ReactNode {
         <input {...getInputProps()} />
         <div className="flex flex-col items-center justify-center gap-4 min-h-45">
           {isDragReject ? (
-            <IconX className="h-12 w-12 text-red-500" stroke={1.5} />
+            <X className="h-12 w-12 text-red-500" strokeWidth={1.5} />
           ) : isDragActive ? (
-            <IconUpload className="h-12 w-12 text-primary" stroke={1.5} />
+            <Upload className="h-12 w-12 text-primary" strokeWidth={1.5} />
           ) : (
-            <IconJson
+            <FileJson
               className="h-16 w-16 text-muted-foreground"
-              stroke={1.5}
+              strokeWidth={1.5}
             />
           )}
           <div className="text-2xl">
@@ -184,7 +177,7 @@ function Page(): ReactNode {
                       onClick={() => handleDelete(row.name)}
                       className="p-2 hover:bg-red-500/20 rounded-md transition-colors text-red-500"
                     >
-                      <IconTrash className="h-5 w-5" />
+                      <Trash2 className="h-5 w-5" />
                     </button>
                   </TableCell>
                 </TableRow>
@@ -199,11 +192,11 @@ function Page(): ReactNode {
       {/* Actions */}
       <div className="mx-auto flex gap-x-4">
         <Button onClick={onDownload}>
-          <IconDownload className="h-4 w-4 mr-2" />
+          <Download className="h-4 w-4 mr-2" />
           Compile and Download
         </Button>
         <Button onClick={onClear} variant="destructive">
-          <IconTrashX className="h-4 w-4 mr-2" />
+          <Trash2 className="h-4 w-4 mr-2" />
           Clear files
         </Button>
       </div>

@@ -1,10 +1,9 @@
-import { IconRefreshAlert } from "@tabler/icons-react";
 import { useLocation, useNavigate } from "@tanstack/react-router";
+import { RefreshCw } from "lucide-react";
 import { type ReactNode, useMemo } from "react";
 import { AppLogo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import { phaseSlugToTitle } from "@/data/match";
-import { useIsScoutingTablet } from "@/hooks/useIsMobile";
 import { usePWAUpdater } from "@/hooks/usePWAUpdater";
 
 const NAVBAR_HEIGHT = 60;
@@ -14,7 +13,6 @@ type LayoutProps = {
 };
 
 export function Layout({ content }: LayoutProps): ReactNode {
-  const isTablet = useIsScoutingTablet();
   const navigate = useNavigate();
   const path = useLocation({ select: (state) => state.pathname });
   const { needRefresh, forceUpdate } = usePWAUpdater();
@@ -31,14 +29,17 @@ export function Layout({ content }: LayoutProps): ReactNode {
   }, [path]);
 
   return (
-    <div className="min-h-dvh flex flex-col">
+    <div
+      className="min-h-dvh flex flex-col"
+      style={{ minHeight: `calc(100dvh - ${NAVBAR_HEIGHT}px)` }}
+    >
       <header
-        className="flex items-center px-2 border-b bg-background"
+        className="flex items-center px-2 border-b-2 bg-background select-none"
         style={{ height: NAVBAR_HEIGHT }}
       >
         <div className="flex-1 flex justify-start h-full">
           <AppLogo
-            className="py-0.5 flex"
+            className="py-1 flex"
             classNames={{ text: "sm:block hidden" }}
             onClick={() => navigate({ to: "/" })}
           />
@@ -49,33 +50,28 @@ export function Layout({ content }: LayoutProps): ReactNode {
           </h1>
         </div>
         <div className="flex-1 flex justify-end items-center gap-2">
-          {isTablet ? (
-            <span className="opacity-50">{__COMMIT_HASH__}</span>
-          ) : (
-            <Button
-              className="hidden lg:block text-primary py-0 px-2"
-              variant="ghost"
-              onClick={() => navigate({ to: "/admin" })}
-            >
-              Scouting Admin
-            </Button>
-          )}
+          <span className="lg:hidden block opacity-50">{__COMMIT_HASH__}</span>
+          <Button
+            className="hidden lg:block text-primary py-0 px-2"
+            variant="ghost"
+            onClick={() => navigate({ to: "/admin" })}
+          >
+            Scouting Admin
+          </Button>
+
           {needRefresh ? (
             <button
               type="button"
               className="p-2 hover:bg-accent rounded-md transition-colors"
               onClick={forceUpdate}
             >
-              <IconRefreshAlert className="h-5 w-5" />
+              <RefreshCw className="h-5 w-5" />
             </button>
           ) : null}
         </div>
       </header>
 
-      <main
-        className="flex-1 flex flex-col max-w-5xl mx-auto w-full py-2"
-        style={{ minHeight: `calc(100dvh - ${NAVBAR_HEIGHT}px)` }}
-      >
+      <main className="flex-1 flex flex-col max-w-5xl mx-auto w-full p-2 overflow-y-auto">
         {content}
       </main>
     </div>

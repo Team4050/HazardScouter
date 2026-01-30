@@ -1,6 +1,6 @@
 import { useForm } from "@tanstack/react-form";
 import { useNavigate } from "@tanstack/react-router";
-import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import { type ReactNode, useMemo, useState } from "react";
 import { Autocomplete } from "@/components/inputs";
 import { Button } from "@/components/ui/button";
 import {
@@ -26,8 +26,6 @@ export function NewMatchModal({
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const matches = useReactivity(() => matchCollection.find().fetch(), []);
-  const scouterInputRef = useRef<HTMLInputElement>(null);
-
   const scouters = useMemo(() => {
     return [...new Set(matches.map((match) => match.scouter))];
   }, [matches]);
@@ -35,17 +33,6 @@ export function NewMatchModal({
   const teams = useMemo(() => {
     return [...new Set(matches.map((match) => match.teamNumber))];
   }, [matches]);
-
-  // Focus input when dialog opens
-  useEffect(() => {
-    if (opened) {
-      // Small delay to ensure dialog is mounted
-      const timer = setTimeout(() => {
-        scouterInputRef.current?.focus();
-      }, 100);
-      return () => clearTimeout(timer);
-    }
-  }, [opened]);
 
   const form = useForm({
     defaultValues: {
@@ -118,11 +105,10 @@ export function NewMatchModal({
           >
             {(field) => (
               <Autocomplete
-                ref={scouterInputRef}
                 label="Scouter"
                 data={scouters}
                 value={field.state.value}
-                onChange={(e) => field.handleChange(e.target.value)}
+                onChange={(val) => field.handleChange(val)}
               />
             )}
           </form.Field>
@@ -139,9 +125,7 @@ export function NewMatchModal({
                 data={teams.map((t) => t.toString())}
                 inputMode="numeric"
                 value={field.state.value ? field.state.value.toString() : ""}
-                onChange={(e) =>
-                  field.handleChange(Number(e.target.value) || 0)
-                }
+                onChange={(val) => field.handleChange(Number(val) || 0)}
               />
             )}
           </form.Field>

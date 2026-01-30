@@ -1,5 +1,5 @@
-import { IconPencil, IconTrash } from "@tabler/icons-react";
 import { createFileRoute } from "@tanstack/react-router";
+import { Pencil, Trash2 } from "lucide-react";
 import { type ReactNode, useCallback, useState } from "react";
 import {
   ConfirmDialog,
@@ -17,7 +17,6 @@ import {
 } from "@/components/ui/table";
 import { downloadMatches, matchCollection, useReactivity } from "@/data/db";
 import { phaseDetails, phaseOrder } from "@/data/match";
-import { useIsMobile } from "@/hooks/useIsMobile";
 import { cn, shortDayName } from "@/util";
 
 export const Route = createFileRoute("/scouting/")({
@@ -28,7 +27,6 @@ function Page(): ReactNode {
   const navigate = Route.useNavigate();
   const matches = useReactivity(() => matchCollection.find().fetch(), []);
   const canFinish = !!matches.filter((m) => m.finished !== undefined).length;
-  const isMobile = useIsMobile();
 
   const [newModalOpened, setNewModalOpened] = useState(false);
   const openNewModal = useCallback(() => setNewModalOpened(true), []);
@@ -105,30 +103,28 @@ function Page(): ReactNode {
       <NewMatchModal opened={newModalOpened} onClose={closeNewModal} />
       <ConfirmDialog {...confirmDialogProps} />
 
-      <div className="flex md:flex-row flex-col gap-2 flex-none">
-        {matches.length > 0 ? (
-          <>
-            <div className="text-4xl grow hidden md:block">Match List</div>
-            <div>
-              <NewMatchButton />
-              <Button
-                className="text-3xl"
-                disabled={!matches || !canFinish}
-                variant="ghost"
-                onClick={handleExport}
-              >
-                Finish Scouting
-              </Button>
-            </div>
-          </>
-        ) : null}
-      </div>
+      {matches.length > 0 ? (
+        <div className="flex sm:flex-row flex-col mb-2">
+          <div className="text-4xl grow hidden sm:block ml-1">Match List</div>
+          <div className="gap-2 flex ml-auto">
+            <NewMatchButton />
+            <Button
+              className="text-3xl"
+              disabled={!matches || !canFinish}
+              variant="ghost"
+              onClick={handleExport}
+            >
+              Finish Scouting
+            </Button>
+          </div>
+        </div>
+      ) : null}
 
       <div className="flex-1 flex flex-col">
         {matches.length > 0 ? (
           <div className="border rounded-lg shadow-lg my-2">
             <Table>
-              <TableHeader>
+              <TableHeader className="text-base">
                 <TableRow>
                   {["Match", "Team", "Scouter", "Started", "Finished"].map(
                     (head) => (
@@ -136,9 +132,7 @@ function Page(): ReactNode {
                         key={head}
                         className={cn(
                           (head === "Started" || head === "Finished") &&
-                            isMobile
-                            ? "hidden"
-                            : null,
+                            "hidden xs:table-cell",
                         )}
                       >
                         {head}
@@ -164,23 +158,17 @@ function Page(): ReactNode {
                       <TableRow
                         key={id}
                         onClick={() => handleOpen(id)}
-                        className="cursor-pointer"
+                        className="cursor-pointer text-base"
                       >
-                        <TableCell>{matchNumber}</TableCell>
+                        <TableCell className="pl-3">{matchNumber}</TableCell>
                         <TableCell>{teamNumber}</TableCell>
                         <TableCell>{scouter}</TableCell>
-                        <TableCell
-                          className="data-[mobile=true]:hidden"
-                          data-mobile={isMobile}
-                        >
-                          {`${shortDayName(startedDate)} ${startedDate.toLocaleTimeString()}`}
+                        <TableCell className="hidden xs:table-cell">
+                          {`${shortDayName(startedDate)} ${startedDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`}
                         </TableCell>
-                        <TableCell
-                          className="data-[mobile=true]:hidden"
-                          data-mobile={isMobile}
-                        >
+                        <TableCell className="hidden xs:table-cell">
                           {finishedDate
-                            ? `${shortDayName(finishedDate)} ${finishedDate.toLocaleTimeString()}`
+                            ? `${shortDayName(finishedDate)} ${finishedDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`
                             : "In Progress"}
                         </TableCell>
                         <TableCell className="w-fit">
@@ -225,20 +213,20 @@ function ActionGroup({
   };
 
   return (
-    <div className="w-fit flex space-x-1">
+    <div className="w-fit flex gap-x-1">
       <button
         type="button"
         onClick={handleEdit}
-        className="p-2 hover:bg-accent rounded-md transition-colors"
+        className="p-2 hover:opacity-50 rounded-md transition-colors cursor-pointer"
       >
-        <IconPencil className="h-5 w-5" />
+        <Pencil className="h-5 w-5" />
       </button>
       <button
         type="button"
         onClick={handleDelete}
-        className="p-2 hover:bg-red-500/20 rounded-md transition-colors text-red-500"
+        className="p-2 rounded-md hover:opacity-50 transition-colors text-red-500 cursor-pointer"
       >
-        <IconTrash className="h-5 w-5" />
+        <Trash2 className="h-5 w-5" />
       </button>
     </div>
   );

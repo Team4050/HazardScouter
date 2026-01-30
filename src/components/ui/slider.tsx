@@ -1,26 +1,74 @@
-import * as SliderPrimitive from "@radix-ui/react-slider";
-import * as React from "react";
+import { Slider as SliderPrimitive } from "@base-ui/react";
+import type { ComponentProps } from "react";
 
 import { cn } from "@/util";
 
-const Slider = React.forwardRef<
-  React.ElementRef<typeof SliderPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root>
->(({ className, ...props }, ref) => (
-  <SliderPrimitive.Root
-    ref={ref}
-    className={cn(
-      "relative flex w-full touch-none select-none items-center",
-      className,
-    )}
-    {...props}
-  >
-    <SliderPrimitive.Track className="relative h-2.5 w-full grow overflow-hidden rounded-full bg-primary/20">
-      <SliderPrimitive.Range className="absolute h-full bg-primary" />
-    </SliderPrimitive.Track>
-    <SliderPrimitive.Thumb className="block h-7 w-7 rounded-full border-2 border-green-500 bg-green-500 shadow-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50" />
-  </SliderPrimitive.Root>
-));
-Slider.displayName = SliderPrimitive.Root.displayName;
+type SliderProps = ComponentProps<typeof SliderPrimitive.Root> & {
+  showSteps?: boolean;
+};
+
+function Slider({
+  className,
+  showSteps,
+  min = 0,
+  max = 100,
+  step = 1,
+  ...props
+}: SliderProps) {
+  const steps: number[] = [];
+  if (showSteps) {
+    for (let i = min; i <= max; i += step) {
+      steps.push(i);
+    }
+  }
+
+  return (
+    <div className="relative w-full">
+      <SliderPrimitive.Root
+        min={min}
+        max={max}
+        step={step}
+        className={cn(
+          "relative flex w-full touch-none select-none items-center",
+          className,
+        )}
+        {...props}
+      >
+        <SliderPrimitive.Control className="flex w-full items-center">
+          <SliderPrimitive.Track className="relative h-2.5 w-full grow overflow-hidden rounded-none bg-primary/20">
+            <SliderPrimitive.Indicator className="absolute h-full bg-primary" />
+          </SliderPrimitive.Track>
+          <SliderPrimitive.Thumb
+            className={cn(
+              "block h-7 w-7",
+              "rounded-none border-4 border-green-500 bg-green-500 shadow-md",
+              "transition-colors",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              "disabled:pointer-events-none disabled:opacity-50",
+            )}
+          />
+        </SliderPrimitive.Control>
+      </SliderPrimitive.Root>
+      {showSteps && steps.length > 0 && (
+        <div className="relative mt-1 h-5 w-full">
+          {steps.map((value) => {
+            const fraction = (value - min) / (max - min);
+            return (
+              <span
+                key={value}
+                className="absolute text-sm font-medium text-muted-foreground -translate-x-1/2"
+                style={{
+                  left: `calc(${fraction} * (100% - 1.75rem) + 0.875rem)`,
+                }}
+              >
+                {value}
+              </span>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export { Slider };

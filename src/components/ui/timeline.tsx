@@ -31,7 +31,7 @@ export function TimelineItem({
 
       <div
         className={cn(
-          "absolute -left-5 size-6 rounded-sm flex items-center justify-center",
+          "absolute -left-5 size-6 rounded-sm flex items-center justify-center p-0.5",
           isComplete
             ? "bg-primary text-primary-foreground"
             : "bg-muted text-muted-foreground",

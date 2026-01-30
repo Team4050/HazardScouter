@@ -1,0 +1,129 @@
+[
+  {
+    "id": "mkzj8m7c005qbgeieg40",
+    "scouter": "Carson",
+    "teamNumber": 4050,
+    "matchNumber": 1,
+    "started": "2026-01-29T14:11:27.720Z",
+    "phases": {
+      "preMatch": {
+        "matchType": "semi",
+        "alliance": "blue",
+        "drivePosition": "middle"
+      },
+      "auto": {
+        "leaveStartingLine": true,
+        "reef": {
+          "coralLevel1": 0,
+          "coralLevel2": 0,
+          "coralLevel3": 0,
+          "coralLevel4": 0
+        },
+        "processor": 24,
+        "net": 0,
+        "coralPreloaded": true,
+        "removedAlgae": true
+      },
+      "teleop": {
+        "reef": {
+          "coralLevel1": 0,
+          "coralLevel2": 0,
+          "coralLevel3": 0,
+          "coralLevel4": 0
+        },
+        "processor": 2,
+        "net": 0,
+        "pickupType": "coral-station",
+        "strategy": "offense",
+        "removedAlgae": true
+      },
+      "endgame": { "endStatus": "shallow-cage" },
+      "postMatch": {
+        "driverRating": 5,
+        "defenseRating": 1,
+        "speedRating": 4,
+        "malfunctioned": true,
+        "unstable": true,
+        "droppedGamePieces": true,
+        "potentialPartner": true,
+        "comments": "",
+        "eStopped": true,
+        "aStopped": false
+      }
+    },
+    "finished": "2026-01-29T18:10:32.368Z"
+  },
+  {
+    "id": "ml049hls00nbmz47czln",
+    "scouter": "Carson",
+    "teamNumber": 4050,
+    "matchNumber": 1,
+    "started": "2026-01-30T00:00:00.352Z",
+    "phases": {
+      "preMatch": {
+        "matchType": "finals",
+        "alliance": "blue",
+        "drivePosition": "near"
+      },
+      "auto": {
+        "leaveStartingLine": true,
+        "reef": {
+          "coralLevel1": 6,
+          "coralLevel2": 0,
+          "coralLevel3": 0,
+          "coralLevel4": 0
+        },
+        "processor": 0,
+        "net": 0,
+        "coralPreloaded": true,
+        "removedAlgae": true
+      }
+    }
+  },
+  {
+    "id": "ml05ubsk00j9m18ticlc",
+    "scouter": "Foo",
+    "teamNumber": 123,
+    "matchNumber": 123,
+    "started": "2026-01-30T00:44:12.212Z",
+    "phases": {
+      "postMatch": {
+        "driverRating": 5,
+        "defenseRating": 5,
+        "speedRating": 5,
+        "malfunctioned": false,
+        "unstable": false,
+        "droppedGamePieces": false,
+        "potentialPartner": false,
+        "comments": "",
+        "eStopped": false,
+        "aStopped": true
+      }
+    },
+    "finished": "2026-01-30T00:44:18.720Z"
+  },
+  {
+    "id": "ml0w6vrg00tev11whsz6",
+    "scouter": "Carson",
+    "teamNumber": 4050,
+    "matchNumber": 1,
+    "started": "2026-01-30T13:01:47.980Z",
+    "phases": {}
+  },
+  {
+    "id": "ml0w70ko002vg27e4iip",
+    "scouter": "Foo",
+    "teamNumber": 4050,
+    "matchNumber": 1,
+    "started": "2026-01-30T13:01:54.216Z",
+    "phases": {}
+  },
+  {
+    "id": "ml0w74tr00ah75bu2zwa",
+    "scouter": "Carson",
+    "teamNumber": 4050,
+    "matchNumber": 1,
+    "started": "2026-01-30T13:01:59.727Z",
+    "phases": {}
+  },
+]

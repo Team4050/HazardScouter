@@ -4,7 +4,6 @@ import { Counter, Switch } from "@/components/inputs";
 import type { PhaseDataMap } from "@/data/db";
 import { autoDefaults, autoSchema } from "@/data/match";
 import { useForm } from "@/hooks/useForm";
-import { useIsMobile } from "@/hooks/useIsMobile";
 
 type Props = {
   matchId: string;
@@ -12,7 +11,6 @@ type Props = {
 };
 
 export function Auto({ matchId, initialData }: Props): ReactNode {
-  const isMobile = useIsMobile();
   const form = useForm<"auto">({
     matchId,
     phase: "auto",
@@ -78,8 +76,7 @@ export function Auto({ matchId, initialData }: Props): ReactNode {
         viewBox="0 0 44 225"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="row-span-full max-h-[500px] max-w-[250px] data-[mobile=true]:hidden"
-        data-mobile={isMobile}
+        className="row-span-full max-h-125 max-w-125 hidden xs:block"
       >
         <path
           d="M3 221.5V182M41 3V29C41 33.4066 38.9253 37.556 35.4 40.2L8.6 60.3C5.07472 62.944 3 67.0934 3 71.5V182M3 182L41 156M3 122L41 96"

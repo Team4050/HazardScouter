@@ -36,14 +36,14 @@ function Page(): ReactNode {
   };
 
   return (
-    <div className="max-w-2xl mx-auto gap-y-6 flex md:flex-col flex-col-reverse">
+    <div className="max-w-2xl mx-auto w-full gap-y-6 flex md:flex-col flex-col-reverse mt-4">
       <ConfirmDialog {...confirmDialogProps} />
 
       <Timeline>
         <TimelineItem
           title="Metadata"
           isComplete={true}
-          nextComplete={phases[phaseOrder[0]] !== undefined}
+          nextComplete={phaseOrder.some((p) => phases[p] !== undefined)}
         >
           <RenderObject obj={metadata} />
         </TimelineItem>
@@ -51,19 +51,27 @@ function Page(): ReactNode {
         {phaseOrder.map((phase, index) => {
           const { title, icon: Icon } = phaseDetails[phase];
           const data = phases[phase];
-          const isComplete = data !== undefined;
           const isLast = index === phaseOrder.length - 1;
+          // A phase is complete if it has data, or any later phase has data
+          // (meaning the user passed through this phase)
+          const isComplete =
+            data !== undefined ||
+            phaseOrder.slice(index + 1).some((p) => phases[p] !== undefined);
+          const nextComplete =
+            !isLast &&
+            (phases[phaseOrder[index + 1]] !== undefined ||
+              phaseOrder
+                .slice(index + 2)
+                .some((p) => phases[p] !== undefined));
 
           return (
             <TimelineItem
               key={phase}
               title={title}
-              icon={<Icon className="h-4 w-4" />}
+              icon={<Icon className="size-8" />}
               isComplete={isComplete}
               isLast={isLast}
-              nextComplete={
-                isLast ? false : phases[phaseOrder[index + 1]] !== undefined
-              }
+              nextComplete={nextComplete}
             >
               <RenderObject obj={data} />
             </TimelineItem>
@@ -72,15 +80,12 @@ function Page(): ReactNode {
       </Timeline>
 
       <div className="flex md:h-auto h-14">
-        <Button
-          onClick={() => history.go(-1)}
-          className="w-40 h-full font-normal"
-        >
+        <Button onClick={() => history.go(-1)} className="w-40 h-full">
           {"< Back"}
         </Button>
         <Button
-          variant="ghost"
-          className="w-40 h-full font-normal ml-auto text-red-500 hover:text-red-500 hover:bg-red-500/10"
+          variant="destructive"
+          className="w-40 h-full ml-auto"
           onClick={handleDelete}
         >
           Delete
@@ -94,7 +99,7 @@ function RenderObject({ obj }: { obj?: unknown }): ReactNode {
   const code = obj ? JSON.stringify(obj, null, 2) : "// No data";
 
   return (
-    <pre className="bg-zinc-900 text-zinc-100 rounded-md p-4 overflow-x-auto text-sm font-mono">
+    <pre className="bg-zinc-900 text-zinc-100 rounded-md p-4 overflow-x-auto text-[16px] font-mono">
       <code>{code}</code>
     </pre>
   );

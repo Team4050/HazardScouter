@@ -1,5 +1,13 @@
 import { memo, type ReactNode, useCallback, useId, useState } from "react";
 import { Button } from "@/components/ui/button";
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "@/components/ui/combobox";
 import { Input } from "@/components/ui/input";
 import {
   SelectContent,
@@ -12,7 +20,6 @@ import { Slider as ShadcnSlider } from "@/components/ui/slider";
 import { Switch as ShadcnSwitch } from "@/components/ui/switch";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea as ShadcnTextarea } from "@/components/ui/textarea";
-import { useIsMobile } from "@/hooks/useIsMobile";
 import { cn } from "@/util";
 
 type BooleanInputProps = {
@@ -59,7 +66,6 @@ export function TextInput({
   );
 }
 
-// NumberInput wrapper
 type NumberInputProps = React.ComponentProps<"input"> & {
   label?: string;
   hideControls?: boolean;
@@ -88,41 +94,65 @@ export function NumberInput({
   );
 }
 
-// Autocomplete wrapper (using simple input with datalist for now)
-type AutocompleteProps = React.ComponentProps<"input"> & {
+type AutocompleteProps = {
   label?: string;
   data: string[];
+  value?: string;
+  onChange?: (value: string) => void;
+  placeholder?: string;
+  className?: string;
+  inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"];
 };
 
 export function Autocomplete({
   label,
   className,
-  id,
   data,
-  ...props
+  value,
+  onChange,
+  placeholder,
+  inputMode,
 }: AutocompleteProps): ReactNode {
-  const generatedId = useId();
-  const inputId = id || generatedId;
-  const listId = `${inputId}-list`;
+  const id = useId();
 
   return (
     <div className={cn("flex flex-col gap-1.5", className)}>
       {label && (
-        <label htmlFor={inputId} className="ml-1 font-medium text-base">
+        <label htmlFor={id} className="ml-1 font-medium text-base">
           {label}
         </label>
       )}
-      <Input id={inputId} list={listId} {...props} />
-      <datalist id={listId}>
-        {data.map((item) => (
-          <option key={item} value={item} />
-        ))}
-      </datalist>
+      <Combobox
+        items={data}
+        inputValue={value ?? ""}
+        onInputValueChange={(inputValue, details) => {
+          if (details.reason === "input-change") {
+            onChange?.(inputValue);
+          }
+        }}
+        onValueChange={(val) => onChange?.(val as string)}
+      >
+        <ComboboxInput
+          id={id}
+          placeholder={placeholder}
+          showTrigger={false}
+          inputMode={inputMode}
+        />
+        <ComboboxContent>
+          <ComboboxEmpty>No matches.</ComboboxEmpty>
+          <ComboboxList>
+            {(item) => (
+              <ComboboxItem key={item} value={item}>
+                {item}
+              </ComboboxItem>
+            )}
+          </ComboboxList>
+        </ComboboxContent>
+      </Combobox>
     </div>
   );
 }
 
-// Select wrapper to match Mantine's data prop API
 type SelectDataItem = { value: string; label: string } | string;
 type SelectProps = {
   label?: string;
@@ -157,7 +187,14 @@ export function Select({
       )}
       <ShadcnSelect value={value} onValueChange={(val) => onChange?.(val)}>
         <SelectTrigger id={id}>
-          <SelectValue placeholder={placeholder} />
+          <SelectValue placeholder={placeholder}>
+            {(value: string | null) =>
+              value
+                ? (normalizedData.find((item) => item.value === value)?.label ??
+                    value)
+                : placeholder
+            }
+          </SelectValue>
         </SelectTrigger>
         <SelectContent>
           {normalizedData.map((item) => (
@@ -171,7 +208,6 @@ export function Select({
   );
 }
 
-// Textarea wrapper
 type TextareaProps = React.ComponentProps<"textarea"> & {
   label?: string;
   autosize?: boolean;
@@ -210,7 +246,6 @@ export function Textarea({
   );
 }
 
-// SegmentedControl using Tabs
 type SegmentedControlDataItem = { value: string; label: string } | string;
 type SegmentedControlProps = {
   label?: string;
@@ -238,10 +273,10 @@ export function SegmentedControl({
   // Map color values to Tailwind classes for alliance colors
   const getColorClasses = () => {
     if (color === "red") {
-      return "data-[state=active]:bg-alliance-red data-[state=active]:text-white";
+      return "data-active:bg-alliance-red data-active:text-white";
     }
     if (color === "blue") {
-      return "data-[state=active]:bg-alliance-blue data-[state=active]:text-white";
+      return "data-active:bg-alliance-blue data-active:text-white";
     }
     return "";
   };
@@ -274,7 +309,6 @@ export function SegmentedControl({
   );
 }
 
-// Switch wrapper
 type SwitchProps = BooleanInputProps & {
   label?: string;
   className?: string;
@@ -291,7 +325,6 @@ export function Switch({
   value,
   onChange,
 }: SwitchProps): ReactNode {
-  const isMobile = useIsMobile();
   const id = useId();
 
   // Create a synthetic event for onChange
@@ -308,7 +341,7 @@ export function Switch({
   return (
     <div className={cn("flex flex-col items-center", className)}>
       {label && (
-        <label htmlFor={id} className={cn("mb-1", classNames?.label)}>
+        <label htmlFor={id} className={cn("mb-1 text-base", classNames?.label)}>
           {label}
         </label>
       )}
@@ -317,16 +350,15 @@ export function Switch({
         checked={checked ?? value}
         onCheckedChange={handleCheckedChange}
         className={cn(
-          isMobile
-            ? "h-6 w-11 [&>span]:h-5 [&>span]:w-5 [&>span]:data-[state=checked]:translate-x-5"
-            : "h-7 w-14 [&>span]:h-6 [&>span]:w-6 [&>span]:data-[state=checked]:translate-x-7",
+          "h-6 w-11 xs:h-7 xs:w-14",
+          "[&>span]:h-5 [&>span]:w-5 [&>span]:data-checked:translate-x-5",
+          "xs:[&>span]:h-6 xs:[&>span]:w-6 xs:[&>span]:data-checked:translate-x-7",
         )}
       />
     </div>
   );
 }
 
-// Slider wrapper
 type SliderProps = NumericInputProps & {
   label?: string;
   className?: string;
@@ -344,16 +376,6 @@ export function Slider({
   value,
   onChange,
 }: SliderProps): ReactNode {
-  const generateMarks = () => {
-    const marks = [];
-    for (let i = min; i <= max; i += step) {
-      marks.push(i);
-    }
-    return marks;
-  };
-
-  const marks = generateMarks();
-
   return (
     <div
       className={cn(
@@ -366,28 +388,19 @@ export function Slider({
           {label}
         </label>
       )}
-      <div className="w-full flex flex-col">
-        <ShadcnSlider
-          className="w-full"
-          min={min}
-          max={max}
-          step={step}
-          value={value !== undefined ? [value] : undefined}
-          onValueChange={(vals) => onChange?.(vals[0])}
-        />
-        <div className="flex justify-between mt-1 px-1">
-          {marks.map((mark) => (
-            <span key={mark} className="text-sm font-medium text-muted-foreground">
-              {mark}
-            </span>
-          ))}
-        </div>
-      </div>
+      <ShadcnSlider
+        className="w-full"
+        min={min}
+        max={max}
+        step={step}
+        showSteps
+        value={value}
+        onValueChange={(val) => onChange?.(val as number)}
+      />
     </div>
   );
 }
 
-// Counter component
 type CounterProps = NumericInputProps & {
   label?: string;
   className?: string;

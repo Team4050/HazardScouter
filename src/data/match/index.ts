@@ -1,9 +1,4 @@
-import {
-  IconDeviceGamepad2,
-  IconListCheck,
-  IconRoute2,
-  IconStopwatch,
-} from "@tabler/icons-react";
+import { Gamepad2, ListChecks, Route, Timer } from "lucide-react";
 import type { Icon } from "@/util";
 
 export type ScoutingPhase =
@@ -32,27 +27,27 @@ export const phaseDetails: { [key in ScoutingPhase]: PhaseDetail } = {
   preMatch: {
     title: "Pre Match",
     slug: "pre-match",
-    icon: IconListCheck,
+    icon: ListChecks,
   },
   auto: {
     title: "Auto",
     slug: "auto",
-    icon: IconRoute2,
+    icon: Route,
   },
   teleop: {
     title: "Teleop",
     slug: "teleop",
-    icon: IconDeviceGamepad2,
+    icon: Gamepad2,
   },
   endgame: {
     title: "Endgame",
     slug: "endgame",
-    icon: IconStopwatch,
+    icon: Timer,
   },
   postMatch: {
     title: "Post Match",
     slug: "post-match",
-    icon: IconListCheck,
+    icon: ListChecks,
   },
 };
 

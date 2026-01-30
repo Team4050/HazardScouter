@@ -40,10 +40,10 @@ export function FormNavigation({ matchId }: { matchId: string }): ReactNode {
   };
 
   return (
-    <div className="flex justify-between md:h-auto h-14">
+    <div className="flex justify-between md:h-auto h-14 mx-1">
       <Button
         onClick={handlePrevious}
-        className="w-40 h-full font-normal"
+        className="w-40 h-full"
         variant={firstPage ? "destructive" : "default"}
       >
         {firstPage ? "Exit" : "< Prev"}
@@ -51,7 +51,7 @@ export function FormNavigation({ matchId }: { matchId: string }): ReactNode {
       <Button
         onClick={handleNext}
         disabled={!pageIsValid}
-        className="w-40 h-full font-normal"
+        className="w-40 h-full"
       >
         {lastPage ? "Save" : "Next >"}
       </Button>
