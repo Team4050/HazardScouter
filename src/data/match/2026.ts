@@ -23,37 +23,20 @@ export enum Strategy {
   Both = "both",
 }
 
-// const coralSchema = pipe(number(), minValue(0), maxValue(12));
-
-// const reefSchema = object({
-//   coralLevel1: coralSchema,
-//   coralLevel2: coralSchema,
-//   coralLevel3: coralSchema,
-//   coralLevel4: coralSchema,
-// });
-
-// export const autoSchema = object({
-//   leaveStartingLine: boolean(),
-//   reef: reefSchema,
-//   processor: saneScoreSchema,
-//   net: saneScoreSchema,
-//   coralPreloaded: boolean(),
-//   removedAlgae: boolean(),
-// });
-// export type Auto = InferOutput<typeof autoSchema>;
-// export const autoDefaults: Auto = {
-//   leaveStartingLine: false,
-//   reef: {
-//     coralLevel1: 0,
-//     coralLevel2: 0,
-//     coralLevel3: 0,
-//     coralLevel4: 0,
-//   },
-//   processor: 0,
-//   net: 0,
-//   coralPreloaded: false,
-//   removedAlgae: false,
-// };
+export enum AutoClimb {
+  None = "none",
+  Attempted = "attempted",
+  Successful = "successful",
+}
+export const autoSchema = object({
+  fuelScored: saneScoreSchema,
+  climb: enum_(AutoClimb),
+});
+export type Auto = InferOutput<typeof autoSchema>;
+export const autoDefaults: Auto = {
+  fuelScored: 0,
+  climb: AutoClimb.None,
+};
 
 export const teleopSchema = object({
   fuelScored: saneScoreSchema,
