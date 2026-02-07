@@ -53,7 +53,7 @@ function Page(): ReactNode {
       cancelLabel: "Cancel",
       confirmVariant: "destructive",
       onConfirm: () => {
-        matchCollection.removeOne({ id: matchId });
+        matchCollection.delete(matchId);
         navigate({ to: "/scouting" });
       },
     });

@@ -1,3 +1,4 @@
+import { useLiveQuery } from "@tanstack/react-db";
 import { useForm } from "@tanstack/react-form";
 import { useNavigate } from "@tanstack/react-router";
 import { type ReactNode, useMemo, useState } from "react";
@@ -12,7 +13,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { type Match, matchCollection, newId, useReactivity } from "@/data/db";
+import { type Match, matchCollection, newId } from "@/data/db";
 
 type NewMatchForm = Omit<Match, "started" | "finished" | "phases" | "id">;
 
@@ -25,7 +26,7 @@ export function NewMatchModal({
 }): ReactNode {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const matches = useReactivity(() => matchCollection.find().fetch(), []);
+  const { data: matches = [] } = useLiveQuery(() => matchCollection);
   const scouters = useMemo(() => {
     return [...new Set(matches.map((match) => match.scouter))];
   }, [matches]);

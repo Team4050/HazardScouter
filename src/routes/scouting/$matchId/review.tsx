@@ -29,7 +29,7 @@ function Page(): ReactNode {
       cancelLabel: "Cancel",
       confirmVariant: "destructive",
       onConfirm: () => {
-        matchCollection.removeOne({ id: matchId });
+        matchCollection.delete(matchId);
         navigate({ to: "/scouting" });
       },
     });
@@ -60,9 +60,7 @@ function Page(): ReactNode {
           const nextComplete =
             !isLast &&
             (phases[phaseOrder[index + 1]] !== undefined ||
-              phaseOrder
-                .slice(index + 2)
-                .some((p) => phases[p] !== undefined));
+              phaseOrder.slice(index + 2).some((p) => phases[p] !== undefined));
 
           return (
             <TimelineItem

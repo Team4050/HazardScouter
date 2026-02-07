@@ -1,3 +1,4 @@
+import { useLiveQuery } from "@tanstack/react-db";
 import { createFileRoute } from "@tanstack/react-router";
 import { Pencil, Trash2 } from "lucide-react";
 import { type ReactNode, useCallback, useState } from "react";
@@ -15,7 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { downloadMatches, matchCollection, useReactivity } from "@/data/db";
+import { downloadMatches, matchCollection } from "@/data/db";
 import { phaseDetails, phaseOrder } from "@/data/match";
 import { cn, shortDayName } from "@/util";
 
@@ -25,7 +26,7 @@ export const Route = createFileRoute("/scouting/")({
 
 function Page(): ReactNode {
   const navigate = Route.useNavigate();
-  const matches = useReactivity(() => matchCollection.find().fetch(), []);
+  const { data: matches = [] } = useLiveQuery(() => matchCollection);
   const canFinish = !!matches.filter((m) => m.finished !== undefined).length;
 
   const [newModalOpened, setNewModalOpened] = useState(false);
@@ -36,7 +37,7 @@ function Page(): ReactNode {
 
   const handleEdit = useCallback(
     (matchId: string) => {
-      const match = matchCollection.findOne({ id: matchId });
+      const match = matchCollection.get(matchId);
 
       if (match) {
         // Redirect to the first phase that hasn't been completed
@@ -68,7 +69,7 @@ function Page(): ReactNode {
         confirmLabel: "Delete Match",
         cancelLabel: "Cancel",
         confirmVariant: "destructive",
-        onConfirm: () => matchCollection.removeOne({ id: matchId }),
+        onConfirm: () => matchCollection.delete(matchId),
       });
     },
     [openConfirmDialog],
