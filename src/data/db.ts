@@ -44,8 +44,9 @@ export const matchCollection = createCollection<Match & ID, string>(
 );
 
 export function resetCollections() {
-  for (const match of matchCollection.toArray) {
-    matchCollection.delete(match.id);
+  const ids = matchCollection.toArray.map((m) => m.id);
+  for (const id of ids) {
+    matchCollection.delete(id);
   }
 }
 
@@ -54,27 +55,24 @@ export function setScoutingPhaseData(
   phase: ScoutingPhase,
   data: PhaseDataMap[typeof phase],
 ) {
-  const existing = matchCollection.get(id);
-  if (!existing) return;
+  if (!matchCollection.get(id)) return;
 
-  let finished: Date | undefined;
-  if (phase === phaseOrder[phaseOrder.length - 1]) {
-    finished = new Date();
-  }
+  const isLastPhase = phase === phaseOrder[phaseOrder.length - 1];
 
   matchCollection.update(id, (draft) => {
     draft.phases = {
-      ...existing.phases,
+      ...draft.phases,
       [phase]: data,
     };
-    if (finished) {
-      draft.finished = finished;
+    if (isLastPhase) {
+      draft.finished = new Date();
     }
   });
 }
 
 export function useMatch(id: string) {
-  const { data } = useLiveQuery(() => matchCollection, [id]);
+  // TODO: Inefficient - TanStack DB lacks single-item reactive queries
+  const { data } = useLiveQuery(() => matchCollection);
   return data?.find((m) => m.id === id);
 }
 

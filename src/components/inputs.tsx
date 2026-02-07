@@ -191,7 +191,7 @@ export function Select({
             {(value: string | null) =>
               value
                 ? (normalizedData.find((item) => item.value === value)?.label ??
-                    value)
+                  value)
                 : placeholder
             }
           </SelectValue>

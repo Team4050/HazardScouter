@@ -17,9 +17,9 @@ bun run preview      # Preview production build locally
 
 - **React 19** + **TypeScript** (strict mode)
 - **Vite** bundler with **TanStack Router** (file-based routing)
-- **SignalDB** with MaverickJS signals for reactive local storage persistence
+- **TanStack DB** for reactive local storage persistence
 - **TanStack Form** + **Valibot** for form validation
-- **Tailwind CSS** + **Radix UI** (shadcn/ui style)
+- **Tailwind CSS** + **Base UI** (shadcn/ui style)
 - **Biome** for formatting/linting (not Prettier/ESLint)
 - **PWA** with offline-first architecture
 
@@ -28,7 +28,7 @@ bun run preview      # Preview production build locally
 ### Data Flow
 
 ```
-User Input → TanStack Form → Valibot Validation → SignalDB → Local Storage
+User Input → TanStack Form → Valibot Validation → TanStack DB → Local Storage
                                     ↓
                             AppContext (phase validity tracking)
 ```
@@ -68,14 +68,14 @@ Routes map directly to `src/routes/` file structure:
 
 The `useForm` hook (`src/hooks/useForm.tsx`) wraps TanStack Form with:
 - Valibot schema validation
-- Debounced auto-save to SignalDB (300ms)
+- Debounced auto-save to TanStack DB (300ms)
 - Phase validity tracking via AppContext
 
 ### Database
 
-SignalDB collection in `src/data/db.ts`:
+TanStack DB collection in `src/data/db.ts`:
 - Persists to Local Storage key `hs-matches`
-- Fine-grained reactivity via MaverickJS signals
+- Reactive queries via `useLiveQuery()` hook
 - Export matches to JSON with `downloadMatches()`
 
 ## Key Patterns
