@@ -5,6 +5,7 @@ import { matchCollection } from "@/data/db";
 
 export const Route = createFileRoute("/scouting/$matchId")({
   loader: async ({ params: { matchId } }) => {
+    await matchCollection.preload();
     if (matchCollection.get(matchId) === undefined) {
       throw notFound();
     }
