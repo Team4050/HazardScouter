@@ -41,7 +41,6 @@ export function NewMatchModal({
       matchNumber: 0,
     } as NewMatchForm,
     onSubmit: async ({ value }) => {
-      // Validate
       if (!value.scouter || value.scouter.length >= 50) {
         return;
       }
@@ -109,6 +108,7 @@ export function NewMatchModal({
                 data={scouters}
                 value={field.state.value}
                 onChange={(val) => field.handleChange(val)}
+                emptyMessage="No saved scouters."
               />
             )}
           </form.Field>
@@ -126,6 +126,7 @@ export function NewMatchModal({
                 inputMode="numeric"
                 value={field.state.value ? field.state.value.toString() : ""}
                 onChange={(val) => field.handleChange(Number(val) || 0)}
+                emptyMessage="No saved teams."
               />
             )}
           </form.Field>

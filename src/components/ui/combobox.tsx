@@ -66,22 +66,24 @@ function ComboboxInput({
         render={<InputGroupInput disabled={disabled} />}
         {...props}
       />
-      <InputGroupAddon align="inline-end">
-        {showTrigger && (
-          <ComboboxTrigger
-            render={
-              <InputGroupButton
-                size="icon-xs"
-                variant="ghost"
-                data-slot="input-group-button"
-                className="group-has-data-[slot=combobox-clear]/input-group:hidden data-pressed:bg-transparent"
-                disabled={disabled}
-              />
-            }
-          />
-        )}
-        {showClear && <ComboboxClear disabled={disabled} />}
-      </InputGroupAddon>
+      {(showTrigger || showClear) && (
+        <InputGroupAddon align="inline-end">
+          {showTrigger && (
+            <ComboboxTrigger
+              render={
+                <InputGroupButton
+                  size="icon-xs"
+                  variant="ghost"
+                  data-slot="input-group-button"
+                  className="group-has-data-[slot=combobox-clear]/input-group:hidden data-pressed:bg-transparent"
+                  disabled={disabled}
+                />
+              }
+            />
+          )}
+          {showClear && <ComboboxClear disabled={disabled} />}
+        </InputGroupAddon>
+      )}
       {children}
     </InputGroup>
   );

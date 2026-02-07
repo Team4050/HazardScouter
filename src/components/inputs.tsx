@@ -102,6 +102,7 @@ type AutocompleteProps = {
   placeholder?: string;
   className?: string;
   inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"];
+  emptyMessage?: string;
 };
 
 export function Autocomplete({
@@ -112,6 +113,7 @@ export function Autocomplete({
   onChange,
   placeholder,
   inputMode,
+  emptyMessage = "No items.",
 }: AutocompleteProps): ReactNode {
   const id = useId();
 
@@ -134,12 +136,13 @@ export function Autocomplete({
       >
         <ComboboxInput
           id={id}
+          className="w-full"
           placeholder={placeholder}
           showTrigger={false}
           inputMode={inputMode}
         />
-        <ComboboxContent>
-          <ComboboxEmpty>No matches.</ComboboxEmpty>
+        <ComboboxContent className="min-w-(--anchor-width)">
+          <ComboboxEmpty>{emptyMessage}</ComboboxEmpty>
           <ComboboxList>
             {(item) => (
               <ComboboxItem key={item} value={item}>
