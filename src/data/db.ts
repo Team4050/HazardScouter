@@ -3,7 +3,6 @@ import {
   localStorageCollectionOptions,
   useLiveQuery,
 } from "@tanstack/react-db";
-import download from "downloadjs";
 import {
   type Auto,
   type EndGame,
@@ -98,11 +97,16 @@ export function downloadMatches(del = false) {
   const firstDay = shortDayName(matches[0].finished!);
   const lastDay = shortDayName(matches[matches.length - 1].finished!);
 
-  download(
-    JSON.stringify(matches, null, 2),
-    `matches_${firstDay}-${lastDay}_${Date.now()}.json`.toLowerCase(),
-    "application/json",
-  );
+  const blob = new Blob([JSON.stringify(matches, null, 2)], {
+    type: "application/json",
+  });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download =
+    `matches_${firstDay}-${lastDay}_${Date.now()}.json`.toLowerCase();
+  a.click();
+  URL.revokeObjectURL(url);
 
   if (del) {
     for (const match of matches) {

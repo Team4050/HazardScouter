@@ -1,5 +1,4 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
-import download from "downloadjs";
 import { Download, FileJson, Trash2, Upload, X } from "lucide-react";
 import {
   type ReactNode,
@@ -112,11 +111,15 @@ function Page(): ReactNode {
     const allMatches = await Promise.all(matchesPromises);
     const combinedMatches = allMatches.flat();
 
-    download(
-      JSON.stringify(combinedMatches, null, 2),
-      `combined_matches_${Date.now()}.json`.toLowerCase(),
-      "application/json",
-    );
+    const blob = new Blob([JSON.stringify(combinedMatches, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `combined_matches_${Date.now()}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   const handleDelete = (fileName: string) => {

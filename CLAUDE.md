@@ -4,6 +4,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Build & Development Commands
 
+**Important:** We should only ever use `bun ...` (or `bunx ...`) commands in this project. We do _not_ use `np(m|x) ...`, `pnp(m|x) ...`, etc.
+
 ```bash
 bun run dev          # Start Vite dev server with HMR
 bun run build        # Full build: generate-routes → tsc → vite build

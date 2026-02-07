@@ -1,5 +1,12 @@
 {
   "permissions": {
-    "allow": ["WebSearch", "Bash(grep:*)", "Bash(wc:*)", "Bash(bun run:*)"]
+    "allow": [
+      "WebSearch",
+      "Bash(grep:*)",
+      "Bash(wc:*)",
+      "Bash(bun run:*)",
+      "Bash(ls:*)",
+      "Bash(sort:*)"
+    ]
   }
 }
