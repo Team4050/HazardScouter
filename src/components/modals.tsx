@@ -109,7 +109,7 @@ export function NewMatchModal({
                 data={scouters}
                 value={field.state.value}
                 onChange={(val) => field.handleChange(val)}
-                emptyMessage="No saved scouters."
+                emptyMessage="No scouters"
               />
             )}
           </form.Field>

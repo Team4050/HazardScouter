@@ -1,6 +1,6 @@
 import { useLiveQuery } from "@tanstack/react-db";
 import { createFileRoute } from "@tanstack/react-router";
-import { Pencil, Trash2 } from "lucide-react";
+import { FileJson, Trash2 } from "lucide-react";
 import { type ReactNode, useCallback, useState } from "react";
 import {
   ConfirmDialog,
@@ -158,7 +158,7 @@ function Page(): ReactNode {
                     return (
                       <TableRow
                         key={id}
-                        onClick={() => handleOpen(id)}
+                        onClick={() => handleEdit(id)}
                         className="cursor-pointer text-base"
                       >
                         <TableCell className="pl-3">{matchNumber}</TableCell>
@@ -174,7 +174,7 @@ function Page(): ReactNode {
                         </TableCell>
                         <TableCell className="w-fit">
                           <ActionGroup
-                            onClickEdit={() => handleEdit(id)}
+                            onClickReview={() => handleOpen(id)}
                             onClickDelete={() => handleDelete(id)}
                           />
                         </TableCell>
@@ -197,15 +197,15 @@ function Page(): ReactNode {
 }
 
 function ActionGroup({
-  onClickEdit,
+  onClickReview,
   onClickDelete,
 }: {
-  onClickEdit: () => void;
+  onClickReview: () => void;
   onClickDelete: () => void;
 }): ReactNode {
-  const handleEdit = (e: React.MouseEvent) => {
+  const handleReview = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onClickEdit();
+    onClickReview();
   };
 
   const handleDelete = (e: React.MouseEvent) => {
@@ -217,10 +217,10 @@ function ActionGroup({
     <div className="w-fit flex gap-x-1">
       <button
         type="button"
-        onClick={handleEdit}
+        onClick={handleReview}
         className="p-2 hover:opacity-50 rounded-md transition-colors cursor-pointer"
       >
-        <Pencil className="h-5 w-5" />
+        <FileJson className="h-5 w-5" />
       </button>
       <button
         type="button"

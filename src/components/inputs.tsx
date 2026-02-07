@@ -1,4 +1,11 @@
-import { memo, type ReactNode, useCallback, useId, useState } from "react";
+import {
+  memo,
+  type ReactNode,
+  useCallback,
+  useId,
+  useRef,
+  useState,
+} from "react";
 import { Button } from "@/components/ui/button";
 import {
   Combobox,
@@ -113,12 +120,13 @@ export function Autocomplete({
   onChange,
   placeholder,
   inputMode,
-  emptyMessage = "No items.",
+  emptyMessage = "No results",
 }: AutocompleteProps): ReactNode {
   const id = useId();
+  const anchorRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className={cn("flex flex-col gap-1.5", className)}>
+    <div className={cn("flex flex-col", className)}>
       {label && (
         <label htmlFor={id} className="ml-1 font-medium text-base">
           {label}
@@ -134,14 +142,16 @@ export function Autocomplete({
         }}
         onValueChange={(val) => onChange?.(val as string)}
       >
-        <ComboboxInput
-          id={id}
-          className="w-full"
-          placeholder={placeholder}
-          showTrigger={false}
-          inputMode={inputMode}
-        />
-        <ComboboxContent className="min-w-(--anchor-width)">
+        <div ref={anchorRef}>
+          <ComboboxInput
+            id={id}
+            className="w-full"
+            placeholder={placeholder}
+            showTrigger={false}
+            inputMode={inputMode}
+          />
+        </div>
+        <ComboboxContent anchor={anchorRef} className="min-w-(--anchor-width)">
           <ComboboxEmpty>{emptyMessage}</ComboboxEmpty>
           <ComboboxList>
             {(item) => (

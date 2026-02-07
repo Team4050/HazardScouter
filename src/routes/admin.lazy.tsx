@@ -194,11 +194,15 @@ function Page(): ReactNode {
 
       {/* Actions */}
       <div className="mx-auto flex gap-x-4">
-        <Button onClick={onDownload}>
+        <Button onClick={onDownload} disabled={files.length === 0}>
           <Download className="h-4 w-4 mr-2" />
           Compile and Download
         </Button>
-        <Button onClick={onClear} variant="destructive">
+        <Button
+          onClick={onClear}
+          disabled={files.length === 0}
+          variant="destructive"
+        >
           <Trash2 className="h-4 w-4 mr-2" />
           Clear files
         </Button>

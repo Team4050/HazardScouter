@@ -1,5 +1,6 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import type { ReactNode } from "react";
+import { JsonView } from "@/components/JsonView";
 import { ConfirmDialog, useConfirmDialog } from "@/components/modals";
 import { Button } from "@/components/ui/button";
 import { Timeline, TimelineItem } from "@/components/ui/timeline";
@@ -94,11 +95,13 @@ function Page(): ReactNode {
 }
 
 function RenderObject({ obj }: { obj?: unknown }): ReactNode {
-  const code = obj ? JSON.stringify(obj, null, 2) : "// No data";
-
   return (
-    <pre className="bg-zinc-900 text-zinc-100 rounded-md p-4 overflow-x-auto text-[16px] font-mono">
-      <code>{code}</code>
-    </pre>
+    <div className="bg-zinc-900 text-zinc-100 rounded-md p-4">
+      {obj ? (
+        <JsonView value={obj} />
+      ) : (
+        <span className="text-gray-500 text-[14px] font-mono">No data</span>
+      )}
+    </div>
   );
 }

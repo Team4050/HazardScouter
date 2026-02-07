@@ -27,6 +27,7 @@ function TabsTrigger({
   return (
     <TabsPrimitive.Tab
       className={cn(
+        "cursor-pointer",
         "inline-flex items-center justify-center",
         "whitespace-nowrap rounded-md px-4 py-1.5 text-base font-medium",
         "ring-offset-background transition-all",

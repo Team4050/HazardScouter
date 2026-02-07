@@ -23,7 +23,7 @@ function Slider({
   }
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full px-3.5">
       <SliderPrimitive.Root
         min={min}
         max={max}
@@ -58,7 +58,7 @@ function Slider({
                 key={value}
                 className="absolute text-sm font-medium text-muted-foreground -translate-x-1/2"
                 style={{
-                  left: `calc(${fraction} * (100% - 1.75rem) + 0.875rem)`,
+                  left: `${fraction * 100}%`,
                 }}
               >
                 {value}

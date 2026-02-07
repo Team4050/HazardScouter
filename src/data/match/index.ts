@@ -67,5 +67,5 @@ export function phaseSlugToTitle(slug: string): string {
 
 // Pretty sure this is generally considered bad practice,
 // but allows us to swap out years easily
-export * from "@/data/match/2025";
+export * from "@/data/match/2026";
 export * from "@/data/match/shared";

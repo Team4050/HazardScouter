@@ -1,4 +1,4 @@
-import { Maximize2, Smartphone } from "lucide-react";
+import { Database, Maximize2, Smartphone } from "lucide-react";
 import type { ReactNode } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import { resetCollections } from "@/data/db";
@@ -27,6 +27,15 @@ export default function DevTools(): ReactNode {
             onClick={() => resetCollections()}
           >
             Reset Collections
+          </button>
+        </div>
+        <div>
+          <button
+            type="button"
+            className="cursor-pointer flex items-center"
+            onClick={() => window.open("/debug", "_blank")}
+          >
+            <Database className="mr-1 h-3.5 w-3.5" /> DB
           </button>
         </div>
       </div>
