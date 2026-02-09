@@ -1,4 +1,5 @@
 import {
+  type ComponentProps,
   memo,
   type ReactNode,
   useCallback,
@@ -29,6 +30,15 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea as ShadcnTextarea } from "@/components/ui/textarea";
 import { cn } from "@/util";
 
+type BaseProps = {
+  label?: ReactNode;
+  classNames?: {
+    wrapper?: string;
+    label?: string;
+    input?: string;
+  };
+};
+
 type BooleanInputProps = {
   value?: boolean;
   defaultValue?: boolean;
@@ -48,10 +58,7 @@ type NumericInputProps = {
   error?: string;
 };
 
-// TextInput wrapper with label support
-type TextInputProps = React.ComponentProps<"input"> & {
-  label?: string;
-};
+type TextInputProps = BaseProps & ComponentProps<"input">;
 
 export function TextInput({
   label,
@@ -63,22 +70,18 @@ export function TextInput({
   const inputId = id || generatedId;
   return (
     <div className={cn("flex flex-col gap-1.5", className)}>
-      {label && (
-        <label htmlFor={inputId} className="ml-1 font-medium text-base">
-          {label}
-        </label>
-      )}
+      {label ? <InputLabel htmlFor={inputId}>{label}</InputLabel> : null}
       <Input id={inputId} {...props} />
     </div>
   );
 }
 
-type NumberInputProps = React.ComponentProps<"input"> & {
-  label?: string;
-  hideControls?: boolean;
-  min?: number;
-  max?: number;
-};
+type NumberInputProps = BaseProps &
+  ComponentProps<"input"> & {
+    hideControls?: boolean;
+    min?: number;
+    max?: number;
+  };
 
 export function NumberInput({
   label,
@@ -91,18 +94,13 @@ export function NumberInput({
   const inputId = id || generatedId;
   return (
     <div className={cn("flex flex-col gap-1.5", className)}>
-      {label && (
-        <label htmlFor={inputId} className="ml-1 font-medium text-base">
-          {label}
-        </label>
-      )}
+      {label ? <InputLabel htmlFor={inputId}>{label}</InputLabel> : null}
       <Input id={inputId} type="text" inputMode="numeric" {...props} />
     </div>
   );
 }
 
-type AutocompleteProps = {
-  label?: string;
+type AutocompleteProps = BaseProps & {
   data: string[];
   value?: string;
   onChange?: (value: string) => void;
@@ -124,14 +122,9 @@ export function Autocomplete({
 }: AutocompleteProps): ReactNode {
   const id = useId();
   const anchorRef = useRef<HTMLDivElement>(null);
-
   return (
     <div className={cn("flex flex-col", className)}>
-      {label && (
-        <label htmlFor={id} className="ml-1 font-medium text-base">
-          {label}
-        </label>
-      )}
+      {label ? <InputLabel htmlFor={id}>{label}</InputLabel> : null}
       <Combobox
         items={data}
         inputValue={value ?? ""}
@@ -167,8 +160,7 @@ export function Autocomplete({
 }
 
 type SelectDataItem = { value: string; label: string } | string;
-type SelectProps = {
-  label?: string;
+type SelectProps = BaseProps & {
   data: SelectDataItem[];
   value?: string;
   onChange?: (value: string | null) => void;
@@ -193,11 +185,7 @@ export function Select({
 
   return (
     <div className={cn("flex flex-col gap-1.5", className)}>
-      {label && (
-        <label htmlFor={id} className="ml-1 mb-2 font-medium text-base">
-          {label}
-        </label>
-      )}
+      {label ? <InputLabel htmlFor={id}>{label}</InputLabel> : null}
       <ShadcnSelect value={value} onValueChange={(val) => onChange?.(val)}>
         <SelectTrigger id={id}>
           <SelectValue placeholder={placeholder}>
@@ -221,14 +209,14 @@ export function Select({
   );
 }
 
-type TextareaProps = React.ComponentProps<"textarea"> & {
-  label?: string;
-  autosize?: boolean;
-  minRows?: number;
-  classNames?: {
-    input?: string;
+type TextareaProps = BaseProps &
+  ComponentProps<"textarea"> & {
+    autosize?: boolean;
+    minRows?: number;
+    classNames?: {
+      input?: string;
+    };
   };
-};
 
 export function Textarea({
   label,
@@ -241,14 +229,9 @@ export function Textarea({
 }: TextareaProps): ReactNode {
   const generatedId = useId();
   const inputId = id || generatedId;
-
   return (
     <div className={cn("flex flex-col gap-1.5", className)}>
-      {label && (
-        <label htmlFor={inputId} className="ml-1 mb-2 font-medium text-base">
-          {label}
-        </label>
-      )}
+      {label ? <InputLabel htmlFor={inputId}>{label}</InputLabel> : null}
       <ShadcnTextarea
         id={inputId}
         rows={minRows}
@@ -260,14 +243,13 @@ export function Textarea({
 }
 
 type SegmentedControlDataItem = { value: string; label: string } | string;
-type SegmentedControlProps = {
-  label?: string;
+type SegmentedControlProps = BaseProps & {
   data: SegmentedControlDataItem[];
   value?: string;
   onChange?: (value: string) => void;
   className?: string;
   fullWidth?: boolean;
-  color?: string;
+  color?: "red" | "blue" | "green";
 };
 
 export function SegmentedControl({
@@ -277,8 +259,10 @@ export function SegmentedControl({
   onChange,
   className,
   fullWidth,
-  color,
+  color = "green",
 }: SegmentedControlProps): ReactNode {
+  const id = useId();
+
   const normalizedData = data.map((item) =>
     typeof item === "string" ? { value: item, label: item } : item,
   );
@@ -291,13 +275,20 @@ export function SegmentedControl({
     if (color === "blue") {
       return "data-active:bg-alliance-blue data-active:text-white";
     }
-    return "";
+    if (color === "green") {
+      return "data-active:bg-hazard-green data-active:text-background";
+    }
   };
 
   return (
-    <div className={cn(className)}>
-      {label && <label className="ml-1 text-base">{label}</label>}
+    <div className={cn("flex flex-col items-center", className)}>
+      {label ? (
+        <InputLabel htmlFor={id} className="ml-1">
+          {label}
+        </InputLabel>
+      ) : null}
       <Tabs
+        id={id}
         value={value}
         onValueChange={onChange}
         className={cn(fullWidth && "w-full")}
@@ -322,13 +313,13 @@ export function SegmentedControl({
   );
 }
 
-type SwitchProps = BooleanInputProps & {
-  label?: string;
-  className?: string;
-  classNames?: {
-    label?: string;
+type SwitchProps = BaseProps &
+  BooleanInputProps & {
+    className?: string;
+    classNames?: {
+      label?: string;
+    };
   };
-};
 
 export function Switch({
   label,
@@ -353,11 +344,11 @@ export function Switch({
 
   return (
     <div className={cn("flex flex-col items-center", className)}>
-      {label && (
-        <label htmlFor={id} className={cn("mb-1 text-base", classNames?.label)}>
+      {label ? (
+        <InputLabel htmlFor={id} className={cn(classNames?.label)}>
           {label}
-        </label>
-      )}
+        </InputLabel>
+      ) : null}
       <ShadcnSwitch
         id={id}
         checked={checked ?? value}
@@ -372,13 +363,13 @@ export function Switch({
   );
 }
 
-type SliderProps = NumericInputProps & {
-  label?: string;
-  className?: string;
-  min?: number;
-  max?: number;
-  step?: number;
-};
+type SliderProps = BaseProps &
+  NumericInputProps & {
+    className?: string;
+    min?: number;
+    max?: number;
+    step?: number;
+  };
 
 export function Slider({
   label,
@@ -389,6 +380,7 @@ export function Slider({
   value,
   onChange,
 }: SliderProps): ReactNode {
+  const id = useId();
   return (
     <div
       className={cn(
@@ -396,12 +388,9 @@ export function Slider({
         className,
       )}
     >
-      {label && (
-        <label className="md:w-48 md:mr-4 md:mb-0 mb-1 text-base">
-          {label}
-        </label>
-      )}
+      {label ? <InputLabel htmlFor={id}>{label}</InputLabel> : null}
       <ShadcnSlider
+        id={id}
         className="w-full"
         min={min}
         max={max}
@@ -414,12 +403,12 @@ export function Slider({
   );
 }
 
-type CounterProps = NumericInputProps & {
-  label?: string;
-  className?: string;
-  min?: number;
-  max?: number;
-};
+type CounterProps = BaseProps &
+  NumericInputProps & {
+    className?: string;
+    min?: number;
+    max?: number;
+  };
 
 export const Counter = memo(function Counter({
   min = 0,
@@ -430,6 +419,8 @@ export const Counter = memo(function Counter({
   defaultValue,
   value,
 }: CounterProps): ReactNode {
+  const id = useId();
+
   const [internalValue, setInternalValue] = useState<number>(
     value ?? defaultValue ?? min,
   );
@@ -468,12 +459,8 @@ export const Counter = memo(function Counter({
         className,
       )}
     >
-      {label && (
-        <label className="mb-1 self-start w-full text-center text-base">
-          {label}
-        </label>
-      )}
-      <div className="flex w-full gap-x-1.5">
+      {label ? <InputLabel htmlFor={id}>{label}</InputLabel> : null}
+      <div id={id} className="flex w-full gap-x-1.5">
         <Button
           type="button"
           onClick={handleDecrement}
@@ -503,3 +490,34 @@ export const Counter = memo(function Counter({
     </div>
   );
 });
+
+function InputLabel({
+  className,
+  children,
+  ...props
+}: ComponentProps<"label">) {
+  return (
+    <label className={cn("text-lg leading-tight", className)} {...props}>
+      {children}
+    </label>
+  );
+}
+
+function InputWrapper({
+  className,
+  children,
+}: {
+  className?: string;
+  children: ReactNode;
+}) {
+  return (
+    <div
+      className={cn(
+        "flex items-center gap-x-2 border rounded-md px-3 py-2",
+        className,
+      )}
+    >
+      {children}
+    </div>
+  );
+}
