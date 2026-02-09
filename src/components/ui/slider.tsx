@@ -50,7 +50,7 @@ function Slider({
         </SliderPrimitive.Control>
       </SliderPrimitive.Root>
       {showSteps && steps.length > 0 && (
-        <div className="relative mt-1 h-5 w-full">
+        <div className="relative mt-2 h-5 w-full">
           {steps.map((value) => {
             const fraction = (value - min) / (max - min);
             return (

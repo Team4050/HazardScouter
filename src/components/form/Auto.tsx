@@ -19,7 +19,7 @@ export function Auto({ matchId, initialData }: Props): ReactNode {
   });
 
   return (
-    <div className="flex flex-col mx-auto gap-y-4">
+    <div className="flex flex-col mx-auto gap-8">
       <form.Field name="fuelScored">
         {(field) => (
           <Counter

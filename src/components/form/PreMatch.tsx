@@ -25,14 +25,13 @@ export function PreMatch({ matchId, initialData }: Props): ReactNode {
   });
 
   return (
-    <div className="grid md:grid-cols-2 gap-x-4 gap-y-2">
+    <div className="grid md:grid-cols-2 gap-8">
       <form.Field name="alliance">
         {(field) => (
           <SegmentedControl
             className="col-span-full"
             label="Alliance"
             data={enumToSelectItem(Alliance)}
-            fullWidth
             color={field.state.value}
             value={field.state.value}
             onChange={(val) => field.handleChange(val as Alliance)}
@@ -48,7 +47,6 @@ export function PreMatch({ matchId, initialData }: Props): ReactNode {
                 className="col-span-full"
                 label="Match Type"
                 data={enumToSelectItem(MatchType)}
-                fullWidth
                 color={alliance}
                 value={field.state.value}
                 onChange={(val) => field.handleChange(val as MatchType)}
@@ -66,7 +64,6 @@ export function PreMatch({ matchId, initialData }: Props): ReactNode {
                 className="col-span-full"
                 label="Drive Position"
                 data={enumToSelectItem(DrivePosition)}
-                fullWidth
                 color={alliance}
                 value={field.state.value}
                 onChange={(val) => field.handleChange(val as DrivePosition)}
