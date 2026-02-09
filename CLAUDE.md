@@ -9,7 +9,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```bash
 bun run dev          # Start Vite dev server with HMR
 bun run build        # Full build: generate-routes → tsc → vite build
-bun run check        # Biome format + lint (use before commits)
+bun run check        # Biome format + lint
 bun run preview      # Preview production build locally
 ```
 

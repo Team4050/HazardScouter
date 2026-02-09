@@ -8,5 +8,18 @@
       "Bash(ls:*)",
       "Bash(sort:*)"
     ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bun run check"
+          }
+        ]
+      }
+    ]
   }
 }
