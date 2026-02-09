@@ -370,12 +370,7 @@ export function Switch({
         id={id}
         checked={checked ?? value}
         onCheckedChange={handleCheckedChange}
-        className={cn(
-          "h-6 w-11 xs:h-7 xs:w-14 aspect-video",
-          "[&>span]:h-5 [&>span]:w-5 [&>span]:data-checked:translate-x-5",
-          "xs:[&>span]:h-6 xs:[&>span]:w-6 xs:[&>span]:data-checked:translate-x-7",
-          classNames?.input,
-        )}
+        className={cn("w-14 xs:w-16", classNames?.input)}
       />
     </InputWrapper>
   );
@@ -491,7 +486,7 @@ export const Counter = memo(function Counter({
           type="text"
           inputMode="numeric"
           className={cn(
-            "text-center text-4xl px-0 size-full",
+            "text-center text-5xl px-0 size-full",
             classNames?.input,
           )}
           min={min}

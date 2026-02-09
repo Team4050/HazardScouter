@@ -24,29 +24,7 @@ export function Teleop({ matchId, initialData }: Props): ReactNode {
   });
 
   return (
-    <div className="flex flex-col mx-auto gap-y-4">
-      <form.Field name="strategy">
-        {(field) => (
-          <SegmentedControl
-            label="Strategy"
-            data={enumToSelectItem(Strategy)}
-            value={field.state.value}
-            onChange={(val: string) => field.handleChange(val as Strategy)}
-            fullWidth
-          />
-        )}
-      </form.Field>
-      <form.Field name="pickupType">
-        {(field) => (
-          <SegmentedControl
-            label="Pickup Type"
-            data={enumToSelectItem(PickupType)}
-            value={field.state.value}
-            onChange={(val: string) => field.handleChange(val as PickupType)}
-            fullWidth
-          />
-        )}
-      </form.Field>
+    <div className="grid grid-cols-2 mx-auto gap-8">
       <form.Field name="bump">
         {(field) => (
           <Switch
@@ -58,16 +36,6 @@ export function Teleop({ matchId, initialData }: Props): ReactNode {
           />
         )}
       </form.Field>
-      <form.Field name="fuelScored">
-        {(field) => (
-          <Counter
-            label="Fuel Scored"
-            max={99}
-            value={field.state.value}
-            onChange={(val: number) => field.handleChange(val)}
-          />
-        )}
-      </form.Field>
       <form.Field name="trench">
         {(field) => (
           <Switch
@@ -76,6 +44,39 @@ export function Teleop({ matchId, initialData }: Props): ReactNode {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               field.handleChange(e.currentTarget.checked)
             }
+          />
+        )}
+      </form.Field>
+      <form.Field name="pickupType">
+        {(field) => (
+          <SegmentedControl
+            label="Pickup Type"
+            data={enumToSelectItem(PickupType)}
+            value={field.state.value}
+            onChange={(val: string) => field.handleChange(val as PickupType)}
+            className="col-span-full"
+          />
+        )}
+      </form.Field>
+      <form.Field name="fuelScored">
+        {(field) => (
+          <Counter
+            label="Fuel Scored"
+            max={99}
+            value={field.state.value}
+            onChange={(val: number) => field.handleChange(val)}
+            className="col-span-full"
+          />
+        )}
+      </form.Field>
+      <form.Field name="strategy">
+        {(field) => (
+          <SegmentedControl
+            label="Strategy"
+            data={enumToSelectItem(Strategy)}
+            value={field.state.value}
+            onChange={(val: string) => field.handleChange(val as Strategy)}
+            className="col-span-full"
           />
         )}
       </form.Field>
