@@ -400,7 +400,10 @@ export function Slider({
       label={label}
       htmlFor={id}
       className={className}
-      classNames={classNames}
+      classNames={{
+        label: cn("mb-1", classNames?.label),
+        ...classNames,
+      }}
     >
       <ShadcnSlider
         id={id}

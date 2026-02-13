@@ -13,7 +13,7 @@ const sliderFields = [
 const switchFields = [
   { name: "malfunctioned", label: "Died?" },
   { name: "unstable", label: "Unstable?" },
-  { name: "droppedGamePieces", label: "Dropped game pieces?" },
+  { name: "droppedGamePieces", label: "Dropped fuel?" },
   { name: "potentialPartner", label: "Alliance potential?" },
   { name: "eStopped", label: "E-Stopped?" },
   { name: "aStopped", label: "A-Stopped?" },
@@ -34,7 +34,7 @@ export function PostMatch({ matchId, initialData }: Props): ReactNode {
 
   return (
     <div className="grid gap-y-6">
-      <div>
+      <div className="flex flex-col gap-y-4">
         {sliderFields.map(({ name, label }) => (
           <form.Field key={name} name={name}>
             {(field) => (
@@ -48,7 +48,7 @@ export function PostMatch({ matchId, initialData }: Props): ReactNode {
         ))}
       </div>
 
-      <div className="flex flex-col px-1 py-2 sm:p-4 mt-4 items-center w-fit mx-auto bg-zinc-900 rounded-sm shadow-md">
+      <div className="flex flex-col p-3 sm:p-4 mt-4 items-center w-fit mx-auto bg-zinc-900 rounded-sm shadow-md">
         <div className="grid grid-cols-3 md:flex items-end gap-y-4 *:flex-1 text-center">
           {switchFields.map(({ name, label }) => (
             <form.Field key={name} name={name}>
