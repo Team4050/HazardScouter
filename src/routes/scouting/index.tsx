@@ -107,7 +107,7 @@ function Page(): ReactNode {
       {matches.length > 0 ? (
         <div className="flex sm:flex-row flex-col mb-2">
           <div className="text-4xl grow hidden sm:block ml-1">Match List</div>
-          <div className="gap-2 md:flex md:ml-auto md:w-fit w-full grid grid-cols-2 grid-rows-1">
+          <div className="grid grid-cols-2 gap-2 w-full md:ml-auto md:w-fit">
             <NewMatchButton />
             <Button
               className="text-3xl"
