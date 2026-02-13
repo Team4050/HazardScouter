@@ -12,8 +12,18 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+} from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
 import { type Match, matchCollection, newId } from "@/data/db";
+import { useIsMobile } from "@/hooks/useIsMobile";
+import { cn } from "@/util";
 
 type NewMatchForm = Omit<Match, "started" | "finished" | "phases" | "id">;
 
@@ -26,6 +36,7 @@ export function NewMatchModal({
 }): ReactNode {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const isMobile = useIsMobile();
   const { data: matches = [] } = useLiveQuery(() => matchCollection);
   const scouters = useMemo(() => {
     return [...new Set(matches.map((match) => match.scouter))];
@@ -79,89 +90,107 @@ export function NewMatchModal({
     form.handleSubmit();
   };
 
+  const formContent = (
+    <>
+      {loading && (
+        <div className="absolute inset-0 bg-background/80 flex items-center justify-center z-50 rounded-lg">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        </div>
+      )}
+
+      <form className="flex flex-col gap-y-4" onSubmit={handleFormSubmit}>
+        <form.Field
+          name="scouter"
+          validators={{
+            onChange: ({ value }) =>
+              !value || value.length >= 50 ? "Invalid scouter name" : undefined,
+          }}
+        >
+          {(field) => (
+            <Autocomplete
+              label="Scouter"
+              data={scouters}
+              value={field.state.value}
+              onChange={(val) => field.handleChange(val)}
+              emptyMessage="No scouters"
+            />
+          )}
+        </form.Field>
+        <form.Field
+          name="teamNumber"
+          validators={{
+            onChange: ({ value }) =>
+              value <= 0 || value > 99999 ? "Invalid team number" : undefined,
+          }}
+        >
+          {(field) => (
+            <Autocomplete
+              label="Team"
+              data={teams.map((t) => t.toString())}
+              inputMode="numeric"
+              value={field.state.value ? field.state.value.toString() : ""}
+              onChange={(val) => field.handleChange(Number(val) || 0)}
+              emptyMessage="No saved teams."
+            />
+          )}
+        </form.Field>
+        <form.Field
+          name="matchNumber"
+          validators={{
+            onChange: ({ value }) =>
+              value <= 0 || value > 999 ? "Invalid match number" : undefined,
+          }}
+        >
+          {(field) => (
+            <div className="flex flex-col gap-1.5">
+              <label className="ml-1 font-medium text-base">Match</label>
+              <Input
+                type="text"
+                inputMode="numeric"
+                value={field.state.value || ""}
+                onChange={(e) =>
+                  field.handleChange(Number(e.target.value) || 0)
+                }
+                onKeyDown={(event: React.KeyboardEvent) => {
+                  if (event.key === "Enter") {
+                    event.preventDefault();
+                    form.handleSubmit();
+                  }
+                }}
+              />
+            </div>
+          )}
+        </form.Field>
+        <Button
+          type="submit"
+          className={cn("ml-auto mt-2 w-20", isMobile ? "w-full" : "")}
+        >
+          Go
+        </Button>
+      </form>
+    </>
+  );
+
+  if (isMobile) {
+    return (
+      <Drawer open={opened} onOpenChange={(open) => !open && onClose()}>
+        <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle>New Match</DrawerTitle>
+          </DrawerHeader>
+          <div className="px-4 pb-4">{formContent}</div>
+        </DrawerContent>
+      </Drawer>
+    );
+  }
+
   return (
     <Dialog open={opened} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>New Match</DialogTitle>
         </DialogHeader>
-
-        {/* Loading overlay */}
-        {loading && (
-          <div className="absolute inset-0 bg-background/80 flex items-center justify-center z-50 rounded-lg">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
-          </div>
-        )}
-
-        <form className="flex flex-col gap-y-4" onSubmit={handleFormSubmit}>
-          <form.Field
-            name="scouter"
-            validators={{
-              onChange: ({ value }) =>
-                !value || value.length >= 50
-                  ? "Invalid scouter name"
-                  : undefined,
-            }}
-          >
-            {(field) => (
-              <Autocomplete
-                label="Scouter"
-                data={scouters}
-                value={field.state.value}
-                onChange={(val) => field.handleChange(val)}
-                emptyMessage="No scouters"
-              />
-            )}
-          </form.Field>
-          <form.Field
-            name="teamNumber"
-            validators={{
-              onChange: ({ value }) =>
-                value <= 0 || value > 99999 ? "Invalid team number" : undefined,
-            }}
-          >
-            {(field) => (
-              <Autocomplete
-                label="Team"
-                data={teams.map((t) => t.toString())}
-                inputMode="numeric"
-                value={field.state.value ? field.state.value.toString() : ""}
-                onChange={(val) => field.handleChange(Number(val) || 0)}
-                emptyMessage="No saved teams."
-              />
-            )}
-          </form.Field>
-          <form.Field
-            name="matchNumber"
-            validators={{
-              onChange: ({ value }) =>
-                value <= 0 || value > 999 ? "Invalid match number" : undefined,
-            }}
-          >
-            {(field) => (
-              <div className="flex flex-col gap-1.5">
-                <label className="ml-1 font-medium text-base">Match</label>
-                <Input
-                  type="text"
-                  inputMode="numeric"
-                  value={field.state.value || ""}
-                  onChange={(e) =>
-                    field.handleChange(Number(e.target.value) || 0)
-                  }
-                  onKeyDown={(event: React.KeyboardEvent) => {
-                    if (event.key === "Enter") {
-                      event.preventDefault();
-                      form.handleSubmit();
-                    }
-                  }}
-                />
-              </div>
-            )}
-          </form.Field>
-          <Button type="submit" className="ml-auto mt-2">
-            Go
-          </Button>
-        </form>
+        {formContent}
       </DialogContent>
     </Dialog>
   );
@@ -191,6 +220,8 @@ export function ConfirmDialog({
   onConfirm,
   onCancel,
 }: ConfirmDialogProps): ReactNode {
+  const isMobile = useIsMobile();
+
   const handleConfirm = () => {
     onConfirm();
     onOpenChange(false);
@@ -201,6 +232,31 @@ export function ConfirmDialog({
     onOpenChange(false);
   };
 
+  const buttons = (
+    <>
+      <Button variant="outline" onClick={handleCancel}>
+        {cancelLabel}
+      </Button>
+      <Button variant={confirmVariant} onClick={handleConfirm}>
+        {confirmLabel}
+      </Button>
+    </>
+  );
+
+  if (isMobile) {
+    return (
+      <Drawer open={open} onOpenChange={onOpenChange}>
+        <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle>{title}</DrawerTitle>
+            <DrawerDescription>{description}</DrawerDescription>
+          </DrawerHeader>
+          <DrawerFooter>{buttons}</DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    );
+  }
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
@@ -208,14 +264,7 @@ export function ConfirmDialog({
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
-        <DialogFooter className="gap-2 sm:gap-0">
-          <Button variant="outline" onClick={handleCancel}>
-            {cancelLabel}
-          </Button>
-          <Button variant={confirmVariant} onClick={handleConfirm}>
-            {confirmLabel}
-          </Button>
-        </DialogFooter>
+        <DialogFooter className="gap-2 sm:gap-0">{buttons}</DialogFooter>
       </DialogContent>
     </Dialog>
   );
