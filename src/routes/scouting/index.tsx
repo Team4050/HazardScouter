@@ -163,7 +163,10 @@ function Page(): ReactNode {
                       >
                         <TableCell className="pl-3">{matchNumber}</TableCell>
                         <TableCell>{teamNumber}</TableCell>
-                        <TableCell>{scouter}</TableCell>
+                        <TableCell className="text-ellipsis max-w-10 overflow-clip whitespace-nowrap">
+                          {/* TODO: Need to add tooltips */}
+                          {scouter}
+                        </TableCell>
                         <TableCell className="hidden xs:table-cell">
                           {`${shortDayName(startedDate)} ${startedDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`}
                         </TableCell>

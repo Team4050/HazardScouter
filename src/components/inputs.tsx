@@ -262,7 +262,7 @@ export function Textarea({
       <ShadcnTextarea
         id={inputId}
         rows={minRows}
-        className={cn(classNames?.input)}
+        className={cn("bg-accent font-mono text-xs!", classNames?.input)}
         {...props}
       />
     </InputWrapper>
