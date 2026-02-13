@@ -6,7 +6,7 @@ import { resetCollections } from "@/data/db";
 export default function DevTools(): ReactNode {
   const isMobile = useMediaQuery("(max-width: 480px)");
   return (
-    <div className="sticky bottom-2 w-full z-50">
+    <div className="sticky bottom-2 w-full z-50 hidden md:block">
       <div className="w-fit text-xs lg:text-md lg:w-125 mx-auto flex rounded-full bg-gray-800 p-2 justify-center items-center font-mono text-[14px] text-white shadow-2xl space-x-1.5 divide-x-2 divide-solid divide-y-0 last-child:pl-2 middle-child:pl-2 gap-x-1">
         <div className="flex items-center">
           <Maximize2 className="mr-1" />
