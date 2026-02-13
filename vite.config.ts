@@ -1,31 +1,31 @@
 import { execSync } from "node:child_process";
 import path from "node:path";
 import { sentryVitePlugin } from "@sentry/vite-plugin";
-import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
+import tailwindcss from "@tailwindcss/vite";
+import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 
 const commitHash = execSync("git rev-parse --short HEAD").toString().trim();
-// const commitCount = execSync("git rev-list --count HEAD").toString().trim();
 
 export default defineConfig({
   define: {
     __COMMIT_HASH__: JSON.stringify(commitHash),
-    // __COMMIT_COUNT__: JSON.stringify(commitCount),
   },
   plugins: [
-    // legacy({
-    //   targets: ["chrome >= 108"],
-    //   modernTargets: ["chrome >= 109"],
-    //   polyfills: ["es.object.has-own", "es.array.at"],
-    //   modernPolyfills: true,
-    // }),
-    TanStackRouterVite({
+    tailwindcss(),
+    tanstackRouter({
       quoteStyle: "double",
       semicolons: true,
+      target: "react",
+      autoCodeSplitting: true,
     }),
-    react(),
+    react({
+      babel: {
+        plugins: [["babel-plugin-react-compiler", { target: "19" }]],
+      },
+    }),
     VitePWA({
       registerType: "autoUpdate",
       devOptions: {
@@ -86,6 +86,7 @@ export default defineConfig({
       },
     }),
     sentryVitePlugin({
+      telemetry: false,
       org: "seesexyz",
       project: "hazard-scouter",
       release: {
@@ -97,7 +98,6 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-      "@tabler/icons-react": "@tabler/icons-react/dist/esm/icons/index.mjs",
     },
   },
 

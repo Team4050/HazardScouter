@@ -1,11 +1,12 @@
-import { Button } from "@mantine/core";
 import { createFileRoute, notFound, useRouter } from "@tanstack/react-router";
 import type { ReactNode } from "react";
+import { Button } from "@/components/ui/button";
 import { matchCollection } from "@/data/db";
 
 export const Route = createFileRoute("/scouting/$matchId")({
   loader: async ({ params: { matchId } }) => {
-    if (matchCollection.findOne({ id: matchId }) === undefined) {
+    await matchCollection.preload();
+    if (matchCollection.get(matchId) === undefined) {
       throw notFound();
     }
   },

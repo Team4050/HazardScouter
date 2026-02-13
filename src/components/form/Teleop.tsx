@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Counter, Select, Switch } from "@/components/inputs";
+import { Counter, SegmentedControl, Switch } from "@/components/inputs";
 import type { PhaseDataMap } from "@/data/db";
 import {
   PickupType,
@@ -8,7 +8,6 @@ import {
   teleopSchema,
 } from "@/data/match";
 import { useForm } from "@/hooks/useForm";
-import { useIsMobile } from "@/hooks/useIsMobile";
 import { enumToSelectItem } from "@/util";
 
 type Props = {
@@ -17,7 +16,6 @@ type Props = {
 };
 
 export function Teleop({ matchId, initialData }: Props): ReactNode {
-  const isMobile = useIsMobile();
   const form = useForm<"teleop">({
     matchId,
     phase: "teleop",
@@ -26,70 +24,62 @@ export function Teleop({ matchId, initialData }: Props): ReactNode {
   });
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 grid-rows-4">
-      <div className="row-span-full flex flex-col md:gap-y-2 gap-y-5 my-auto">
-        <Select
-          label="Strategy"
-          data={enumToSelectItem(Strategy)}
-          {...form.getInputProps("strategy")}
-        />
-        <Select
-          label="Pickup Type"
-          data={enumToSelectItem(PickupType)}
-          {...form.getInputProps("pickupType")}
-        />
-        <Counter
-          label="Processor Scores"
-          {...form.getInputProps("processor")}
-        />
-        <Counter label="Net Scores" max={99} {...form.getInputProps("net")} />
-        <Switch
-          label="Removed Algae"
-          max={99}
-          {...form.getInputProps("removedAlgae")}
-        />
-      </div>
-
-      <svg
-        width="100%"
-        height="100%"
-        viewBox="0 0 44 225"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className="row-span-full max-h-[500px] max-w-[250px] data-[mobile=true]:hidden"
-        data-mobile={isMobile}
-      >
-        <path
-          d="M3 221.5V182M41 3V29C41 33.4066 38.9253 37.556 35.4 40.2L8.6 60.3C5.07472 62.944 3 67.0934 3 71.5V182M3 182L41 156M3 122L41 96"
-          stroke="#D115EB"
-          strokeWidth="6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-
-      <Counter
-        label="Coral Level 4"
-        className="mt-0 mb-0 sm:mb-auto"
-        max={12}
-        {...form.getInputProps("reef.coralLevel4")}
-      />
-      <Counter
-        label="Coral Level 3"
-        max={12}
-        {...form.getInputProps("reef.coralLevel3")}
-      />
-      <Counter
-        label="Coral Level 2"
-        max={12}
-        {...form.getInputProps("reef.coralLevel2")}
-      />
-      <Counter
-        label="Coral Level 1"
-        className="mb-0 mt-0 sm:mt-auto"
-        max={12}
-        {...form.getInputProps("reef.coralLevel1")}
-      />
+    <div className="grid grid-cols-2 mx-auto gap-8">
+      <form.Field name="bump">
+        {(field) => (
+          <Switch
+            label="Bump"
+            checked={field.state.value}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              field.handleChange(e.currentTarget.checked)
+            }
+          />
+        )}
+      </form.Field>
+      <form.Field name="trench">
+        {(field) => (
+          <Switch
+            label="Trench"
+            checked={field.state.value}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              field.handleChange(e.currentTarget.checked)
+            }
+          />
+        )}
+      </form.Field>
+      <form.Field name="pickupType">
+        {(field) => (
+          <SegmentedControl
+            label="Pickup Type"
+            data={enumToSelectItem(PickupType)}
+            value={field.state.value}
+            onChange={(val: string) => field.handleChange(val as PickupType)}
+            className="col-span-full"
+          />
+        )}
+      </form.Field>
+      <form.Field name="fuelScored">
+        {(field) => (
+          <Counter
+            label="Fuel Scored"
+            max={99}
+            value={field.state.value}
+            onChange={(val: number) => field.handleChange(val)}
+            className="col-span-full"
+          />
+        )}
+      </form.Field>
+      <form.Field name="strategy">
+        {(field) => (
+          <SegmentedControl
+            label="Strategy"
+            data={enumToSelectItem(Strategy)}
+            value={field.state.value}
+            onChange={(val: string) => field.handleChange(val as Strategy)}
+            className="col-span-full"
+          />
+        )}
+      </form.Field>
     </div>
   );
 }

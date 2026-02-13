@@ -1,16 +1,23 @@
-import { ActionIcon, Button, Paper, Table } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import { IconPencil, IconTrash } from "@tabler/icons-react";
+import { useLiveQuery } from "@tanstack/react-db";
 import { createFileRoute } from "@tanstack/react-router";
-import { type ReactNode, useCallback } from "react";
+import { FileJson, Trash2 } from "lucide-react";
+import { type ReactNode, useCallback, useState } from "react";
 import {
+  ConfirmDialog,
   NewMatchModal,
-  openDeleteModal,
-  openExportModal,
+  useConfirmDialog,
 } from "@/components/modals";
-import { downloadMatches, matchCollection, useReactivity } from "@/data/db";
+import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { downloadMatches, matchCollection } from "@/data/db";
 import { phaseDetails, phaseOrder } from "@/data/match";
-import { useIsMobile } from "@/hooks/useIsMobile";
 import { cn, shortDayName } from "@/util";
 
 export const Route = createFileRoute("/scouting/")({
@@ -19,16 +26,18 @@ export const Route = createFileRoute("/scouting/")({
 
 function Page(): ReactNode {
   const navigate = Route.useNavigate();
-  const matches = useReactivity(() => matchCollection.find().fetch(), []);
+  const { data: matches = [] } = useLiveQuery(() => matchCollection);
   const canFinish = !!matches.filter((m) => m.finished !== undefined).length;
-  const isMobile = useIsMobile();
 
-  const [newModalOpened, { open: openNewModal, close: closeNewModal }] =
-    useDisclosure();
+  const [newModalOpened, setNewModalOpened] = useState(false);
+  const openNewModal = useCallback(() => setNewModalOpened(true), []);
+  const closeNewModal = useCallback(() => setNewModalOpened(false), []);
+
+  const { confirmDialogProps, openConfirmDialog } = useConfirmDialog();
 
   const handleEdit = useCallback(
     (matchId: string) => {
-      const match = matchCollection.findOne({ id: matchId });
+      const match = matchCollection.get(matchId);
 
       if (match) {
         // Redirect to the first phase that hasn't been completed
@@ -52,11 +61,30 @@ function Page(): ReactNode {
     [navigate],
   );
 
-  const handleDelete = useCallback((matchId: string) => {
-    openDeleteModal({
-      onConfirm: () => matchCollection.removeOne({ id: matchId }),
+  const handleDelete = useCallback(
+    (matchId: string) => {
+      openConfirmDialog({
+        title: "Delete Match",
+        description: "Are you sure you want to delete this match?",
+        confirmLabel: "Delete Match",
+        cancelLabel: "Cancel",
+        confirmVariant: "destructive",
+        onConfirm: () => matchCollection.delete(matchId),
+      });
+    },
+    [openConfirmDialog],
+  );
+
+  const handleExport = useCallback(() => {
+    openConfirmDialog({
+      title: "Download Matches",
+      description:
+        "Are you sure you are ready to download? This will reset your data and clear all finished matches.",
+      confirmLabel: "Download",
+      cancelLabel: "Cancel",
+      onConfirm: () => downloadMatches(true),
     });
-  }, []);
+  }, [openConfirmDialog]);
 
   const handleOpen = useCallback(
     (matchId: string) => {
@@ -67,70 +95,55 @@ function Page(): ReactNode {
 
   const NewMatchButton = (): ReactNode => (
     <Button className="text-3xl" onClick={openNewModal}>
-      Scout New Match
+      New Match
     </Button>
   );
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col flex-1 py-2 md:py-6">
       <NewMatchModal opened={newModalOpened} onClose={closeNewModal} />
+      <ConfirmDialog {...confirmDialogProps} />
 
-      <div className="flex md:flex-row flex-col mb-2 md:mb-6 gap-2 flex-none">
-        <div
-          className="text-4xl flex-grow hidden md:block"
-          data-mobile={isMobile}
-        >
-          Match List
-        </div>
-
-        {matches.length > 0 ? (
-          <>
-            {/* TODO: These buttons should match the prev/next buttons */}
+      {matches.length > 0 ? (
+        <div className="flex sm:flex-row flex-col mb-2">
+          <div className="text-4xl grow hidden sm:block ml-1">Match List</div>
+          <div className="grid grid-cols-2 gap-2 w-full md:ml-auto md:w-fit">
             <NewMatchButton />
             <Button
               className="text-3xl"
               disabled={!matches || !canFinish}
-              variant="subtle"
-              onClick={() =>
-                openExportModal({
-                  onConfirm: () => {
-                    downloadMatches(true);
-                  },
-                })
-              }
+              variant="ghost"
+              onClick={handleExport}
             >
               Finish Scouting
             </Button>
-          </>
-        ) : null}
-      </div>
+          </div>
+        </div>
+      ) : null}
 
-      <div className="flex-1">
+      <div className="flex-1 flex flex-col">
         {matches.length > 0 ? (
-          <Paper withBorder shadow="xl" className="py-2">
-            <Table highlightOnHover>
-              <Table.Thead>
-                <Table.Tr>
+          <div className="border rounded-lg shadow-lg my-2">
+            <Table>
+              <TableHeader className="text-base">
+                <TableRow>
                   {["Match", "Team", "Scouter", "Started", "Finished"].map(
                     (head) => (
-                      <Table.Th
+                      <TableHead
                         key={head}
-                        // The below code is not how this is supposed to be done
                         className={cn(
                           (head === "Started" || head === "Finished") &&
-                            isMobile
-                            ? "hidden"
-                            : null,
+                            "hidden xs:table-cell",
                         )}
                       >
                         {head}
-                      </Table.Th>
+                      </TableHead>
                     ),
                   )}
-                  <Table.Th className="w-0" />
-                </Table.Tr>
-              </Table.Thead>
-              <Table.Tbody>
+                  <TableHead className="w-0" />
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 {matches.map(
                   ({
                     id,
@@ -143,43 +156,40 @@ function Page(): ReactNode {
                     const startedDate = new Date(started);
                     const finishedDate = finished ? new Date(finished) : null;
                     return (
-                      <Table.Tr
+                      <TableRow
                         key={id}
-                        onClick={() => handleOpen(id)}
-                        className="cursor-pointer"
+                        onClick={() => handleEdit(id)}
+                        className="cursor-pointer text-base"
                       >
-                        <Table.Td>{matchNumber}</Table.Td>
-                        <Table.Td>{teamNumber}</Table.Td>
-                        <Table.Td>{scouter}</Table.Td>
-                        <Table.Td
-                          className="data-[mobile=true]:hidden"
-                          data-mobile={isMobile}
-                        >
-                          {`${shortDayName(startedDate)} ${startedDate.toLocaleTimeString()}`}
-                        </Table.Td>
-                        <Table.Td
-                          className="data-[mobile=true]:hidden"
-                          data-mobile={isMobile}
-                        >
+                        <TableCell className="pl-3">{matchNumber}</TableCell>
+                        <TableCell>{teamNumber}</TableCell>
+                        <TableCell className="text-ellipsis max-w-10 overflow-clip whitespace-nowrap">
+                          {/* TODO: Need to add tooltips */}
+                          {scouter}
+                        </TableCell>
+                        <TableCell className="hidden xs:table-cell">
+                          {`${shortDayName(startedDate)} ${startedDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`}
+                        </TableCell>
+                        <TableCell className="hidden xs:table-cell">
                           {finishedDate
-                            ? `${shortDayName(finishedDate)} ${finishedDate.toLocaleTimeString()}`
+                            ? `${shortDayName(finishedDate)} ${finishedDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`
                             : "In Progress"}
-                        </Table.Td>
-                        <Table.Td className="w-fit">
+                        </TableCell>
+                        <TableCell className="w-fit">
                           <ActionGroup
-                            onClickEdit={() => handleEdit(id)}
+                            onClickReview={() => handleOpen(id)}
                             onClickDelete={() => handleDelete(id)}
                           />
-                        </Table.Td>
-                      </Table.Tr>
+                        </TableCell>
+                      </TableRow>
                     );
                   },
                 )}
-              </Table.Tbody>
+              </TableBody>
             </Table>
-          </Paper>
+          </div>
         ) : (
-          <div className="flex flex-col justify-center items-center gap-y-4 h-full">
+          <div className="flex-1 flex flex-col justify-center items-center gap-y-4">
             <div className="text-4xl">No matches found</div>
             <NewMatchButton />
           </div>
@@ -190,15 +200,15 @@ function Page(): ReactNode {
 }
 
 function ActionGroup({
-  onClickEdit,
+  onClickReview,
   onClickDelete,
 }: {
-  onClickEdit: () => void;
+  onClickReview: () => void;
   onClickDelete: () => void;
 }): ReactNode {
-  const handleEdit = (e: React.MouseEvent) => {
+  const handleReview = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onClickEdit();
+    onClickReview();
   };
 
   const handleDelete = (e: React.MouseEvent) => {
@@ -207,15 +217,21 @@ function ActionGroup({
   };
 
   return (
-    <div className="w-fit flex space-x-2">
-      <ActionIcon.Group>
-        <ActionIcon onClick={handleEdit} variant="subtle">
-          <IconPencil />
-        </ActionIcon>
-        <ActionIcon onClick={handleDelete} variant="subtle" color="red">
-          <IconTrash />
-        </ActionIcon>
-      </ActionIcon.Group>
+    <div className="w-fit flex gap-x-1">
+      <button
+        type="button"
+        onClick={handleReview}
+        className="p-2 hover:opacity-50 rounded-md transition-colors cursor-pointer"
+      >
+        <FileJson className="h-5 w-5" />
+      </button>
+      <button
+        type="button"
+        onClick={handleDelete}
+        className="p-2 rounded-md hover:opacity-50 transition-colors text-red-500 cursor-pointer"
+      >
+        <Trash2 className="h-5 w-5" />
+      </button>
     </div>
   );
 }

@@ -14,7 +14,7 @@ export function AppLogo({ className, classNames, onClick }: Props): ReactNode {
   return (
     <div
       className={cn(
-        "flex items-center size-full",
+        "flex items-center size-full select-none",
         onClick !== undefined ? "cursor-pointer" : null,
         className,
       )}

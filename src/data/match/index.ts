@@ -1,9 +1,4 @@
-import {
-  IconDeviceGamepad2,
-  IconListCheck,
-  IconRoute2,
-  IconStopwatch,
-} from "@tabler/icons-react";
+import { Gamepad2, ListChecks, Route, Timer } from "lucide-react";
 import type { Icon } from "@/util";
 
 export type ScoutingPhase =
@@ -32,27 +27,27 @@ export const phaseDetails: { [key in ScoutingPhase]: PhaseDetail } = {
   preMatch: {
     title: "Pre Match",
     slug: "pre-match",
-    icon: IconListCheck,
+    icon: ListChecks,
   },
   auto: {
     title: "Auto",
     slug: "auto",
-    icon: IconRoute2,
+    icon: Route,
   },
   teleop: {
     title: "Teleop",
     slug: "teleop",
-    icon: IconDeviceGamepad2,
+    icon: Gamepad2,
   },
   endgame: {
     title: "Endgame",
     slug: "endgame",
-    icon: IconStopwatch,
+    icon: Timer,
   },
   postMatch: {
     title: "Post Match",
     slug: "post-match",
-    icon: IconListCheck,
+    icon: ListChecks,
   },
 };
 
@@ -60,14 +55,19 @@ export const phaseRoutes = phaseOrder.map(
   (phase) => phaseDetails[phase].slug,
 ) as ["pre-match", "auto", "teleop", "endgame", "post-match"];
 
+const slugToPhase = new Map(
+  phaseOrder.map((phase) => [phaseDetails[phase].slug, phase]),
+);
+
 export function phaseSlugToTitle(slug: string): string {
-  return phaseDetails[
-    // biome-ignore lint/style/noNonNullAssertion: We expect only valid slugs to be here
-    phaseOrder.find((phase) => phaseDetails[phase].slug === slug)!
-  ].title;
+  const phase = slugToPhase.get(slug);
+  if (!phase) {
+    throw new Error(`Unknown phase slug: ${slug}`);
+  }
+  return phaseDetails[phase].title;
 }
 
 // Pretty sure this is generally considered bad practice,
 // but allows us to swap out years easily
-export * from "@/data/match/2025";
+export * from "@/data/match/2026";
 export * from "@/data/match/shared";

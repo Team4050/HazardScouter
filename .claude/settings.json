@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(grep:*)",
+      "Bash(wc:*)",
+      "Bash(bun run:*)",
+      "Bash(ls:*)",
+      "Bash(sort:*)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bun run check"
+          }
+        ]
+      }
+    ]
+  }
+}

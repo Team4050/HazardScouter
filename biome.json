@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.3.11/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.3.13/schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
@@ -23,12 +23,20 @@
         "noUnknownAtRules": "off",
         "noArrayIndexKey": "info"
       },
-      "a11y": "off"
+      "a11y": "off",
+      "style": {
+        "useBlockStatements": "error"
+      }
     }
   },
   "javascript": {
     "formatter": {
       "quoteStyle": "double"
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
     }
   },
   "assist": {
