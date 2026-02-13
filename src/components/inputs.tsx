@@ -363,7 +363,7 @@ export function Switch({
     <InputWrapper
       label={label}
       htmlFor={id}
-      className={className}
+      className={cn("items-center", className)}
       classNames={classNames}
     >
       <ShadcnSwitch
@@ -536,11 +536,7 @@ function InputWrapper({
 }: InputWrapperProps) {
   return (
     <div
-      className={cn(
-        "flex flex-col gap-1.5 items-center",
-        className,
-        classNames?.wrapper,
-      )}
+      className={cn("flex flex-col gap-1.5", className, classNames?.wrapper)}
     >
       {label ? (
         <InputLabel htmlFor={htmlFor} className={classNames?.label}>
