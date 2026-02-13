@@ -1,8 +1,4 @@
-import {
-  browserTracingIntegration,
-  captureConsoleIntegration,
-  init,
-} from "@sentry/react";
+import { captureConsoleIntegration, init } from "@sentry/react";
 import { lazy, StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { Toaster } from "sonner";
@@ -20,10 +16,7 @@ const DevTools =
 if (process.env.NODE_ENV === "production" && navigator.onLine) {
   init({
     dsn: "https://055ca8caf4488f3cc1647425883ed0ad@o4508903100186624.ingest.us.sentry.io/4508903134789637",
-    integrations: [
-      captureConsoleIntegration({ levels: ["error", "warn"] }),
-      browserTracingIntegration(),
-    ],
+    integrations: [captureConsoleIntegration({ levels: ["error", "warn"] })],
     release: __COMMIT_HASH__,
     tracesSampleRate: 1.0,
   });
