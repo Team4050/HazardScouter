@@ -23,7 +23,10 @@
         "noUnknownAtRules": "off",
         "noArrayIndexKey": "info"
       },
-      "a11y": "off"
+      "a11y": "off",
+      "style": {
+        "useBlockStatements": "error"
+      }
     }
   },
   "javascript": {
