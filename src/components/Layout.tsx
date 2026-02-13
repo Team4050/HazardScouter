@@ -1,5 +1,4 @@
 import { useLocation, useNavigate } from "@tanstack/react-router";
-import { RefreshCw } from "lucide-react";
 import { type ReactNode, useMemo } from "react";
 import { AppLogo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
@@ -15,7 +14,7 @@ type LayoutProps = {
 export function Layout({ content }: LayoutProps): ReactNode {
   const navigate = useNavigate();
   const path = useLocation({ select: (state) => state.pathname });
-  const { needRefresh, forceUpdate } = usePWAUpdater();
+  usePWAUpdater();
 
   const matchPhaseTitle = useMemo(() => {
     const matchedPath = path.match(/\/scouting\/[^/]*\/collect\/(.*)/);
@@ -59,15 +58,6 @@ export function Layout({ content }: LayoutProps): ReactNode {
             Scouting Admin
           </Button>
 
-          {needRefresh ? (
-            <button
-              type="button"
-              className="p-2 hover:bg-accent rounded-md transition-colors"
-              onClick={forceUpdate}
-            >
-              <RefreshCw className="h-5 w-5" />
-            </button>
-          ) : null}
         </div>
       </header>
 
