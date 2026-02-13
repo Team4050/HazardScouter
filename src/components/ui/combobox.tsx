@@ -96,33 +96,48 @@ function ComboboxContent({
   align = "start",
   alignOffset = 0,
   anchor,
+  portal = true,
   ...props
 }: ComboboxPrimitive.Popup.Props &
   Pick<
     ComboboxPrimitive.Positioner.Props,
     "side" | "align" | "sideOffset" | "alignOffset" | "anchor"
-  >) {
+  > & {
+    /** Set to false when inside a modal/drawer whose overlay sets
+     *  pointer-events:none on body, blocking portaled popups. */
+    portal?: boolean;
+  }) {
+  // When portal is disabled, we still need ComboboxPrimitive.Portal (it
+  // provides required context), but redirect it into a local container so
+  // the popup stays inside the drawer's DOM instead of escaping to <body>.
+  const inlineContainerRef = useRef<HTMLDivElement>(null);
+
   return (
-    <ComboboxPrimitive.Portal>
-      <ComboboxPrimitive.Positioner
-        side={side}
-        sideOffset={sideOffset}
-        align={align}
-        alignOffset={alignOffset}
-        anchor={anchor}
-        className="isolate z-50"
+    <>
+      {!portal && <div ref={inlineContainerRef} />}
+      <ComboboxPrimitive.Portal
+        container={portal ? undefined : inlineContainerRef}
       >
-        <ComboboxPrimitive.Popup
-          data-slot="combobox-content"
-          data-chips={!!anchor}
-          className={cn(
-            "bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 *:data-[slot=input-group]:bg-input/30 *:data-[slot=input-group]:border-input/30 group/combobox-content relative max-h-96 w-(--anchor-width) max-w-(--available-width) min-w-[calc(var(--anchor-width)+--spacing(7))] origin-(--transform-origin) overflow-hidden rounded-md shadow-md ring-1 duration-100 data-[chips=true]:min-w-(--anchor-width) *:data-[slot=input-group]:m-1 *:data-[slot=input-group]:mb-0 *:data-[slot=input-group]:h-8 *:data-[slot=input-group]:shadow-none",
-            className,
-          )}
-          {...props}
-        />
-      </ComboboxPrimitive.Positioner>
-    </ComboboxPrimitive.Portal>
+        <ComboboxPrimitive.Positioner
+          side={side}
+          sideOffset={sideOffset}
+          align={align}
+          alignOffset={alignOffset}
+          anchor={anchor}
+          className="isolate z-50"
+        >
+          <ComboboxPrimitive.Popup
+            data-slot="combobox-content"
+            data-chips={!!anchor}
+            className={cn(
+              "bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 *:data-[slot=input-group]:bg-input/30 *:data-[slot=input-group]:border-input/30 group/combobox-content relative max-h-96 w-(--anchor-width) max-w-(--available-width) min-w-[calc(var(--anchor-width)+--spacing(7))] origin-(--transform-origin) overflow-hidden rounded-md shadow-md ring-1 duration-100 data-[chips=true]:min-w-(--anchor-width) *:data-[slot=input-group]:m-1 *:data-[slot=input-group]:mb-0 *:data-[slot=input-group]:h-8 *:data-[slot=input-group]:shadow-none",
+              className,
+            )}
+            {...props}
+          />
+        </ComboboxPrimitive.Positioner>
+      </ComboboxPrimitive.Portal>
+    </>
   );
 }
 

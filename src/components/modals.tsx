@@ -77,6 +77,11 @@ export function NewMatchModal({
       setLoading(false);
 
       onClose();
+      // iOS Safari doesn't restore scroll position after the keyboard
+      // dismisses inside a drawer, leaving the next page scrolled down.
+      if (window.scrollY > 0) {
+        window.scrollTo(0, 0);
+      }
       navigate({
         to: "/scouting/$matchId/collect",
         params: { matchId: id },
@@ -113,6 +118,7 @@ export function NewMatchModal({
               value={field.state.value}
               onChange={(val) => field.handleChange(val)}
               emptyMessage="No scouters"
+              portal={false}
             />
           )}
         </form.Field>
@@ -131,6 +137,7 @@ export function NewMatchModal({
               value={field.state.value ? field.state.value.toString() : ""}
               onChange={(val) => field.handleChange(Number(val) || 0)}
               emptyMessage="No saved teams."
+              portal={false}
             />
           )}
         </form.Field>
@@ -173,7 +180,11 @@ export function NewMatchModal({
 
   if (isMobile) {
     return (
-      <Drawer open={opened} onOpenChange={(open) => !open && onClose()}>
+      <Drawer
+        open={opened}
+        onOpenChange={(open) => !open && onClose()}
+        repositionInputs={false}
+      >
         <DrawerContent>
           <DrawerHeader>
             <DrawerTitle>New Match</DrawerTitle>

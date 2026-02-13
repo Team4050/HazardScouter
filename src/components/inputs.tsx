@@ -124,6 +124,8 @@ type AutocompleteProps = BaseProps & {
   className?: string;
   inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"];
   emptyMessage?: string;
+  /** Set to false when inside a modal/drawer to avoid pointer-events issues. */
+  portal?: boolean;
 };
 
 export function Autocomplete({
@@ -136,6 +138,7 @@ export function Autocomplete({
   placeholder,
   inputMode,
   emptyMessage = "No results",
+  portal,
 }: AutocompleteProps): ReactNode {
   const id = useId();
   const anchorRef = useRef<HTMLDivElement>(null);
@@ -165,7 +168,11 @@ export function Autocomplete({
             inputMode={inputMode}
           />
         </div>
-        <ComboboxContent anchor={anchorRef} className="min-w-(--anchor-width)">
+        <ComboboxContent
+          anchor={anchorRef}
+          className="min-w-(--anchor-width)"
+          portal={portal}
+        >
           <ComboboxEmpty>{emptyMessage}</ComboboxEmpty>
           <ComboboxList>
             {(item) => (

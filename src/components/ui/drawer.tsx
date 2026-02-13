@@ -43,7 +43,7 @@ function DrawerContent({
       <DrawerPrimitive.Content
         className={cn(
           "fixed inset-x-0 bottom-0 z-50",
-          "mt-24 pt-4 flex h-auto flex-col",
+          "mt-24 pt-4 flex h-auto flex-col overflow-y-auto",
           "border-t-2 bg-background",
           className,
         )}
