@@ -16,7 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { downloadMatches, matchCollection } from "@/data/db";
+import { downloadMatches, matchCollection, softDeleteMatch } from "@/data/db";
 import { phaseDetails, phaseOrder } from "@/data/match";
 import { cn, shortDayName } from "@/util";
 
@@ -26,7 +26,8 @@ export const Route = createFileRoute("/scouting/")({
 
 function Page(): ReactNode {
   const navigate = Route.useNavigate();
-  const { data: matches = [] } = useLiveQuery(() => matchCollection);
+  const { data: allMatches = [] } = useLiveQuery(() => matchCollection);
+  const matches = allMatches.filter((m) => !m.deleted);
   const canFinish = !!matches.filter((m) => m.finished !== undefined).length;
 
   const [newModalOpened, setNewModalOpened] = useState(false);
@@ -69,7 +70,7 @@ function Page(): ReactNode {
         confirmLabel: "Delete Match",
         cancelLabel: "Cancel",
         confirmVariant: "destructive",
-        onConfirm: () => matchCollection.delete(matchId),
+        onConfirm: () => softDeleteMatch(matchId),
       });
     },
     [openConfirmDialog],
