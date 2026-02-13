@@ -57,7 +57,6 @@ export function Layout({ content }: LayoutProps): ReactNode {
           >
             Scouting Admin
           </Button>
-
         </div>
       </header>
 
