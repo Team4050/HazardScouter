@@ -320,7 +320,9 @@ export function useConfirmDialog() {
     confirmDialogProps: {
       ...state,
       onOpenChange: (open: boolean) => {
-        if (!open) closeConfirmDialog();
+        if (!open) {
+          closeConfirmDialog();
+        }
       },
     },
     openConfirmDialog,

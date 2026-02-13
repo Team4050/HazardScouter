@@ -61,7 +61,9 @@ const slugToPhase = new Map(
 
 export function phaseSlugToTitle(slug: string): string {
   const phase = slugToPhase.get(slug);
-  if (!phase) throw new Error(`Unknown phase slug: ${slug}`);
+  if (!phase) {
+    throw new Error(`Unknown phase slug: ${slug}`);
+  }
   return phaseDetails[phase].title;
 }
 

@@ -9,19 +9,26 @@ export function JsonView({ value }: { value: unknown }): ReactNode {
 }
 
 function JsonValue({ value, depth = 0 }: { value: unknown; depth?: number }) {
-  if (value === null) return <span className="text-gray-500">null</span>;
-  if (value === undefined)
+  if (value === null) {
+    return <span className="text-gray-500">null</span>;
+  }
+  if (value === undefined) {
     return <span className="text-gray-500">undefined</span>;
-  if (typeof value === "boolean")
+  }
+  if (typeof value === "boolean") {
     return <span className="text-yellow-400">{String(value)}</span>;
-  if (typeof value === "number")
+  }
+  if (typeof value === "number") {
     return <span className="text-cyan-400">{value}</span>;
-  if (typeof value === "string")
+  }
+  if (typeof value === "string") {
     return <span className="text-green-400">"{value}"</span>;
+  }
 
   if (Array.isArray(value)) {
-    if (value.length === 0)
+    if (value.length === 0) {
       return <span className="text-gray-400">{"[]"}</span>;
+    }
     return (
       <span>
         {"["}
@@ -41,8 +48,9 @@ function JsonValue({ value, depth = 0 }: { value: unknown; depth?: number }) {
 
   if (typeof value === "object") {
     const entries = Object.entries(value as Record<string, unknown>);
-    if (entries.length === 0)
+    if (entries.length === 0) {
       return <span className="text-gray-400">{"{}"}</span>;
+    }
     return (
       <span>
         {"{"}

@@ -54,7 +54,9 @@ export function setScoutingPhaseData(
   phase: ScoutingPhase,
   data: PhaseDataMap[typeof phase],
 ) {
-  if (!matchCollection.get(id)) return;
+  if (!matchCollection.get(id)) {
+    return;
+  }
 
   const isLastPhase = phase === phaseOrder[phaseOrder.length - 1];
 

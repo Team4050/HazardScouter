@@ -18,7 +18,9 @@ function Page(): ReactNode {
   const navigate = Route.useNavigate();
   const { confirmDialogProps, openConfirmDialog } = useConfirmDialog();
 
-  if (!match) return null;
+  if (!match) {
+    return null;
+  }
 
   const { phases, ...metadata } = match;
 
