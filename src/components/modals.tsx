@@ -37,7 +37,11 @@ export function NewMatchModal({
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const isMobile = useIsMobile();
-  const { data: matches = [] } = useLiveQuery(() => matchCollection);
+  const { data: allMatches = [] } = useLiveQuery(() => matchCollection);
+  const matches = useMemo(
+    () => allMatches.filter((m) => !m.deleted),
+    [allMatches],
+  );
   const scouters = useMemo(() => {
     return [...new Set(matches.map((match) => match.scouter))];
   }, [matches]);

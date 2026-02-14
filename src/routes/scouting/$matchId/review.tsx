@@ -4,7 +4,7 @@ import { JsonView } from "@/components/JsonView";
 import { ConfirmDialog, useConfirmDialog } from "@/components/modals";
 import { Button } from "@/components/ui/button";
 import { Timeline, TimelineItem } from "@/components/ui/timeline";
-import { matchCollection, useMatch } from "@/data/db";
+import { softDeleteMatch, useMatch } from "@/data/db";
 import { phaseDetails, phaseOrder } from "@/data/match";
 
 export const Route = createFileRoute("/scouting/$matchId/review")({
@@ -32,7 +32,7 @@ function Page(): ReactNode {
       cancelLabel: "Cancel",
       confirmVariant: "destructive",
       onConfirm: () => {
-        matchCollection.delete(matchId);
+        softDeleteMatch(matchId);
         navigate({ to: "/scouting" });
       },
     });

@@ -30,6 +30,7 @@ export type Match = {
   teamNumber: number;
   started: Date;
   finished?: Date;
+  deleted?: boolean;
   phases: {
     [K in ScoutingPhase]?: PhaseDataMap[K];
   };
@@ -47,6 +48,15 @@ export function resetCollections() {
   for (const id of ids) {
     matchCollection.delete(id);
   }
+}
+
+export function softDeleteMatch(id: string) {
+  if (!matchCollection.get(id)) {
+    return;
+  }
+  matchCollection.update(id, (draft) => {
+    draft.deleted = true;
+  });
 }
 
 export function setScoutingPhaseData(
@@ -86,7 +96,7 @@ export function newId(): string {
 // biome-ignore-start lint/style/noNonNullAssertion: We're finding all cases where finished != undefined, so safe to assume non-null
 export function downloadMatches(del = false) {
   const matches = matchCollection.toArray
-    .filter((m) => m.finished !== undefined)
+    .filter((m) => m.finished !== undefined && !m.deleted)
     .sort(
       (a, b) =>
         new Date(a.finished!).getTime() - new Date(b.finished!).getTime(),
@@ -99,7 +109,10 @@ export function downloadMatches(del = false) {
   const firstDay = shortDayName(matches[0].finished!);
   const lastDay = shortDayName(matches[matches.length - 1].finished!);
 
-  const blob = new Blob([JSON.stringify(matches, null, 2)], {
+  // Strip the `deleted` field from exported data
+  const exportData = matches.map(({ deleted, ...rest }) => rest);
+
+  const blob = new Blob([JSON.stringify(exportData, null, 2)], {
     type: "application/json",
   });
   const url = URL.createObjectURL(blob);
@@ -111,7 +124,11 @@ export function downloadMatches(del = false) {
   URL.revokeObjectURL(url);
 
   if (del) {
+    // Hard-delete exported matches and soft-deleted matches
     for (const match of matches) {
+      matchCollection.delete(match.id);
+    }
+    for (const match of matchCollection.toArray.filter((m) => m.deleted)) {
       matchCollection.delete(match.id);
     }
   }
