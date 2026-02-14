@@ -192,6 +192,9 @@ export function NewMatchModal({
         <DrawerContent>
           <DrawerHeader>
             <DrawerTitle>New Match</DrawerTitle>
+            <DrawerDescription className="sr-only">
+              Create a new scouting match
+            </DrawerDescription>
           </DrawerHeader>
           <div className="px-4 pb-4">{formContent}</div>
         </DrawerContent>
@@ -204,6 +207,9 @@ export function NewMatchModal({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>New Match</DialogTitle>
+          <DialogDescription className="sr-only">
+            Create a new scouting match
+          </DialogDescription>
         </DialogHeader>
         {formContent}
       </DialogContent>
