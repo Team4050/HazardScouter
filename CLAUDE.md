@@ -97,3 +97,9 @@ Custom inputs in `src/components/inputs.tsx` wrap Radix UI:
 ### Path Aliases
 
 `@/*` resolves to `src/*` (configured in tsconfig and vite)
+
+## Coding Conventions
+
+- **Block statements required**: Always use `{}` braces for `if`/`else`/`for`/`while` — no inline single-line bodies. Enforced by Biome `useBlockStatements: error`.
+- **No `any` types**: Avoid `any` in all TypeScript code. Use `unknown`, generics, or specific types instead. Enforced by Biome `noExplicitAny: error`. Only suppress with `biome-ignore` when truly unavoidable (e.g., third-party API introspection) and include a justification.
+- **Extract prop types**: When a component has >2 props, define a named `type FooProps = { ... }` above the component instead of inline typing in the parameter list. Components with 1–2 props may use inline typing.
