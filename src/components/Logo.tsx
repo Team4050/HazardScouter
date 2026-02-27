@@ -57,7 +57,7 @@ function Logo(props: SVGProps<SVGSVGElement>): ReactNode {
 function HazardScouter(props: SVGProps<SVGSVGElement>): ReactNode {
   return (
     <svg viewBox="0 0 1250 600" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <g clipPath="url(#clip_0)" fontFamily="'Jersey 20'">
+      <g clipPath="url(#clip_0)" fontFamily="'Jersey 10'">
         <g filter="url(#filter_1)">
           <text fill="#16a34a" fontSize="460">
             <tspan x="15" y="300">
