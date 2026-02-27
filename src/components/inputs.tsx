@@ -431,11 +431,20 @@ type CounterProps = BaseProps &
     className?: string;
     min?: number;
     max?: number;
+    /** Amount to increment/decrement by. Defaults to 1. Overridden by incrementBy/decrementBy. */
+    step?: number;
+    /** Amount to increment by. Defaults to step. */
+    incrementBy?: number;
+    /** Amount to decrement by. Defaults to step. */
+    decrementBy?: number;
   };
 
 export const Counter = memo(function Counter({
   min = 0,
   max = 999,
+  step = 1,
+  incrementBy,
+  decrementBy,
   onChange,
   label,
   className,
@@ -460,21 +469,24 @@ export const Counter = memo(function Counter({
     }
   };
 
+  const incAmount = incrementBy ?? step;
+  const decAmount = decrementBy ?? step;
+
   const handleIncrement = useCallback(() => {
-    const newValue = displayValue + 1;
-    if (newValue <= max) {
+    const newValue = Math.min(displayValue + incAmount, max);
+    if (newValue !== displayValue) {
       setInternalValue(newValue);
       onChange?.(newValue);
     }
-  }, [displayValue, max, onChange]);
+  }, [displayValue, incAmount, max, onChange]);
 
   const handleDecrement = useCallback(() => {
-    const newValue = displayValue - 1;
-    if (newValue >= min) {
+    const newValue = Math.max(displayValue - decAmount, min);
+    if (newValue !== displayValue) {
       setInternalValue(newValue);
       onChange?.(newValue);
     }
-  }, [displayValue, min, onChange]);
+  }, [displayValue, decAmount, min, onChange]);
 
   return (
     <InputWrapper
@@ -490,7 +502,7 @@ export const Counter = memo(function Counter({
           disabled={displayValue === min}
           className="px-0 size-full font-normal text-5xl"
         >
-          -
+          -{decAmount !== 1 && decAmount}
         </Button>
         <Input
           type="text"
@@ -510,7 +522,7 @@ export const Counter = memo(function Counter({
           disabled={displayValue === max}
           className="px-0 size-full font-normal text-5xl"
         >
-          +
+          +{incAmount !== 1 && incAmount}
         </Button>
       </div>
     </InputWrapper>

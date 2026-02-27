@@ -11,7 +11,7 @@ import {
   string,
 } from "valibot";
 
-export const saneScoreSchema = pipe(number(), minValue(0), maxValue(99));
+export const saneScoreSchema = pipe(number(), minValue(0), maxValue(200));
 
 export enum MatchType {
   Practice = "practice",

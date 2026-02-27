@@ -62,10 +62,11 @@ export function Teleop({ matchId, initialData }: Props): ReactNode {
         {(field) => (
           <Counter
             label="Fuel Scored"
-            max={99}
             value={field.state.value}
             onChange={(val: number) => field.handleChange(val)}
             className="col-span-full"
+            incrementBy={5}
+            max={200}
           />
         )}
       </form.Field>

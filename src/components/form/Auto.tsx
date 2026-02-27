@@ -26,6 +26,8 @@ export function Auto({ matchId, initialData }: Props): ReactNode {
             label="Fuel Scored"
             value={field.state.value}
             onChange={(val: number) => field.handleChange(val)}
+            incrementBy={5}
+            max={200}
           />
         )}
       </form.Field>
