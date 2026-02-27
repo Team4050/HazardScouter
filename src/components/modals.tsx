@@ -23,6 +23,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { type Match, matchCollection, newId } from "@/data/db";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { setSentryUser } from "@/sentry";
 import { cn } from "@/util";
 
 type NewMatchForm = Omit<Match, "started" | "finished" | "phases" | "id">;
@@ -68,6 +69,8 @@ export function NewMatchModal({
       }
 
       setLoading(true);
+
+      setSentryUser({ username: value.scouter });
 
       const id = newId();
       matchCollection.insert({

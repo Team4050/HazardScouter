@@ -1,9 +1,11 @@
 import { useLocation, useNavigate } from "@tanstack/react-router";
+import { BugIcon } from "lucide-react";
 import { type ReactNode, useMemo } from "react";
 import { AppLogo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import { phaseSlugToTitle } from "@/data/match";
 import { usePWAUpdater } from "@/hooks/usePWAUpdater";
+import { sentryEnabled as enableSentry, getSentryFeedback } from "@/sentry";
 
 const NAVBAR_HEIGHT = 60;
 
@@ -15,6 +17,8 @@ export function Layout({ content }: LayoutProps): ReactNode {
   const navigate = useNavigate();
   const path = useLocation({ select: (state) => state.pathname });
   usePWAUpdater();
+
+  const feedback = getSentryFeedback();
 
   const matchPhaseTitle = useMemo(() => {
     const matchedPath = path.match(/\/scouting\/[^/]*\/collect\/(.*)/);
@@ -49,7 +53,6 @@ export function Layout({ content }: LayoutProps): ReactNode {
           </h1>
         </div>
         <div className="flex-1 flex justify-end items-center gap-2">
-          <span className="lg:hidden block opacity-50">{__COMMIT_HASH__}</span>
           <Button
             className="hidden lg:block text-primary py-0 px-2"
             variant="ghost"
@@ -57,6 +60,20 @@ export function Layout({ content }: LayoutProps): ReactNode {
           >
             Scouting Admin
           </Button>
+          {enableSentry ? (
+            <Button
+              variant="destructive"
+              onClick={async () => {
+                const form = await feedback?.createForm();
+                form?.appendToDom();
+                form?.open();
+              }}
+              className="lg:px-4 px-2"
+            >
+              <span className="hidden lg:inline">Report Bug</span>
+              <BugIcon className="inline lg:hidden size-6!" />
+            </Button>
+          ) : null}
         </div>
       </header>
 
