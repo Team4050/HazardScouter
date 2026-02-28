@@ -84,5 +84,12 @@ export function useForm<T extends ScoutingPhase>({
     return unsubscribe;
   }, [form, handleValuesChange, schema]);
 
+  // Save current values on unmount (handles untouched forms and rapid navigation)
+  useEffect(() => {
+    return () => {
+      setScoutingPhaseData(matchId, phase, form.store.state.values);
+    };
+  }, [form, matchId, phase]);
+
   return form;
 }
