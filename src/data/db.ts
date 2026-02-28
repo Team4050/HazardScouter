@@ -12,6 +12,7 @@ import {
   type TeamReview,
   type Teleop,
 } from "@/data/match";
+import { addBreadcrumb, captureException } from "@/sentry";
 import { shortDayName } from "@/util";
 
 type ID = { id: string };
@@ -57,6 +58,7 @@ export function softDeleteMatch(id: string) {
   matchCollection.update(id, (draft) => {
     draft.deleted = true;
   });
+  addBreadcrumb({ category: "match", message: "Match deleted", data: { id } });
 }
 
 export function setScoutingPhaseData(
@@ -65,6 +67,12 @@ export function setScoutingPhaseData(
   data: PhaseDataMap[typeof phase],
 ) {
   if (!matchCollection.get(id)) {
+    addBreadcrumb({
+      category: "match",
+      message: "Match not found for phase save",
+      level: "warning",
+      data: { id, phase },
+    });
     return;
   }
 
@@ -123,6 +131,12 @@ export function downloadMatches(del = false) {
   a.click();
   URL.revokeObjectURL(url);
 
+  addBreadcrumb({
+    category: "data",
+    message: "Matches exported",
+    data: { count: matches.length, deleted: del },
+  });
+
   if (del) {
     // Hard-delete exported matches and soft-deleted matches
     for (const match of matches) {
@@ -145,6 +159,13 @@ export async function parseMatchesFile(file: File): Promise<Match[]> {
         const matches = JSON.parse(reader.result as string);
         resolve(matches);
       } catch (error) {
+        captureException(error, { file: file.name, size: file.size });
+        addBreadcrumb({
+          category: "data",
+          message: "Failed to parse matches file",
+          level: "error",
+          data: { file: file.name },
+        });
         reject(error);
       }
     };

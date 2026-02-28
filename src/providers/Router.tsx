@@ -2,7 +2,7 @@ import { createRouter, RouterProvider } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { routeTree } from "@/routeTree.gen";
 
-const router = createRouter({
+export const router = createRouter({
   routeTree,
   defaultNotFoundComponent: NotFound,
 });

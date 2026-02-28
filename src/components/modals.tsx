@@ -23,7 +23,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { type Match, matchCollection, newId } from "@/data/db";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { setSentryUser } from "@/sentry";
+import { addBreadcrumb, setSentryUser, setTags } from "@/sentry";
 import { cn } from "@/util";
 
 type NewMatchForm = Omit<Match, "started" | "finished" | "phases" | "id">;
@@ -78,6 +78,23 @@ export function NewMatchModal({
         ...value,
         started: new Date(),
         phases: {},
+      });
+
+      addBreadcrumb({
+        category: "match",
+        message: "Match created",
+        data: {
+          matchId: id,
+          scouter: value.scouter,
+          teamNumber: value.teamNumber,
+          matchNumber: value.matchNumber,
+        },
+      });
+      setTags({
+        scouter: value.scouter,
+        teamNumber: value.teamNumber,
+        matchNumber: value.matchNumber,
+        matchId: id,
       });
 
       await new Promise((resolve) => setTimeout(resolve, 500));

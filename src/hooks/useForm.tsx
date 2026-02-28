@@ -6,6 +6,7 @@ import { safeParse } from "valibot";
 import { type PhaseDataMap, setScoutingPhaseData } from "@/data/db";
 import type { ScoutingPhase } from "@/data/match";
 import { useAppState } from "@/hooks/useAppState";
+import { addBreadcrumb, setTags } from "@/sentry";
 
 type Props<T extends ScoutingPhase> = {
   matchId: string;
@@ -31,6 +32,12 @@ export function useForm<T extends ScoutingPhase>({
   const debouncedSave = useDebounceCallback((values: PhaseDataMap[T]) => {
     setScoutingPhaseData(matchId, phase, values);
     setPhaseSaving(phase, false);
+    addBreadcrumb({
+      category: "form",
+      message: "Phase saved",
+      data: { phase, matchId },
+    });
+    setTags({ currentPhase: phase });
   }, 300);
 
   const form = useTanStackForm({

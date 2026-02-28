@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.2.0",
-    "@sentry/react": "^10.38.0",
+    "@sentry/react": "^10.40.0",
     "@tanstack/react-db": "^0.1.69",
     "@tanstack/react-form": "^1.28.3",
     "@tanstack/react-router": "^1.158.0",
