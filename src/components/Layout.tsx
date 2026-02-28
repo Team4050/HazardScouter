@@ -1,9 +1,10 @@
 import { useLocation, useNavigate } from "@tanstack/react-router";
-import { BugIcon } from "lucide-react";
+import { BugIcon, RefreshCwIcon } from "lucide-react";
 import { type ReactNode, useMemo } from "react";
 import { AppLogo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import { phaseSlugToTitle } from "@/data/match";
+import { useOnline } from "@/hooks/useOnline";
 import { usePWAUpdater } from "@/hooks/usePWAUpdater";
 import { sentryEnabled as enableSentry, getSentryFeedback } from "@/sentry";
 
@@ -16,7 +17,8 @@ type LayoutProps = {
 export function Layout({ content }: LayoutProps): ReactNode {
   const navigate = useNavigate();
   const path = useLocation({ select: (state) => state.pathname });
-  usePWAUpdater();
+  const { forceUpdate } = usePWAUpdater();
+  const isOnline = useOnline();
 
   const feedback = getSentryFeedback();
 
@@ -60,7 +62,16 @@ export function Layout({ content }: LayoutProps): ReactNode {
           >
             Scouting Admin
           </Button>
-          {enableSentry ? (
+          {isOnline ? (
+            <Button
+              onClick={forceUpdate}
+              className="px-2"
+              title="Check for updates"
+            >
+              <RefreshCwIcon className="size-6!" />
+            </Button>
+          ) : null}
+          {enableSentry && isOnline ? (
             <Button
               variant="destructive"
               onClick={async () => {
