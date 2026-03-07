@@ -88,7 +88,7 @@ export function useForm<T extends ScoutingPhase>({
         handleValuesChange(state.values, result.success);
       }
     });
-    return unsubscribe;
+    return () => unsubscribe.unsubscribe();
   }, [form, handleValuesChange, schema]);
 
   // Save current values on unmount (handles untouched forms and rapid navigation)
