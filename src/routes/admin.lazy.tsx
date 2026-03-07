@@ -1,14 +1,9 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { Download, FileJson, Trash2, Upload, X } from "lucide-react";
-import {
-  type ReactNode,
-  useCallback,
-  useEffect,
-  useReducer,
-  useState,
-} from "react";
+import { type ReactNode, useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
+import { Select } from "@/components/inputs";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -19,58 +14,55 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { parseMatchesFile } from "@/data/db";
+import { downloadCsv, downloadJson, type ExportFormat } from "@/data/export";
 import { cn } from "@/util";
 
 export const Route = createLazyFileRoute("/admin")({
   component: Page,
 });
 
+function validateFile(file: File): boolean {
+  return (
+    /^matches_[a-z]{3}-[a-z]{3}_\d+\.json$/.test(file.name) &&
+    file.type === "application/json"
+  );
+}
+
+type RowData = {
+  name: string;
+  totalMatches: number;
+  totalTeams: number;
+};
+
 function Page(): ReactNode {
   const [files, setFiles] = useState<File[]>([]);
-  const [rowData, setRowData] = useState<
-    { name: string; totalMatches: number; totalTeams: Map<number, number> }[]
-  >([]);
-  const forceUpdate = useReducer((x) => x + 1, 0)[1];
+  const [rowData, setRowData] = useState<RowData[]>([]);
+  const [format, setFormat] = useState<ExportFormat>("json");
 
-  const validateFile = useCallback((file: File): boolean => {
-    if (!file.name.match(/^matches_[a-z]{3}-[a-z]{3}_\d+\.json$/)) {
-      return false;
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    const validFiles = acceptedFiles.filter(validateFile);
+    const invalidFiles = acceptedFiles.filter((f) => !validateFile(f));
+
+    if (invalidFiles.length > 0) {
+      toast.error(
+        invalidFiles.length > 1
+          ? "Invalid files"
+          : `Invalid file: ${invalidFiles[0].name}`,
+        {
+          description: "Only upload match data files",
+        },
+      );
     }
-    if (!file.type.match(/^application\/json$/)) {
-      return false;
+
+    if (validFiles.length > 0) {
+      setFiles((prev) => [
+        ...validFiles.filter(
+          (file) => !prev.find(({ name }) => name === file.name),
+        ),
+        ...prev,
+      ]);
     }
-    return true;
   }, []);
-
-  const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      const validFiles = acceptedFiles.filter(validateFile);
-      const invalidFiles = acceptedFiles.filter((f) => !validateFile(f));
-
-      if (invalidFiles.length > 0) {
-        forceUpdate();
-        toast.error(
-          invalidFiles.length > 1
-            ? "Invalid files"
-            : `Invalid file: ${invalidFiles[0].name}`,
-          {
-            description: "Only upload match data files",
-          },
-        );
-      }
-
-      if (validFiles.length > 0) {
-        const newFiles = [
-          ...validFiles.filter(
-            (file) => !files.find(({ name }) => name === file.name),
-          ),
-          ...files,
-        ];
-        setFiles(newFiles);
-      }
-    },
-    [files, validateFile],
-  );
 
   const { getRootProps, getInputProps, isDragActive, isDragReject } =
     useDropzone({
@@ -84,42 +76,32 @@ function Page(): ReactNode {
     Promise.all(
       files.map(async (file) => {
         const matches = await parseMatchesFile(file);
-
         return {
           name: file.name,
           totalMatches: matches.length,
-          totalTeams: matches.reduce(
-            (acc, match) =>
-              acc.set(match.teamNumber, 1 + (acc.get(match.teamNumber) || 0)),
-            new Map<number, number>(),
-          ),
+          totalTeams: new Set(matches.map((m) => m.teamNumber)).size,
         };
       }),
     ).then(setRowData);
   }, [files]);
 
-  const onClear = () => {
-    setFiles([]);
+  const onDownload = async () => {
+    const allMatches = await Promise.all(files.map(parseMatchesFile));
+    const combinedMatches = allMatches.flat();
+    if (combinedMatches.length === 0) {
+      return;
+    }
+
+    const filenameBase = `combined_matches_${Date.now()}`;
+    if (format === "csv") {
+      downloadCsv(combinedMatches, filenameBase);
+    } else {
+      downloadJson(combinedMatches, filenameBase);
+    }
   };
 
-  const onDownload = async () => {
-    const matchesPromises = files.map(async (file) => {
-      const matches = await parseMatchesFile(file);
-      return matches;
-    });
-
-    const allMatches = await Promise.all(matchesPromises);
-    const combinedMatches = allMatches.flat();
-
-    const blob = new Blob([JSON.stringify(combinedMatches, null, 2)], {
-      type: "application/json",
-    });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `combined_matches_${Date.now()}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
+  const onClear = () => {
+    setFiles([]);
   };
 
   const handleDelete = (fileName: string) => {
@@ -173,7 +155,7 @@ function Page(): ReactNode {
                 <TableRow key={row.name} className="normal-case">
                   <TableCell>{row.name}</TableCell>
                   <TableCell>{row.totalMatches}</TableCell>
-                  <TableCell>{row.totalTeams.size}</TableCell>
+                  <TableCell>{row.totalTeams}</TableCell>
                   <TableCell className="w-fit">
                     <button
                       type="button"
@@ -193,7 +175,20 @@ function Page(): ReactNode {
       </div>
 
       {/* Actions */}
-      <div className="mx-auto flex gap-x-4">
+      <div className="mx-auto flex gap-x-4 items-center">
+        <Select
+          data={[
+            { value: "json", label: "JSON" },
+            { value: "csv", label: "CSV" },
+          ]}
+          value={format}
+          onChange={(val) => {
+            if (val) {
+              setFormat(val as ExportFormat);
+            }
+          }}
+          classNames={{ wrapper: "w-28" }}
+        />
         <Button onClick={onDownload} disabled={files.length === 0}>
           <Download className="h-4 w-4 mr-2" />
           Compile and Download
