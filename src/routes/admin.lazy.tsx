@@ -7,7 +7,13 @@ import {
   Upload,
   X,
 } from "lucide-react";
-import { type ReactNode, useCallback, useEffect, useState } from "react";
+import {
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
 import { Select } from "@/components/inputs";
@@ -20,7 +26,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { parseMatchesFile } from "@/data/db";
+import { type Match, parseMatchesFile } from "@/data/db";
 import {
   copyTsvToClipboard,
   downloadCsv,
@@ -50,10 +56,14 @@ function Page(): ReactNode {
   const [files, setFiles] = useState<File[]>([]);
   const [rowData, setRowData] = useState<RowData[]>([]);
   const [format, setFormat] = useState<ExportFormat>("json");
+  const parsedMatchesRef = useRef<Match[]>([]);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
-    const validFiles = acceptedFiles.filter(validateFile);
-    const invalidFiles = acceptedFiles.filter((f) => !validateFile(f));
+    const validFiles: File[] = [];
+    const invalidFiles: File[] = [];
+    for (const f of acceptedFiles) {
+      (validateFile(f) ? validFiles : invalidFiles).push(f);
+    }
 
     if (invalidFiles.length > 0) {
       toast.error(
@@ -85,40 +95,53 @@ function Page(): ReactNode {
     });
 
   useEffect(() => {
-    Promise.all(
-      files.map(async (file) => {
-        const matches = await parseMatchesFile(file);
-        return {
-          name: file.name,
-          totalMatches: matches.length,
-          totalTeams: new Set(matches.map((m) => m.teamNumber)).size,
-        };
-      }),
-    ).then(setRowData);
+    let stale = false;
+    Promise.all(files.map(parseMatchesFile))
+      .then((results) => {
+        if (stale) {
+          return;
+        }
+        const allMatches = results.flat();
+        parsedMatchesRef.current = allMatches;
+        setRowData(
+          results.map((matches, i) => ({
+            name: files[i].name,
+            totalMatches: matches.length,
+            totalTeams: new Set(matches.map((m) => m.teamNumber)).size,
+          })),
+        );
+      })
+      .catch((error) => {
+        if (!stale) {
+          toast.error("Failed to parse file", {
+            description: String(error),
+          });
+        }
+      });
+    return () => {
+      stale = true;
+    };
   }, [files]);
 
-  const onDownload = async () => {
-    const allMatches = await Promise.all(files.map(parseMatchesFile));
-    const combinedMatches = allMatches.flat();
-    if (combinedMatches.length === 0) {
+  const onDownload = () => {
+    const matches = parsedMatchesRef.current;
+    if (matches.length === 0) {
       return;
     }
-
     const filenameBase = `combined_matches_${Date.now()}`;
     if (format === "csv") {
-      downloadCsv(combinedMatches, filenameBase);
+      downloadCsv(matches, filenameBase);
     } else {
-      downloadJson(combinedMatches, filenameBase);
+      downloadJson(matches, filenameBase);
     }
   };
 
   const onCopyForSheets = async () => {
-    const allMatches = await Promise.all(files.map(parseMatchesFile));
-    const combinedMatches = allMatches.flat();
-    if (combinedMatches.length === 0) {
+    const matches = parsedMatchesRef.current;
+    if (matches.length === 0) {
       return;
     }
-    await copyTsvToClipboard(combinedMatches);
+    await copyTsvToClipboard(matches);
     toast.success("Copied to clipboard", {
       description: "Paste into Google Sheets with Ctrl+V",
     });
@@ -126,6 +149,7 @@ function Page(): ReactNode {
 
   const onClear = () => {
     setFiles([]);
+    parsedMatchesRef.current = [];
   };
 
   const handleDelete = (fileName: string) => {
@@ -167,7 +191,7 @@ function Page(): ReactNode {
         {rowData.length ? (
           <Table>
             <TableHeader>
-              <TableRow>
+              <TableRow className="hover:bg-inherit">
                 {["Name", "Total Matches", "Total Teams"].map((head) => (
                   <TableHead key={head}>{head}</TableHead>
                 ))}
@@ -176,7 +200,10 @@ function Page(): ReactNode {
             </TableHeader>
             <TableBody>
               {rowData.map((row) => (
-                <TableRow key={row.name} className="normal-case">
+                <TableRow
+                  key={row.name}
+                  className="normal-case hover:bg-inherit"
+                >
                   <TableCell>{row.name}</TableCell>
                   <TableCell>{row.totalMatches}</TableCell>
                   <TableCell>{row.totalTeams}</TableCell>
@@ -184,7 +211,7 @@ function Page(): ReactNode {
                     <button
                       type="button"
                       onClick={() => handleDelete(row.name)}
-                      className="p-2 hover:bg-red-500/20 rounded-md transition-colors text-red-500"
+                      className="p-2 hover:bg-red-500/20 rounded-md transition-colors text-red-500 cursor-pointer"
                     >
                       <Trash2 className="h-5 w-5" />
                     </button>

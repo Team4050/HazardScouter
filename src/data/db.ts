@@ -3,6 +3,7 @@ import {
   localStorageCollectionOptions,
   useLiveQuery,
 } from "@tanstack/react-db";
+import { triggerDownload } from "@/data/export";
 import {
   type Auto,
   type EndGame,
@@ -120,16 +121,11 @@ export function downloadMatches(del = false) {
   // Strip the `deleted` field from exported data
   const exportData = matches.map(({ deleted, ...rest }) => rest);
 
-  const blob = new Blob([JSON.stringify(exportData, null, 2)], {
-    type: "application/json",
-  });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download =
-    `matches_${firstDay}-${lastDay}_${Date.now()}.json`.toLowerCase();
-  a.click();
-  URL.revokeObjectURL(url);
+  triggerDownload(
+    JSON.stringify(exportData, null, 2),
+    `matches_${firstDay}-${lastDay}_${Date.now()}.json`.toLowerCase(),
+    "application/json",
+  );
 
   addBreadcrumb({
     category: "data",

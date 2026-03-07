@@ -29,7 +29,16 @@ function flattenMatch(match: Match): FlatRecord {
       continue;
     }
     for (const [key, value] of Object.entries(data)) {
-      flat[`${phase}.${key}`] = value as string | number | boolean;
+      if (typeof value === "object" && value !== null) {
+        for (const [nestedKey, nestedValue] of Object.entries(value)) {
+          flat[`${phase}.${key}.${nestedKey}`] = nestedValue as
+            | string
+            | number
+            | boolean;
+        }
+      } else {
+        flat[`${phase}.${key}`] = value as string | number | boolean;
+      }
     }
   }
 
@@ -103,16 +112,24 @@ function matchesToCsv(matches: Match[]): string {
   return [header, ...dataRows].join("\n");
 }
 
+function escapeTsvField(value: unknown): string {
+  return String(value ?? "").replace(/[\t\n\r]/g, " ");
+}
+
 function matchesToTsv(matches: Match[]): string {
   const { keys, rows } = flattenAndSort(matches);
   const header = keys.join("\t");
   const dataRows = rows.map((row) =>
-    keys.map((key) => String(row[key] ?? "")).join("\t"),
+    keys.map((key) => escapeTsvField(row[key])).join("\t"),
   );
   return [header, ...dataRows].join("\n");
 }
 
-function triggerDownload(content: string, filename: string, mimeType: string) {
+export function triggerDownload(
+  content: string,
+  filename: string,
+  mimeType: string,
+) {
   const blob = new Blob([content], { type: mimeType });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
