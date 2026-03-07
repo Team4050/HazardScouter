@@ -55,10 +55,12 @@ function escapeCsvField(value: unknown): string {
   return str;
 }
 
-function matchesToCsv(matches: Match[]): string {
+function flattenAndSort(matches: Match[]): {
+  keys: string[];
+  rows: FlatRecord[];
+} {
   const rows = matches.map(flattenMatch);
 
-  // Collect all keys, ordered by preferredOrder then alphabetically for unknowns
   const allKeys = new Set<string>();
   for (const row of rows) {
     for (const key of Object.keys(row)) {
@@ -67,10 +69,9 @@ function matchesToCsv(matches: Match[]): string {
   }
 
   const frontmatterSet = new Set(frontmatterFields);
-  const sortedKeys = [...allKeys].sort((a, b) => {
+  const keys = [...allKeys].sort((a, b) => {
     const aFront = frontmatterSet.has(a);
     const bFront = frontmatterSet.has(b);
-    // Frontmatter fields come first, in their defined order
     if (aFront && bFront) {
       return frontmatterFields.indexOf(a) - frontmatterFields.indexOf(b);
     }
@@ -80,7 +81,6 @@ function matchesToCsv(matches: Match[]): string {
     if (bFront) {
       return 1;
     }
-    // Phase fields: sort by phase order, then alphabetically within phase
     const aPhase = a.split(".")[0];
     const bPhase = b.split(".")[0];
     const aPhaseIdx = phaseIndex.get(aPhase) ?? Number.MAX_SAFE_INTEGER;
@@ -91,11 +91,24 @@ function matchesToCsv(matches: Match[]): string {
     return a.localeCompare(b);
   });
 
-  const header = sortedKeys.map(escapeCsvField).join(",");
-  const dataRows = rows.map((row) =>
-    sortedKeys.map((key) => escapeCsvField(row[key])).join(","),
-  );
+  return { keys, rows };
+}
 
+function matchesToCsv(matches: Match[]): string {
+  const { keys, rows } = flattenAndSort(matches);
+  const header = keys.map(escapeCsvField).join(",");
+  const dataRows = rows.map((row) =>
+    keys.map((key) => escapeCsvField(row[key])).join(","),
+  );
+  return [header, ...dataRows].join("\n");
+}
+
+function matchesToTsv(matches: Match[]): string {
+  const { keys, rows } = flattenAndSort(matches);
+  const header = keys.join("\t");
+  const dataRows = rows.map((row) =>
+    keys.map((key) => String(row[key] ?? "")).join("\t"),
+  );
   return [header, ...dataRows].join("\n");
 }
 
@@ -112,6 +125,11 @@ function triggerDownload(content: string, filename: string, mimeType: string) {
 export function downloadCsv(matches: Match[], filenameBase: string) {
   const csv = matchesToCsv(matches);
   triggerDownload(csv, `${filenameBase}.csv`, "text/csv");
+}
+
+export async function copyTsvToClipboard(matches: Match[]): Promise<void> {
+  const tsv = matchesToTsv(matches);
+  await navigator.clipboard.writeText(tsv);
 }
 
 export function downloadJson(matches: Match[], filenameBase: string) {

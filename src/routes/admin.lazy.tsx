@@ -1,5 +1,12 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
-import { Download, FileJson, Trash2, Upload, X } from "lucide-react";
+import {
+  ClipboardCopy,
+  Download,
+  FileJson,
+  Trash2,
+  Upload,
+  X,
+} from "lucide-react";
 import { type ReactNode, useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
@@ -14,7 +21,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { parseMatchesFile } from "@/data/db";
-import { downloadCsv, downloadJson, type ExportFormat } from "@/data/export";
+import {
+  copyTsvToClipboard,
+  downloadCsv,
+  downloadJson,
+  type ExportFormat,
+} from "@/data/export";
 import { cn } from "@/util";
 
 export const Route = createLazyFileRoute("/admin")({
@@ -98,6 +110,18 @@ function Page(): ReactNode {
     } else {
       downloadJson(combinedMatches, filenameBase);
     }
+  };
+
+  const onCopyForSheets = async () => {
+    const allMatches = await Promise.all(files.map(parseMatchesFile));
+    const combinedMatches = allMatches.flat();
+    if (combinedMatches.length === 0) {
+      return;
+    }
+    await copyTsvToClipboard(combinedMatches);
+    toast.success("Copied to clipboard", {
+      description: "Paste into Google Sheets with Ctrl+V",
+    });
   };
 
   const onClear = () => {
@@ -192,6 +216,14 @@ function Page(): ReactNode {
         <Button onClick={onDownload} disabled={files.length === 0}>
           <Download className="h-4 w-4 mr-2" />
           Compile and Download
+        </Button>
+        <Button
+          onClick={onCopyForSheets}
+          disabled={files.length === 0}
+          variant="secondary"
+        >
+          <ClipboardCopy className="h-4 w-4 mr-2" />
+          Copy for Sheets
         </Button>
         <Button
           onClick={onClear}
