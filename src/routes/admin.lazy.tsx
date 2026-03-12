@@ -157,7 +157,7 @@ function Page(): ReactNode {
   };
 
   return (
-    <div className="gap-y-5 flex flex-col mt-4">
+    <div className="gap-y-5 flex flex-col my-5">
       {/* Dropzone */}
       <div
         {...getRootProps()}
