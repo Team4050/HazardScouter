@@ -40,15 +40,12 @@ export default defineConfig({
         clientsClaim: true,
         // Activate new service worker immediately
         skipWaiting: true,
-        runtimeCaching: [
-          {
-            urlPattern: /\/$/, // Matches root path
-            handler: "NetworkFirst",
-            options: {
-              networkTimeoutSeconds: 5,
-            },
-          },
-        ],
+        // Serve cached index.html for all navigation requests (SPA fallback).
+        // Without this, deep links like /scouting/123/collect/auto fail
+        // offline because no cached response exists for those paths.
+        navigateFallback: "index.html",
+        // Don't apply the SPA fallback to API calls or static assets
+        navigateFallbackDenylist: [/^\/api/],
       },
       includeAssets: ["**/*"],
       manifest: {
