@@ -44,7 +44,7 @@ export default defineConfig({
         // Without this, deep links like /scouting/123/collect/auto fail
         // offline because no cached response exists for those paths.
         navigateFallback: "index.html",
-        // Don't apply the SPA fallback to API calls or static assets
+        // Don't apply the SPA fallback to API routes
         navigateFallbackDenylist: [/^\/api/],
       },
       includeAssets: ["**/*"],
