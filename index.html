@@ -18,15 +18,13 @@
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     <script>
-      window.addEventListener('offline', () => {
-        // Disable pull-to-refresh when offline
-        document.body.style.overscrollBehavior = 'none';
-      });
-
-      window.addEventListener('online', () => {
-        // Re-enable pull-to-refresh when online
-        document.body.style.overscrollBehavior = 'auto';
-      });
+      // Disable pull-to-refresh when offline to prevent blank-screen refreshes
+      function setOverscroll() {
+        document.body.style.overscrollBehavior = navigator.onLine ? 'auto' : 'none';
+      }
+      setOverscroll();
+      window.addEventListener('offline', setOverscroll);
+      window.addEventListener('online', setOverscroll);
     </script>
   </body>
 </html>
